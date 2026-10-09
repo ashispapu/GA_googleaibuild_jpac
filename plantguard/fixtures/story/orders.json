@@ -1,0 +1,20 @@
+[
+  {
+    "id": "ORD-5521",
+    "product": "Cordless drill CD-18",
+    "quantity": 5000,
+    "completed": 2900,
+    "due_at": "2026-10-16T18:00:00Z",
+    "line_id": "L3",
+    "status": "at_risk"
+  },
+  {
+    "id": "ORD-5530",
+    "product": "Angle grinder AG-9",
+    "quantity": 3000,
+    "completed": 1200,
+    "due_at": "2026-10-23T18:00:00Z",
+    "line_id": "L1",
+    "status": "running"
+  }
+]

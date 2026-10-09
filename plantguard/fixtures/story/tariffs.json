@@ -1,0 +1,20 @@
+[
+  {
+    "name": "peak",
+    "start_hour": 6,
+    "end_hour": 22,
+    "price_per_kwh": {
+      "amount": 0.28,
+      "currency": "EUR"
+    }
+  },
+  {
+    "name": "off_peak",
+    "start_hour": 22,
+    "end_hour": 6,
+    "price_per_kwh": {
+      "amount": 0.12,
+      "currency": "EUR"
+    }
+  }
+]

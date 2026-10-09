@@ -1,0 +1,12 @@
+{
+  "line_id": "L3",
+  "window": {
+    "start": "2026-10-12T21:40:00Z",
+    "end": "2026-10-13T21:40:00Z"
+  },
+  "availability": 0.95,
+  "performance": 0.93,
+  "quality": 0.985,
+  "oee": 0.87,
+  "downtime_minutes": 72
+}

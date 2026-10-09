@@ -1,0 +1,2578 @@
+[
+  {
+    "asset_id": "EQ-3012",
+    "signal": "vibration_rms",
+    "unit": "mm/s",
+    "source_tag": "L3.ST2.SPDL2.VIB_RMS",
+    "points": [
+      {
+        "ts": "2026-10-13T15:45:00Z",
+        "value": 2.147,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:50:00Z",
+        "value": 2.217,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:55:00Z",
+        "value": 2.124,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:00:00Z",
+        "value": 1.991,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:05:00Z",
+        "value": 1.95,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:10:00Z",
+        "value": 2.221,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:15:00Z",
+        "value": 2.082,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:20:00Z",
+        "value": 2.055,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:25:00Z",
+        "value": 2.039,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:30:00Z",
+        "value": 2.114,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:35:00Z",
+        "value": 2.112,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:40:00Z",
+        "value": 2.221,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:45:00Z",
+        "value": 2.081,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:50:00Z",
+        "value": 2.208,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:55:00Z",
+        "value": 2.242,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:00:00Z",
+        "value": 2.344,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:05:00Z",
+        "value": 2.321,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:10:00Z",
+        "value": 2.316,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:15:00Z",
+        "value": 2.347,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:20:00Z",
+        "value": 2.183,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:25:00Z",
+        "value": 2.316,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:30:00Z",
+        "value": 2.383,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:35:00Z",
+        "value": 2.3,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:40:00Z",
+        "value": 2.38,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:45:00Z",
+        "value": 2.388,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:50:00Z",
+        "value": 2.278,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:55:00Z",
+        "value": 2.57,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:00:00Z",
+        "value": 2.497,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:05:00Z",
+        "value": 2.403,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:10:00Z",
+        "value": 2.586,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:15:00Z",
+        "value": 2.602,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:20:00Z",
+        "value": 2.549,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:25:00Z",
+        "value": 2.744,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:30:00Z",
+        "value": 2.638,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:35:00Z",
+        "value": 2.638,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:40:00Z",
+        "value": 2.714,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:45:00Z",
+        "value": 2.806,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:50:00Z",
+        "value": 2.875,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:55:00Z",
+        "value": 2.854,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:00:00Z",
+        "value": 2.875,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:05:00Z",
+        "value": 2.884,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:10:00Z",
+        "value": 2.935,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:15:00Z",
+        "value": 3.123,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:20:00Z",
+        "value": 3.116,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:25:00Z",
+        "value": 3.253,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:30:00Z",
+        "value": 3.108,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:35:00Z",
+        "value": 3.239,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:40:00Z",
+        "value": 3.28,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:45:00Z",
+        "value": 3.253,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:50:00Z",
+        "value": 3.396,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:55:00Z",
+        "value": 3.401,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:00:00Z",
+        "value": 3.481,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:05:00Z",
+        "value": 3.471,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:10:00Z",
+        "value": 3.491,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:15:00Z",
+        "value": 3.478,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:20:00Z",
+        "value": 3.538,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:25:00Z",
+        "value": 3.769,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:30:00Z",
+        "value": 3.828,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:35:00Z",
+        "value": 3.914,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:40:00Z",
+        "value": 3.772,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:45:00Z",
+        "value": 3.981,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:50:00Z",
+        "value": 4.06,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:55:00Z",
+        "value": 4.111,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:00:00Z",
+        "value": 4.237,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:05:00Z",
+        "value": 4.253,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:10:00Z",
+        "value": 4.374,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:15:00Z",
+        "value": 4.334,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:20:00Z",
+        "value": 4.345,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:25:00Z",
+        "value": 4.463,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:30:00Z",
+        "value": 4.539,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:35:00Z",
+        "value": 4.669,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:40:00Z",
+        "value": 4.68,
+        "quality": "good"
+      }
+    ]
+  },
+  {
+    "asset_id": "EQ-3012",
+    "signal": "vibration_peak",
+    "unit": "mm/s",
+    "source_tag": "L3.ST2.SPDL2.VIB_PK",
+    "points": [
+      {
+        "ts": "2026-10-13T15:45:00Z",
+        "value": 5.288,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:50:00Z",
+        "value": 6.172,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:55:00Z",
+        "value": 5.888,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:00:00Z",
+        "value": 5.751,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:05:00Z",
+        "value": 6.014,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:10:00Z",
+        "value": 5.839,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:15:00Z",
+        "value": 5.782,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:20:00Z",
+        "value": 5.789,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:25:00Z",
+        "value": 5.959,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:30:00Z",
+        "value": 6.318,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:35:00Z",
+        "value": 6.053,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:40:00Z",
+        "value": 6.119,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:45:00Z",
+        "value": 5.996,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:50:00Z",
+        "value": 6.141,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:55:00Z",
+        "value": 6.116,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:00:00Z",
+        "value": 6.061,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:05:00Z",
+        "value": 6.25,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:10:00Z",
+        "value": 6.205,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:15:00Z",
+        "value": 6.246,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:20:00Z",
+        "value": 6.332,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:25:00Z",
+        "value": 6.482,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:30:00Z",
+        "value": 6.586,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:35:00Z",
+        "value": 6.539,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:40:00Z",
+        "value": 6.309,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:45:00Z",
+        "value": 6.27,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:50:00Z",
+        "value": 6.835,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:55:00Z",
+        "value": 6.438,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:00:00Z",
+        "value": 6.988,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:05:00Z",
+        "value": 6.714,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:10:00Z",
+        "value": 6.812,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:15:00Z",
+        "value": 6.885,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:20:00Z",
+        "value": 6.709,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:25:00Z",
+        "value": 6.971,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:30:00Z",
+        "value": 7.431,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:35:00Z",
+        "value": 7.407,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:40:00Z",
+        "value": 7.124,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:45:00Z",
+        "value": 7.39,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:50:00Z",
+        "value": 7.68,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:55:00Z",
+        "value": 7.477,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:00:00Z",
+        "value": 7.52,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:05:00Z",
+        "value": 7.975,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:10:00Z",
+        "value": 7.866,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:15:00Z",
+        "value": 8.07,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:20:00Z",
+        "value": 8.106,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:25:00Z",
+        "value": 8.114,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:30:00Z",
+        "value": 8.359,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:35:00Z",
+        "value": 8.679,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:40:00Z",
+        "value": 8.204,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:45:00Z",
+        "value": 8.783,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:50:00Z",
+        "value": 8.657,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:55:00Z",
+        "value": 8.448,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:00:00Z",
+        "value": 9.098,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:05:00Z",
+        "value": 8.924,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:10:00Z",
+        "value": 8.78,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:15:00Z",
+        "value": 9.407,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:20:00Z",
+        "value": 9.621,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:25:00Z",
+        "value": 9.817,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:30:00Z",
+        "value": 9.38,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:35:00Z",
+        "value": 9.938,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:40:00Z",
+        "value": 10.07,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:45:00Z",
+        "value": 10.231,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:50:00Z",
+        "value": 10.568,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:55:00Z",
+        "value": 10.481,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:00:00Z",
+        "value": 10.59,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:05:00Z",
+        "value": 10.721,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:10:00Z",
+        "value": 11.062,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:15:00Z",
+        "value": 11.191,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:20:00Z",
+        "value": 10.928,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:25:00Z",
+        "value": 11.163,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:30:00Z",
+        "value": 11.543,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:35:00Z",
+        "value": 11.131,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:40:00Z",
+        "value": 11.42,
+        "quality": "good"
+      }
+    ]
+  },
+  {
+    "asset_id": "EQ-3012",
+    "signal": "vibration_kurtosis",
+    "unit": "",
+    "source_tag": "L3.ST2.SPDL2.VIB_KURT",
+    "points": [
+      {
+        "ts": "2026-10-13T15:45:00Z",
+        "value": 2.94,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:50:00Z",
+        "value": 2.992,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:55:00Z",
+        "value": 3.145,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:00:00Z",
+        "value": 2.81,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:05:00Z",
+        "value": 2.994,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:10:00Z",
+        "value": 3.115,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:15:00Z",
+        "value": 3.179,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:20:00Z",
+        "value": 2.941,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:25:00Z",
+        "value": 3.196,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:30:00Z",
+        "value": 3.123,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:35:00Z",
+        "value": 2.942,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:40:00Z",
+        "value": 3.067,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:45:00Z",
+        "value": 2.984,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:50:00Z",
+        "value": 3.238,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:55:00Z",
+        "value": 3.179,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:00:00Z",
+        "value": 3.245,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:05:00Z",
+        "value": 2.987,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:10:00Z",
+        "value": 3.047,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:15:00Z",
+        "value": 3.071,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:20:00Z",
+        "value": 3.247,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:25:00Z",
+        "value": 3.053,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:30:00Z",
+        "value": 3.071,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:35:00Z",
+        "value": 3.309,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:40:00Z",
+        "value": 3.289,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:45:00Z",
+        "value": 3.36,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:50:00Z",
+        "value": 3.326,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:55:00Z",
+        "value": 3.311,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:00:00Z",
+        "value": 3.454,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:05:00Z",
+        "value": 3.275,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:10:00Z",
+        "value": 3.691,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:15:00Z",
+        "value": 3.416,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:20:00Z",
+        "value": 3.579,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:25:00Z",
+        "value": 3.657,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:30:00Z",
+        "value": 3.526,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:35:00Z",
+        "value": 3.581,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:40:00Z",
+        "value": 3.68,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:45:00Z",
+        "value": 3.653,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:50:00Z",
+        "value": 3.654,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:55:00Z",
+        "value": 3.824,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:00:00Z",
+        "value": 3.758,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:05:00Z",
+        "value": 3.629,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:10:00Z",
+        "value": 3.885,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:15:00Z",
+        "value": 3.711,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:20:00Z",
+        "value": 4.005,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:25:00Z",
+        "value": 3.669,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:30:00Z",
+        "value": 4.089,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:35:00Z",
+        "value": 4.085,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:40:00Z",
+        "value": 4.033,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:45:00Z",
+        "value": 4.076,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:50:00Z",
+        "value": 3.987,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:55:00Z",
+        "value": 4.353,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:00:00Z",
+        "value": 4.337,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:05:00Z",
+        "value": 4.396,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:10:00Z",
+        "value": 4.343,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:15:00Z",
+        "value": 4.284,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:20:00Z",
+        "value": 4.553,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:25:00Z",
+        "value": 4.455,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:30:00Z",
+        "value": 4.285,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:35:00Z",
+        "value": 4.605,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:40:00Z",
+        "value": 4.644,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:45:00Z",
+        "value": 4.713,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:50:00Z",
+        "value": 4.724,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:55:00Z",
+        "value": 4.873,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:00:00Z",
+        "value": 5.139,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:05:00Z",
+        "value": 4.904,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:10:00Z",
+        "value": 5.045,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:15:00Z",
+        "value": 5.144,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:20:00Z",
+        "value": 5.098,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:25:00Z",
+        "value": 5.228,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:30:00Z",
+        "value": 5.308,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:35:00Z",
+        "value": 5.358,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:40:00Z",
+        "value": 5.288,
+        "quality": "good"
+      }
+    ]
+  },
+  {
+    "asset_id": "EQ-3012",
+    "signal": "bearing_temp",
+    "unit": "°C",
+    "source_tag": "L3.ST2.SPDL2.BRG_T",
+    "points": [
+      {
+        "ts": "2026-10-13T15:45:00Z",
+        "value": 57.919,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:50:00Z",
+        "value": 58.224,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:55:00Z",
+        "value": 57.433,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:00:00Z",
+        "value": 57.835,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:05:00Z",
+        "value": 58.142,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:10:00Z",
+        "value": 57.354,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:15:00Z",
+        "value": 58.194,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:20:00Z",
+        "value": 57.757,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:25:00Z",
+        "value": 58.105,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:30:00Z",
+        "value": 57.714,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:35:00Z",
+        "value": 57.979,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:40:00Z",
+        "value": 57.979,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:45:00Z",
+        "value": 58.124,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:50:00Z",
+        "value": 58.617,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:55:00Z",
+        "value": 58.199,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:00:00Z",
+        "value": 57.975,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:05:00Z",
+        "value": 58.148,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:10:00Z",
+        "value": 58.612,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:15:00Z",
+        "value": 58.868,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:20:00Z",
+        "value": 58.697,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:25:00Z",
+        "value": 59.003,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:30:00Z",
+        "value": 59.143,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:35:00Z",
+        "value": 58.739,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:40:00Z",
+        "value": 58.506,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:45:00Z",
+        "value": 59.407,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:50:00Z",
+        "value": 59.007,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:55:00Z",
+        "value": 58.888,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:00:00Z",
+        "value": 59.302,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:05:00Z",
+        "value": 59.76,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:10:00Z",
+        "value": 59.722,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:15:00Z",
+        "value": 59.682,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:20:00Z",
+        "value": 60.315,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:25:00Z",
+        "value": 59.961,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:30:00Z",
+        "value": 59.829,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:35:00Z",
+        "value": 60.118,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:40:00Z",
+        "value": 60.192,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:45:00Z",
+        "value": 60.373,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:50:00Z",
+        "value": 60.137,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:55:00Z",
+        "value": 60.961,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:00:00Z",
+        "value": 60.189,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:05:00Z",
+        "value": 60.593,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:10:00Z",
+        "value": 60.5,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:15:00Z",
+        "value": 61.474,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:20:00Z",
+        "value": 61.16,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:25:00Z",
+        "value": 61.999,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:30:00Z",
+        "value": 62.121,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:35:00Z",
+        "value": 62.147,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:40:00Z",
+        "value": 61.982,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:45:00Z",
+        "value": 62.566,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:50:00Z",
+        "value": 62.364,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:55:00Z",
+        "value": 62.765,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:00:00Z",
+        "value": 62.692,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:05:00Z",
+        "value": 62.693,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:10:00Z",
+        "value": 63.158,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:15:00Z",
+        "value": 63.497,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:20:00Z",
+        "value": 62.888,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:25:00Z",
+        "value": 63.524,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:30:00Z",
+        "value": 63.151,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:35:00Z",
+        "value": 63.964,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:40:00Z",
+        "value": 64.677,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:45:00Z",
+        "value": 64.497,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:50:00Z",
+        "value": 64.708,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:55:00Z",
+        "value": 65.196,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:00:00Z",
+        "value": 64.888,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:05:00Z",
+        "value": 65.281,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:10:00Z",
+        "value": 65.998,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:15:00Z",
+        "value": 66.24,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:20:00Z",
+        "value": 66.369,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:25:00Z",
+        "value": 65.96,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:30:00Z",
+        "value": 66.956,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:35:00Z",
+        "value": 66.875,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:40:00Z",
+        "value": 67.12,
+        "quality": "good"
+      }
+    ]
+  },
+  {
+    "asset_id": "EQ-3012",
+    "signal": "motor_current",
+    "unit": "A",
+    "source_tag": "L3.ST2.SPDL2.MTR_I",
+    "points": [
+      {
+        "ts": "2026-10-13T15:45:00Z",
+        "value": 20.926,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:50:00Z",
+        "value": 20.785,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:55:00Z",
+        "value": 21.029,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:00:00Z",
+        "value": 20.918,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:05:00Z",
+        "value": 21.089,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:10:00Z",
+        "value": 21.194,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:15:00Z",
+        "value": 21.115,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:20:00Z",
+        "value": 21.191,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:25:00Z",
+        "value": 20.892,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:30:00Z",
+        "value": 20.913,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:35:00Z",
+        "value": 21.143,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:40:00Z",
+        "value": 21.259,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:45:00Z",
+        "value": 20.958,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:50:00Z",
+        "value": 21.024,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:55:00Z",
+        "value": 21.092,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:00:00Z",
+        "value": 21.113,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:05:00Z",
+        "value": 21.028,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:10:00Z",
+        "value": 20.966,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:15:00Z",
+        "value": 21.299,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:20:00Z",
+        "value": 21.264,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:25:00Z",
+        "value": 21.074,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:30:00Z",
+        "value": 21.191,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:35:00Z",
+        "value": 21.277,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:40:00Z",
+        "value": 20.994,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:45:00Z",
+        "value": 21.257,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:50:00Z",
+        "value": 21.215,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:55:00Z",
+        "value": 21.282,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:00:00Z",
+        "value": 21.426,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:05:00Z",
+        "value": 21.324,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:10:00Z",
+        "value": 21.357,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:15:00Z",
+        "value": 21.056,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:20:00Z",
+        "value": 21.4,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:25:00Z",
+        "value": 21.471,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:30:00Z",
+        "value": 21.646,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:35:00Z",
+        "value": 21.318,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:40:00Z",
+        "value": 21.34,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:45:00Z",
+        "value": 21.459,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:50:00Z",
+        "value": 21.563,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:55:00Z",
+        "value": 21.463,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:00:00Z",
+        "value": 21.423,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:05:00Z",
+        "value": 21.532,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:10:00Z",
+        "value": 21.575,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:15:00Z",
+        "value": 21.689,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:20:00Z",
+        "value": 21.664,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:25:00Z",
+        "value": 21.655,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:30:00Z",
+        "value": 21.603,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:35:00Z",
+        "value": 21.815,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:40:00Z",
+        "value": 21.812,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:45:00Z",
+        "value": 21.775,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:50:00Z",
+        "value": 22.008,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:55:00Z",
+        "value": 21.922,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:00:00Z",
+        "value": 21.794,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:05:00Z",
+        "value": 22.164,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:10:00Z",
+        "value": 22.003,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:15:00Z",
+        "value": 21.816,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:20:00Z",
+        "value": 22.222,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:25:00Z",
+        "value": 22.019,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:30:00Z",
+        "value": 22.073,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:35:00Z",
+        "value": 22.272,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:40:00Z",
+        "value": 22.27,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:45:00Z",
+        "value": 22.012,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:50:00Z",
+        "value": 22.306,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:55:00Z",
+        "value": 22.368,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:00:00Z",
+        "value": 22.477,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:05:00Z",
+        "value": 22.418,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:10:00Z",
+        "value": 22.495,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:15:00Z",
+        "value": 22.547,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:20:00Z",
+        "value": 22.594,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:25:00Z",
+        "value": 22.515,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:30:00Z",
+        "value": 22.636,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:35:00Z",
+        "value": 22.566,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:40:00Z",
+        "value": 22.477,
+        "quality": "good"
+      }
+    ]
+  },
+  {
+    "asset_id": "EQ-3012",
+    "signal": "power_kw",
+    "unit": "kW",
+    "source_tag": "L3.ST2.SPDL2.PWR",
+    "points": [
+      {
+        "ts": "2026-10-13T15:45:00Z",
+        "value": 11.027,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:50:00Z",
+        "value": 11.043,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:55:00Z",
+        "value": 11.003,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:00:00Z",
+        "value": 11.042,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:05:00Z",
+        "value": 11.061,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:10:00Z",
+        "value": 11.024,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:15:00Z",
+        "value": 11.018,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:20:00Z",
+        "value": 10.953,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:25:00Z",
+        "value": 11.014,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:30:00Z",
+        "value": 11.066,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:35:00Z",
+        "value": 11.065,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:40:00Z",
+        "value": 11.008,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:45:00Z",
+        "value": 11.159,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:50:00Z",
+        "value": 11.039,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:55:00Z",
+        "value": 11.028,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:00:00Z",
+        "value": 11.106,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:05:00Z",
+        "value": 11.177,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:10:00Z",
+        "value": 11.046,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:15:00Z",
+        "value": 11.108,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:20:00Z",
+        "value": 11.099,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:25:00Z",
+        "value": 11.13,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:30:00Z",
+        "value": 11.069,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:35:00Z",
+        "value": 11.128,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:40:00Z",
+        "value": 11.093,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:45:00Z",
+        "value": 11.054,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:50:00Z",
+        "value": 11.169,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:55:00Z",
+        "value": 11.175,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:00:00Z",
+        "value": 11.219,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:05:00Z",
+        "value": 11.176,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:10:00Z",
+        "value": 11.155,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:15:00Z",
+        "value": 11.202,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:20:00Z",
+        "value": 11.252,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:25:00Z",
+        "value": 11.198,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:30:00Z",
+        "value": 11.226,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:35:00Z",
+        "value": 11.239,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:40:00Z",
+        "value": 11.187,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:45:00Z",
+        "value": 11.169,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:50:00Z",
+        "value": 11.232,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:55:00Z",
+        "value": 11.343,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:00:00Z",
+        "value": 11.226,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:05:00Z",
+        "value": 11.16,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:10:00Z",
+        "value": 11.252,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:15:00Z",
+        "value": 11.358,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:20:00Z",
+        "value": 11.29,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:25:00Z",
+        "value": 11.355,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:30:00Z",
+        "value": 11.273,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:35:00Z",
+        "value": 11.335,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:40:00Z",
+        "value": 11.422,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:45:00Z",
+        "value": 11.407,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:50:00Z",
+        "value": 11.456,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:55:00Z",
+        "value": 11.504,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:00:00Z",
+        "value": 11.491,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:05:00Z",
+        "value": 11.425,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:10:00Z",
+        "value": 11.5,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:15:00Z",
+        "value": 11.534,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:20:00Z",
+        "value": 11.544,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:25:00Z",
+        "value": 11.572,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:30:00Z",
+        "value": 11.579,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:35:00Z",
+        "value": 11.604,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:40:00Z",
+        "value": 11.594,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:45:00Z",
+        "value": 11.605,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:50:00Z",
+        "value": 11.67,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:55:00Z",
+        "value": 11.729,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:00:00Z",
+        "value": 11.695,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:05:00Z",
+        "value": 11.744,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:10:00Z",
+        "value": 11.788,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:15:00Z",
+        "value": 11.798,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:20:00Z",
+        "value": 11.826,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:25:00Z",
+        "value": 11.82,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:30:00Z",
+        "value": 11.814,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:35:00Z",
+        "value": 11.901,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:40:00Z",
+        "value": 11.897,
+        "quality": "good"
+      }
+    ]
+  },
+  {
+    "asset_id": "EQ-3012",
+    "signal": "spindle_rpm",
+    "unit": "rpm",
+    "source_tag": "L3.ST2.SPDL2.RPM",
+    "points": [
+      {
+        "ts": "2026-10-13T15:45:00Z",
+        "value": 11999.019,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:50:00Z",
+        "value": 11997.836,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T15:55:00Z",
+        "value": 11987.231,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:00:00Z",
+        "value": 11999.455,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:05:00Z",
+        "value": 12009.178,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:10:00Z",
+        "value": 12006.898,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:15:00Z",
+        "value": 11995.293,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:20:00Z",
+        "value": 11996.241,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:25:00Z",
+        "value": 11979.337,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:30:00Z",
+        "value": 12002.212,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:35:00Z",
+        "value": 12002.993,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:40:00Z",
+        "value": 11977.439,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:45:00Z",
+        "value": 12000.56,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:50:00Z",
+        "value": 11985.28,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T16:55:00Z",
+        "value": 11959.176,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:00:00Z",
+        "value": 11997.387,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:05:00Z",
+        "value": 11989.919,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:10:00Z",
+        "value": 11998.684,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:15:00Z",
+        "value": 12005.314,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:20:00Z",
+        "value": 12010.519,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:25:00Z",
+        "value": 11988.604,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:30:00Z",
+        "value": 11999.052,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:35:00Z",
+        "value": 11995.331,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:40:00Z",
+        "value": 11997.008,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:45:00Z",
+        "value": 11999.653,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:50:00Z",
+        "value": 11981.435,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T17:55:00Z",
+        "value": 11976.196,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:00:00Z",
+        "value": 12007.355,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:05:00Z",
+        "value": 12000.082,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:10:00Z",
+        "value": 11998.781,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:15:00Z",
+        "value": 11983.851,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:20:00Z",
+        "value": 11984.098,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:25:00Z",
+        "value": 11992.419,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:30:00Z",
+        "value": 11980.322,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:35:00Z",
+        "value": 12017.465,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:40:00Z",
+        "value": 12022.54,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:45:00Z",
+        "value": 12010.53,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:50:00Z",
+        "value": 12009.51,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T18:55:00Z",
+        "value": 12003.744,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:00:00Z",
+        "value": 12000.474,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:05:00Z",
+        "value": 11978.957,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:10:00Z",
+        "value": 11990.562,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:15:00Z",
+        "value": 11984.024,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:20:00Z",
+        "value": 11972.618,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:25:00Z",
+        "value": 11973.569,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:30:00Z",
+        "value": 12009.455,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:35:00Z",
+        "value": 11999.218,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:40:00Z",
+        "value": 11971.539,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:45:00Z",
+        "value": 12014.027,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:50:00Z",
+        "value": 12011.707,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T19:55:00Z",
+        "value": 11972.707,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:00:00Z",
+        "value": 11997.221,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:05:00Z",
+        "value": 11986.765,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:10:00Z",
+        "value": 12016.402,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:15:00Z",
+        "value": 12007.74,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:20:00Z",
+        "value": 12027.417,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:25:00Z",
+        "value": 11978.748,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:30:00Z",
+        "value": 11996.518,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:35:00Z",
+        "value": 11999.182,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:40:00Z",
+        "value": 12008.496,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:45:00Z",
+        "value": 12008.527,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:50:00Z",
+        "value": 11989.757,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T20:55:00Z",
+        "value": 11969.867,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:00:00Z",
+        "value": 11993.462,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:05:00Z",
+        "value": 11978.041,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:10:00Z",
+        "value": 12000.075,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:15:00Z",
+        "value": 11990.57,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:20:00Z",
+        "value": 11984.187,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:25:00Z",
+        "value": 12010.292,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:30:00Z",
+        "value": 11996.35,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:35:00Z",
+        "value": 12000.828,
+        "quality": "good"
+      },
+      {
+        "ts": "2026-10-13T21:40:00Z",
+        "value": 12003.091,
+        "quality": "good"
+      }
+    ]
+  }
+]

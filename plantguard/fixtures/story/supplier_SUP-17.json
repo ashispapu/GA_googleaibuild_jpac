@@ -1,0 +1,7 @@
+{
+  "id": "SUP-17",
+  "name": "Bearing Supply Co.",
+  "lead_time_days": 21,
+  "express_available": false,
+  "express_lead_time_days": null
+}

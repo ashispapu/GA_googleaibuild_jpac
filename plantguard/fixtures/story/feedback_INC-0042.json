@@ -1,0 +1,9 @@
+{
+  "id": "FB-0031",
+  "incident_id": "INC-0042",
+  "confirmed": true,
+  "actual_root_cause": "Rear bearing outer race worn; alignment OK",
+  "stored_for_retraining": true,
+  "new_similar_case_confidence": 0.82,
+  "created_at": "2026-10-15T01:00:00Z"
+}

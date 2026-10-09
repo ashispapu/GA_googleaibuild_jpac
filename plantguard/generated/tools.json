@@ -1,0 +1,708 @@
+{
+  "get_asset_health": {
+    "agents": [
+      "decision",
+      "diagnosis",
+      "monitor"
+    ],
+    "writes": false,
+    "endpoint": "GET /ml/assets/{asset_id}/health",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_asset_health",
+        "description": "ML risk, RUL and top SHAP features for an asset",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "asset_id": {
+              "title": "Asset Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "asset_id"
+          ],
+          "title": "AssetArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_signals": {
+    "agents": [
+      "diagnosis",
+      "monitor"
+    ],
+    "writes": false,
+    "endpoint": "GET /ot/assets/{asset_id}/signals",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_signals",
+        "description": "Sensor time series for an asset",
+        "parameters": {
+          "$defs": {
+            "Signal": {
+              "enum": [
+                "vibration_rms",
+                "vibration_peak",
+                "vibration_kurtosis",
+                "bearing_temp",
+                "motor_temp",
+                "spindle_rpm",
+                "motor_current",
+                "power_kw"
+              ],
+              "title": "Signal",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "properties": {
+            "asset_id": {
+              "title": "Asset Id",
+              "type": "string"
+            },
+            "signals": {
+              "items": {
+                "$ref": "#/$defs/Signal"
+              },
+              "title": "Signals",
+              "type": "array"
+            },
+            "minutes": {
+              "default": 360,
+              "title": "Minutes",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "asset_id",
+            "signals"
+          ],
+          "title": "SignalArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_alarms": {
+    "agents": [
+      "diagnosis",
+      "monitor"
+    ],
+    "writes": false,
+    "endpoint": "GET /ot/alarms",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_alarms",
+        "description": "Active alarms for a plant",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "plant_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Plant Id"
+            }
+          },
+          "title": "PlantArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "search_manuals": {
+    "agents": [
+      "diagnosis"
+    ],
+    "writes": false,
+    "endpoint": "POST /engineering/docs/search",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "search_manuals",
+        "description": "Search machine manuals and past work orders; returns cited chunks",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "title": "Query",
+              "type": "string"
+            },
+            "asset_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Asset Id"
+            },
+            "top_k": {
+              "default": 5,
+              "title": "Top K",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "title": "DocSearchRequest",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_maintenance_history": {
+    "agents": [
+      "diagnosis"
+    ],
+    "writes": false,
+    "endpoint": "GET /maintenance/assets/{asset_id}/history",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_maintenance_history",
+        "description": "Past work orders and failures for an asset",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "asset_id": {
+              "title": "Asset Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "asset_id"
+          ],
+          "title": "AssetArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_defects": {
+    "agents": [
+      "diagnosis"
+    ],
+    "writes": false,
+    "endpoint": "GET /quality/lines/{line_id}/defects",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_defects",
+        "description": "Quality defects for a line",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "line_id": {
+              "title": "Line Id",
+              "type": "string"
+            },
+            "hours": {
+              "default": 24,
+              "title": "Hours",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "line_id"
+          ],
+          "title": "LineArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_bom": {
+    "agents": [
+      "diagnosis",
+      "spare_parts"
+    ],
+    "writes": false,
+    "endpoint": "GET /engineering/assets/{asset_id}/bom",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_bom",
+        "description": "Bill of materials for an asset",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "asset_id": {
+              "title": "Asset Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "asset_id"
+          ],
+          "title": "AssetArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "check_stock": {
+    "agents": [
+      "spare_parts"
+    ],
+    "writes": false,
+    "endpoint": "GET /erp/parts/{sku}",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "check_stock",
+        "description": "Part stock in every plant, unit cost and supplier lead time",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "sku": {
+              "title": "Sku",
+              "type": "string"
+            }
+          },
+          "required": [
+            "sku"
+          ],
+          "title": "SkuArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_supplier": {
+    "agents": [
+      "spare_parts"
+    ],
+    "writes": false,
+    "endpoint": "GET /erp/suppliers/{supplier_id}",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_supplier",
+        "description": "Supplier lead times and express option",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "supplier_id": {
+              "title": "Supplier Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "supplier_id"
+          ],
+          "title": "SupplierArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_orders": {
+    "agents": [
+      "decision",
+      "scheduler"
+    ],
+    "writes": false,
+    "endpoint": "GET /mes/orders",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_orders",
+        "description": "Production orders and due dates",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "line_id": {
+              "title": "Line Id",
+              "type": "string"
+            },
+            "hours": {
+              "default": 24,
+              "title": "Hours",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "line_id"
+          ],
+          "title": "LineArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_schedule": {
+    "agents": [
+      "scheduler"
+    ],
+    "writes": false,
+    "endpoint": "GET /mes/lines/{line_id}/schedule",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_schedule",
+        "description": "Planned production slots for a line",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "line_id": {
+              "title": "Line Id",
+              "type": "string"
+            },
+            "hours": {
+              "default": 24,
+              "title": "Hours",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "line_id"
+          ],
+          "title": "LineArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "find_technicians": {
+    "agents": [
+      "scheduler"
+    ],
+    "writes": false,
+    "endpoint": "GET /workforce/technicians",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "find_technicians",
+        "description": "Technicians by skill and shift",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "skill": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Skill"
+            },
+            "on_shift": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "On Shift"
+            }
+          },
+          "title": "TechArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_energy": {
+    "agents": [
+      "energy"
+    ],
+    "writes": false,
+    "endpoint": "GET /energy/lines/{line_id}/consumption",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_energy",
+        "description": "Energy use, cost and CO2 for a line",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "line_id": {
+              "title": "Line Id",
+              "type": "string"
+            },
+            "hours": {
+              "default": 24,
+              "title": "Hours",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "line_id"
+          ],
+          "title": "LineArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_tariffs": {
+    "agents": [
+      "energy"
+    ],
+    "writes": false,
+    "endpoint": "GET /energy/tariffs",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_tariffs",
+        "description": "Peak and off-peak electricity prices",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {},
+          "title": "NoArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "get_co2_factor": {
+    "agents": [
+      "energy"
+    ],
+    "writes": false,
+    "endpoint": "GET /energy/co2-factor",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "get_co2_factor",
+        "description": "Grid CO2 kg per kWh",
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {},
+          "title": "NoArgs",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "create_work_order": {
+    "agents": [
+      "executor"
+    ],
+    "writes": true,
+    "endpoint": "POST /maintenance/work-orders",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "create_work_order",
+        "description": "Create maintenance work order",
+        "parameters": {
+          "$defs": {
+            "PartUse": {
+              "additionalProperties": false,
+              "properties": {
+                "sku": {
+                  "examples": [
+                    "SKF-6205"
+                  ],
+                  "pattern": "^[A-Z0-9]+-[A-Z0-9-]+$",
+                  "title": "Sku",
+                  "type": "string"
+                },
+                "quantity": {
+                  "minimum": 1,
+                  "title": "Quantity",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "sku",
+                "quantity"
+              ],
+              "title": "PartUse",
+              "type": "object"
+            },
+            "WorkOrderType": {
+              "enum": [
+                "corrective",
+                "preventive",
+                "predictive"
+              ],
+              "title": "WorkOrderType",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "properties": {
+            "asset_id": {
+              "examples": [
+                "EQ-3012"
+              ],
+              "pattern": "^EQ-\\d{4}$",
+              "title": "Asset Id",
+              "type": "string"
+            },
+            "type": {
+              "$ref": "#/$defs/WorkOrderType"
+            },
+            "title": {
+              "title": "Title",
+              "type": "string"
+            },
+            "root_cause": {
+              "title": "Root Cause",
+              "type": "string"
+            },
+            "parts": {
+              "items": {
+                "$ref": "#/$defs/PartUse"
+              },
+              "title": "Parts",
+              "type": "array"
+            },
+            "technician_id": {
+              "examples": [
+                "TECH-104"
+              ],
+              "pattern": "^TECH-\\d{3}$",
+              "title": "Technician Id",
+              "type": "string"
+            },
+            "planned_start": {
+              "format": "date-time",
+              "title": "Planned Start",
+              "type": "string"
+            },
+            "duration_hours": {
+              "exclusiveMinimum": 0,
+              "title": "Duration Hours",
+              "type": "number"
+            },
+            "incident_id": {
+              "examples": [
+                "INC-0042"
+              ],
+              "pattern": "^INC-\\d{4}$",
+              "title": "Incident Id",
+              "type": "string"
+            },
+            "approval_token": {
+              "title": "Approval Token",
+              "type": "string"
+            }
+          },
+          "required": [
+            "asset_id",
+            "type",
+            "title",
+            "root_cause",
+            "parts",
+            "technician_id",
+            "planned_start",
+            "duration_hours",
+            "incident_id",
+            "approval_token"
+          ],
+          "title": "WorkOrderCreate",
+          "type": "object"
+        }
+      }
+    }
+  },
+  "create_stock_transfer": {
+    "agents": [
+      "executor"
+    ],
+    "writes": true,
+    "endpoint": "POST /erp/stock-transfers",
+    "schema": {
+      "type": "function",
+      "function": {
+        "name": "create_stock_transfer",
+        "description": "Move parts between plants",
+        "parameters": {
+          "$defs": {
+            "TransferMode": {
+              "enum": [
+                "standard",
+                "express"
+              ],
+              "title": "TransferMode",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "properties": {
+            "sku": {
+              "examples": [
+                "SKF-6205"
+              ],
+              "pattern": "^[A-Z0-9]+-[A-Z0-9-]+$",
+              "title": "Sku",
+              "type": "string"
+            },
+            "from_plant": {
+              "examples": [
+                "PLANT-A"
+              ],
+              "pattern": "^PLANT-[A-Z]$",
+              "title": "From Plant",
+              "type": "string"
+            },
+            "to_plant": {
+              "examples": [
+                "PLANT-A"
+              ],
+              "pattern": "^PLANT-[A-Z]$",
+              "title": "To Plant",
+              "type": "string"
+            },
+            "quantity": {
+              "minimum": 1,
+              "title": "Quantity",
+              "type": "integer"
+            },
+            "mode": {
+              "$ref": "#/$defs/TransferMode"
+            },
+            "incident_id": {
+              "examples": [
+                "INC-0042"
+              ],
+              "pattern": "^INC-\\d{4}$",
+              "title": "Incident Id",
+              "type": "string"
+            },
+            "approval_token": {
+              "title": "Approval Token",
+              "type": "string"
+            }
+          },
+          "required": [
+            "sku",
+            "from_plant",
+            "to_plant",
+            "quantity",
+            "mode",
+            "incident_id",
+            "approval_token"
+          ],
+          "title": "StockTransferCreate",
+          "type": "object"
+        }
+      }
+    }
+  }
+}

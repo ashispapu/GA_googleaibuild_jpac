@@ -1,0 +1,53 @@
+[
+  {
+    "id": "SH-0413-N",
+    "name": "night",
+    "start": "2026-10-14T22:00:00Z",
+    "end": "2026-10-15T06:00:00Z",
+    "plant_id": "PLANT-A",
+    "technicians": [
+      {
+        "id": "TECH-104",
+        "name": "Suresh",
+        "skills": [
+          "bearing_replacement",
+          "spindle_alignment"
+        ],
+        "certifications": [
+          "spindle-200"
+        ],
+        "on_shift": false
+      }
+    ]
+  },
+  {
+    "id": "SH-0413-E",
+    "name": "evening",
+    "start": "2026-10-13T14:00:00Z",
+    "end": "2026-10-13T22:00:00Z",
+    "plant_id": "PLANT-A",
+    "technicians": [
+      {
+        "id": "TECH-112",
+        "name": "Meera",
+        "skills": [
+          "bearing_replacement",
+          "electrical"
+        ],
+        "certifications": [
+          "spindle-200"
+        ],
+        "on_shift": true
+      },
+      {
+        "id": "TECH-120",
+        "name": "Arjun",
+        "skills": [
+          "hydraulics"
+        ],
+        "certifications": [],
+        "on_shift": true
+      }
+    ]
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "id": "APR-0007",
+  "incident_id": "INC-0042",
+  "option_id": "OPT-B",
+  "decision": "approve",
+  "reason": "Evidence matches 2024 failure; inspect misalignment during swap.",
+  "approver_id": "USR-lead",
+  "approver_role": "maintenance_lead",
+  "approval_token": "<signed-jwt>",
+  "approved_at": "2026-10-13T21:44:10Z",
+  "executed_actions": [
+    {
+      "kind": "speed_change",
+      "ref_id": "L3",
+      "ok": true,
+      "message": "Line 3 set to 70% until Wed 22:00"
+    },
+    {
+      "kind": "stock_transfer",
+      "ref_id": "STO-4500012",
+      "ok": true,
+      "message": "1× SKF-6205 Plant B → A, ETA Wed 18:00"
+    },
+    {
+      "kind": "work_order",
+      "ref_id": "WO-2026-0153",
+      "ok": true,
+      "message": "Work order for Wed 22:00, TECH-104"
+    }
+  ]
+}

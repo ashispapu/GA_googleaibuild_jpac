@@ -1,0 +1,16 @@
+# On-prem SSO for PlantGuard. Start: docker compose -f config/keycloak/docker-compose.yml up
+# Admin console: http://localhost:8080 (admin / admin). Realm "plantguard" is imported on first start.
+# start-dev = in-memory-ish H2 storage, fine for the hackathon. Production: `start` + Postgres + TLS.
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: http://localhost:8080          # fixes the token issuer, wherever the token is fetched from
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"     # lets the api container reach keycloak at http://keycloak:8080
+      KC_HEALTH_ENABLED: "true"
+    ports: ["8080:8080"]
+    volumes:
+      - ./plantguard-realm.json:/opt/keycloak/data/import/plantguard-realm.json:ro

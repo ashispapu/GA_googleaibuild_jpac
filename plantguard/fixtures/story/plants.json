@@ -1,0 +1,403 @@
+[
+  {
+    "id": "PLANT-A",
+    "name": "Plant A",
+    "location": "Pune",
+    "lines": [
+      {
+        "id": "L1",
+        "plant_id": "PLANT-A",
+        "name": "Line 1 — Grinder",
+        "product": "Angle grinder AG-9",
+        "state": "run",
+        "health": "ok",
+        "speed_pct": 100,
+        "oee": 0.91,
+        "current_order_id": null,
+        "stations": [
+          {
+            "id": "L1-ST1",
+            "name": "Press",
+            "order": 1,
+            "assets": [
+              {
+                "id": "EQ-3001",
+                "name": "Press",
+                "type": "press",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  4.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L1-ST2",
+            "name": "Spindle",
+            "order": 2,
+            "assets": [
+              {
+                "id": "EQ-3002",
+                "name": "Spindle",
+                "type": "spindle",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  12.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L1-ST3",
+            "name": "Robot",
+            "order": 3,
+            "assets": [
+              {
+                "id": "EQ-3003",
+                "name": "Robot",
+                "type": "robot",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  20.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L1-ST4",
+            "name": "Tester",
+            "order": 4,
+            "assets": [
+              {
+                "id": "EQ-3004",
+                "name": "Tester",
+                "type": "inspection",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  28.0,
+                  12.0
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "L2",
+        "plant_id": "PLANT-A",
+        "name": "Line 2 — Impact driver",
+        "product": "Impact driver ID-12",
+        "state": "run",
+        "health": "ok",
+        "speed_pct": 100,
+        "oee": 0.89,
+        "current_order_id": null,
+        "stations": [
+          {
+            "id": "L2-ST1",
+            "name": "Press",
+            "order": 1,
+            "assets": [
+              {
+                "id": "EQ-3005",
+                "name": "Press",
+                "type": "press",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  4.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L2-ST2",
+            "name": "Spindle",
+            "order": 2,
+            "assets": [
+              {
+                "id": "EQ-3006",
+                "name": "Spindle",
+                "type": "spindle",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  12.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L2-ST3",
+            "name": "Robot",
+            "order": 3,
+            "assets": [
+              {
+                "id": "EQ-3007",
+                "name": "Robot",
+                "type": "robot",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  20.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L2-ST4",
+            "name": "Tester",
+            "order": 4,
+            "assets": [
+              {
+                "id": "EQ-3008",
+                "name": "Tester",
+                "type": "inspection",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  28.0,
+                  12.0
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "L3",
+        "plant_id": "PLANT-A",
+        "name": "Line 3 — Drill assembly",
+        "product": "Cordless drill CD-18",
+        "state": "run",
+        "health": "warning",
+        "speed_pct": 100,
+        "oee": 0.87,
+        "current_order_id": "ORD-5521",
+        "stations": [
+          {
+            "id": "L3-ST1",
+            "name": "Housing press",
+            "order": 1,
+            "assets": [
+              {
+                "id": "EQ-3010",
+                "name": "Hydraulic press",
+                "type": "press",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  4.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L3-ST2",
+            "name": "Spindle machining",
+            "order": 2,
+            "assets": [
+              {
+                "id": "EQ-3011",
+                "name": "CNC spindle 1",
+                "type": "spindle",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  10.0,
+                  12.0
+                ]
+              },
+              {
+                "id": "EQ-3012",
+                "name": "CNC spindle 2",
+                "type": "spindle",
+                "state": "run",
+                "health": "critical",
+                "risk_72h": 0.78,
+                "position": [
+                  13.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L3-ST3",
+            "name": "Gearbox assembly",
+            "order": 3,
+            "assets": [
+              {
+                "id": "EQ-3013",
+                "name": "Assembly robot",
+                "type": "robot",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  20.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L3-ST4",
+            "name": "Conveyor",
+            "order": 4,
+            "assets": [
+              {
+                "id": "EQ-3014",
+                "name": "Belt conveyor",
+                "type": "conveyor",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  27.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L3-ST5",
+            "name": "End-of-line test",
+            "order": 5,
+            "assets": [
+              {
+                "id": "EQ-3015",
+                "name": "Torque tester",
+                "type": "inspection",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  34.0,
+                  12.0
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "PLANT-B",
+    "name": "Plant B",
+    "location": "Chennai",
+    "lines": [
+      {
+        "id": "L1",
+        "plant_id": "PLANT-B",
+        "name": "Line 1 — Drill assembly",
+        "product": "Cordless drill CD-18",
+        "state": "run",
+        "health": "ok",
+        "speed_pct": 100,
+        "oee": 0.85,
+        "current_order_id": null,
+        "stations": [
+          {
+            "id": "L1-ST1",
+            "name": "Press",
+            "order": 1,
+            "assets": [
+              {
+                "id": "EQ-4001",
+                "name": "Press",
+                "type": "press",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  4.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L1-ST2",
+            "name": "Spindle",
+            "order": 2,
+            "assets": [
+              {
+                "id": "EQ-4002",
+                "name": "Spindle",
+                "type": "spindle",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  12.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L1-ST3",
+            "name": "Robot",
+            "order": 3,
+            "assets": [
+              {
+                "id": "EQ-4003",
+                "name": "Robot",
+                "type": "robot",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  20.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L1-ST4",
+            "name": "Tester",
+            "order": 4,
+            "assets": [
+              {
+                "id": "EQ-4004",
+                "name": "Tester",
+                "type": "inspection",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  28.0,
+                  12.0
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "asset_id": "EQ-3012",
+  "items": [
+    {
+      "sku": "SKF-6205",
+      "description": "Rear spindle bearing 6205-2RS",
+      "quantity": 1
+    },
+    {
+      "sku": "SKF-7008",
+      "description": "Front angular contact bearing 7008",
+      "quantity": 2
+    },
+    {
+      "sku": "BLT-HTD-8M",
+      "description": "Drive belt HTD 8M",
+      "quantity": 1
+    }
+  ]
+}

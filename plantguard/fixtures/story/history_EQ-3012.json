@@ -1,0 +1,37 @@
+[
+  {
+    "id": "WO-2024-0871",
+    "asset_id": "EQ-3012",
+    "type": "corrective",
+    "title": "Spindle 2 rear bearing failure",
+    "root_cause": "Rear bearing outer race wear (lubrication breakdown)",
+    "findings": "Vibration rose ~120% over 3 days before seizure; line stopped 14 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2024-11-05T06:00:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-11-05T02:00:00Z"
+  },
+  {
+    "id": "WO-2026-0091",
+    "asset_id": "EQ-3012",
+    "type": "preventive",
+    "title": "Spindle 2 lubrication and inspection",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-06-02T06:00:00Z",
+    "duration_hours": 1.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-06-01T09:00:00Z"
+  }
+]
