@@ -6,12 +6,473 @@ Every function and class also has a docstring in the code, so hovering over it i
 
 ## Contents
 
+0. [Architecture at a glance](#0-architecture-at-a-glance) ← start here if you are new: diagrams of the whole system
+   - [whole system](#03-the-whole-system-on-one-page) · [backend layers](#04-inside-the-backend-the-layers) · [one click](#05-what-happens-on-one-click-approve) · [incident story](#06-the-incident-story-from-start-to-end) · [states](#07-incident-status-the-states) · [live data](#08-live-data-and-alerts-the-scoring-path) · [event bus](#09-the-event-bus-who-posts-who-listens) · [security](#010-security-the-gates-a-request-passes) · [data](#011-where-the-data-lives-today-and-tomorrow) · [Docker](#012-docker-services) · [glossary](#013-words-you-will-meet)
 1. [Big picture](#1-big-picture)
 2. [`container.py` explained step by step](#2-containerpy-explained-step-by-step) ← start here if the wiring is confusing
 3. [Reference: every file and function](#3-reference-every-file-and-function)
    - [app/ top level](#31-app-top-level) · [core/](#32-appcore) · [routers/](#33-approuters) · [services/](#34-appservices) · [repositories/](#35-apprepositories) · [connectors/](#36-appconnectors) · [middleware/ and infrastructure/](#37-appmiddleware-and-appinfrastructure)
 4. [Tests](#4-tests)
 5. [Common questions](#5-common-questions)
+
+---
+
+## 0. Architecture at a glance
+
+This part is for someone who has never seen the project. Read it top to bottom; every later section adds detail.
+
+### 0.1 The problem in one paragraph
+
+A factory has machines (PLCs, sensors). **PlantGuard AI** watches them and warns before something breaks. When a machine looks unhealthy, the
+system opens an **incident**, a team of AI **agents** investigates (reads sensor history, manuals, spare-part stock, the production plan,
+energy prices) and proposes **options** (for example "slow the line to 70 % and order a bearing"). A **human** approves one option.
+Only then does the backend create the work order and stock transfer. The technician later says whether the diagnosis was right.
+Everything that matters is written to a tamper-evident **audit log**.
+
+### 0.2 The four people and how their parts connect
+
+| Who | Folder | Builds | Contracts (C1 to C9) |
+|---|---|---|---|
+| P1 (this folder) | `p1-backend/` | The backend: API, security, live data, approvals, audit | Provides C1, C2, C4, C7, C8. Uses C3 (agents), C5 (model), C6 (live feed) |
+| P2 | `p2-agents/` | The AI agents, manual search (RAG), privacy redactor | Provides C3 (agent runtime). Uses C4 (tools) |
+| P3 | `p3-frontend/` | The web UI | Uses C1 (REST) and C2 (WebSocket) |
+| P4 | `p4-ml-data/` | ML model, machine simulator, documents, sample data | Provides C5 (model), C6 (live feed), C9 (golden data) |
+
+> **contract** - an agreed shape of data or list of methods (see `CONTRACTS.md` and `plantguard_contracts/`) so four people can build in parallel.
+> **REST** - ordinary request/response calls over HTTP, such as `GET /plants`.
+> **WebSocket** - a connection that stays open so the server can push updates (live charts, agent steps).
+
+Important: P2's agents and P4's model are **not separate servers**. They are Python code that the one backend process loads and calls.
+That is why `container.py` is the single place where they plug in.
+
+### 0.3 The whole system on one page
+
+```
+┌──────────────────────────────────┐                    ┌──────────────────────────────────────────┐
+│ 1. USERS (browser, P3)           │                    │ 2. KEYCLOAK (optional login server)      │
+├──────────────────────────────────┤                    ├──────────────────────────────────────────┤
+│ operator, lead, manager, admin   │    login page      │ Logs people in and signs their token     │
+│ Log in, watch live charts,       │◄──────────────────►│ Only used when AUTH_MODE=keycloak        │
+│ read the agents' reasoning,      │  (SSO mode only)   │ Docker service 'keycloak' (profile sso)  │
+│ click Approve / Reject           │                    │ The backend still decides permissions    │
+└──────────────────────────────────┘                    └──────────────────────────────────────────┘
+                 │                                                           ▲
+                 │ REST + WebSocket,                                         │ fetches public keys (JWKS)
+                 │ token on every call                                       │ to check token signatures
+                 ▼                                                           │
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 3. BACKEND - one Python process (FastAPI, P1) - http://localhost:8000                            │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Each request: rate limit > token > permission > router > service > connector/repository          │
+│ container.py builds every object once at start-up; an in-memory bus passes messages around       │
+│                                                                                                  │
+│  ┌──────────────────────────────────────────────┐ ┌────────────────────────────────────────────┐ │
+│  │ 4. AGENTS (P2: p2-agents/)                   │ │ 5. ML MODEL (P4: p4-ml-data/ml/)           │ │
+│  ├──────────────────────────────────────────────┤ ├────────────────────────────────────────────┤ │
+│  │ Orchestrator + 6 agents: monitor, diagnosis, │ │ features.py: raw readings -> numbers       │ │
+│  │ spare_parts, scheduler, energy, decision     │ │ serving.py: numbers -> risk_72h, RUL       │ │
+│  │ RAG (manual search), redactor, cost model    │ │ Today: stubs (not written yet),            │ │
+│  │ Today: ReplayAgentRuntime plays back a       │ │ so live scoring is OFF; fixture health     │ │
+│  │ recorded run; P2's runtime plugs in later    │ │ is used instead                            │ │
+│  └──────────────────────────────────────────────┘ └────────────────────────────────────────────┘ │
+│ Agents reach plant data ONLY through the Tool Gateway (allow-list, approval on writes, audit)    │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                 :                               :                         │
+                 :                               :                         │
+                 : redacted prompts (planned)    :                         │ reads JSON files
+                 ▼                               :                         ▼
+┌──────────────────────────────────────────────┐ :  ┌──────────────────────────────────────────────┐
+│ 6. LLM PROVIDER (outside, via P2)            │ :  │ 7. DATA TODAY (inside the repo)              │
+├──────────────────────────────────────────────┤ :  ├──────────────────────────────────────────────┤
+│ Gets prompts AFTER the redactor removed      │ :  │ fixtures/story/*.json (JSON files):          │
+│ serial numbers, names and PLC tags           │ :  │   ERP, MES, maintenance, quality,            │
+│ The replay never calls it                    │ :  │   energy, workforce, plants, users           │
+│ If it fails: fall back to the replay         │ :  │ config/tag_map.yaml: sensor ranges           │
+└──────────────────────────────────────────────┘ :  │ Fake live readings: generated in code        │
+                                                 :  │ Agent replay: agent_events_INC-0042          │
+                                                 :  └──────────────────────────────────────────────┘
+                                                 : dotted = planned,
+                                                 ▼ not connected yet
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 8. DOCKER SERVICES (docker-compose.yml) - running, but the backend does not use them yet         │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Timescale/Postgres :5432   Redis :6379   Qdrant :6333   Mosquitto (MQTT) :1883                   │
+│ Keycloak :8080 (only with --profile sso)                                                         │
+│ Planned: Postgres = incidents + audit log, Redis = shared bus,                                   │
+│          Qdrant = manual search (RAG), MQTT = live sensor readings                               │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                              ▲
+                              : MQTT messages (planned)
+                              :
+┌────────────────────────────────────────────────────────────────┐
+│ 9. OT SIMULATOR (P4: p4-ml-data/simulator/)                    │
+├────────────────────────────────────────────────────────────────┤
+│ Pretends to be the factory floor: publishes machine readings   │
+│ publisher.py is an empty stub today                            │
+│ Meanwhile the backend makes its own fake readings              │
+└────────────────────────────────────────────────────────────────┘
+
+solid line = works today          dotted line = planned / not connected yet
+```
+
+
+How to read it: boxes 1 and 2 are people-facing. Box 3 is the program you are reading about (P1), with P2's agents (4) and P4's model (5) plugged
+into the same process. Boxes 6 to 9 are outside things: the AI provider, data files, Docker services and the machine simulator.
+The dotted lines are the integrations that are **designed but not connected yet**.
+
+### 0.4 Inside the backend: the layers
+
+```
+Browser (P3) or P2 agents  --  HTTP / WebSocket
+                              ▼
+┌────────────────────────────────────────────────────────────────┐
+│ MIDDLEWARE  (middleware/, main.py)                             │
+├────────────────────────────────────────────────────────────────┤
+│ Rate limit: token bucket per user/IP, else 429 RATE_LIMITED    │
+│ CORS: which websites may call the API (main.py)                │
+│ Error handlers: every error -> {code, message, trace_id}       │
+└────────────────────────────────────────────────────────────────┘
+                              ▼                                         ┌──────────────────────────────────────┐
+┌────────────────────────────────────────────────────────────────┐      │ container.py                         │
+│ ROUTERS  (routers/ - 15 files)                                 │      ├──────────────────────────────────────┤
+├────────────────────────────────────────────────────────────────┤      │ Creates every object ONCE when       │
+│ Read the token, check the permission (routers/deps.py)         ◄──────│ the server starts and connects       │
+│ Validate input. NO business rules. One file per area:          │      │ them to each other                   │
+│ auth plants ot erp mes maintenance quality engineering         │      │ (build_container).                   │
+│ workforce energy ml incidents audit security simulator         │      │                                      │
+└────────────────────────────────────────────────────────────────┘      │ Routers receive it through           │
+                              ▼                                         │ Depends(container).                  │
+┌────────────────────────────────────────────────────────────────┐      │                                      │
+│ SERVICES  (services/ - the rules)                              │      │ Services never create their          │
+├────────────────────────────────────────────────────────────────┤      │ own helpers; they are handed         │
+│ incident_service    open, approve, feedback, status            │      │ what they need.                      │
+│ run_coordinator     starts agents, stores + broadcasts events  │      │                                      │
+│ tool_gateway        the only door agents use                   ◄──────│ To swap a fixture for a real         │
+│ action_executor     carries out approved actions               │      │ system, change ONE line here.        │
+│ ot_gateway          marks readings good/stale/out_of_range     │      │                                      │
+│ scoring             ML risk loop and alerts                    │      │                                      │
+│ auth, approval_tokens, write_authorizer, audit_log             │      │                                      │
+└────────────────────────────────────────────────────────────────┘      │                                      │
+                              ▼                                         │                                      │
+┌────────────────────────────────────────────────────────────────┐      │                                      │
+│ CONNECTORS and REPOSITORIES                                    │      │                                      │
+├────────────────────────────────────────────────────────────────┤      │                                      │
+│ connectors/fixtures.py   ERP, MES, maintenance... (JSON)       ◄──────│                                      │
+│ connectors/telemetry     fake live sensor readings             │      └──────────────────────────────────────┘
+│ repositories/            incidents (in memory), users          │
+└────────────────────────────────────────────────────────────────┘
+                              ▼
+fixtures/story/*.json     Python lists/dicts in memory     later: Postgres, SAP, MQTT
+```
+
+
+The rule is: **each layer only talks to the layer below it**. `container.py` (right) is not a layer; it builds the objects in every layer and hands
+them to whoever needs them.
+
+### 0.5 What happens on one click: "Approve"
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 1. BROWSER                                                                                       │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Lead clicks Approve:  POST /incidents/INC-0042/approve                                           │
+│ body {option_id: OPT-B, decision: approve}  +  Authorization: Bearer <token>                     │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                  │
+                                                  ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 2. RATE LIMIT  (middleware/rate_limit.py)                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Does this user still have tokens in the bucket?  No -> 429                                       │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                  │
+                                                  ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 3. ROUTER  (routers/incidents.py: approve)                                                       │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ current_user: verify the token (local HS256 or Keycloak RS256) -> AccessClaims                   │
+│ require(APPROVE): is role 'maintenance_lead' allowed to approve?  No -> 403                      │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                  │
+                                                  ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 4. INCIDENT SERVICE  (decide)                                                                    │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Plant scope ok?  Status must be AWAITING_APPROVAL, else 409.  Flip status to APPROVED first,     │
+│ so a second click cannot run the actions twice                                                   │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                  │
+                                                  ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 5. APPROVAL TOKEN SERVICE                                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Issue a 10-minute token tied to INC-0042 + OPT-B + its action kinds                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                  │
+                                                  ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 6. ACTION EXECUTOR                                                                               │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ speed_change -> MES (line speed 70 %)                                                            │
+│ work_order, stock_transfer -> Tool Gateway (write tools)                                         │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                  │
+                                                  ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 7. TOOL GATEWAY + WRITE AUTHORIZER                                                               │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Agent allowed? Arguments valid? Token valid AND draft identical to the approved draft?           │
+│ Run with a timeout; write an audit entry (never storing the token)                               │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                  │
+                                                  ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 8. CONNECTORS                                                                                    │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ FixtureMaintenance creates WO-2026-0153                                                          │
+│ FixtureERP creates STO-4500012                                                                   │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                  │
+                                                  ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 9. INCIDENT SERVICE (end of decide)                                                              │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ All actions ok -> status EXECUTED (one failed -> stays APPROVED)                                 │
+│ Audit 'approve'; publish incident.INC-0042.status                                                │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                  │
+                                                  ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 10. RESPONSE                                                                                     │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Approval APR-0007 with executed_actions goes back to the browser                                 │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+
+### 0.6 The incident story from start to end
+
+This is the demo story the contracts call "golden" (ids such as `INC-0042`, `APR-0007`, `WO-2026-0153` are fixed on purpose).
+
+| # | Who | Does what | Backend part that handles it |
+|---|---|---|---|
+| 1 | Admin | Sets the scene to `reset`, then `warning` (`POST /simulator/scenario/...`) | `SceneController` |
+| 2 | Telemetry | EQ-3012's vibration ramps from 2.1 to 4.3 mm/s and bearing temperature rises | `SyntheticTelemetrySource` |
+| 3 | System | The scene listener (or the scoring loop) opens incident `INC-0042`, status `analysing` | `SceneIncidentLifecycle` / `AlertIncidentOpener` -> `IncidentService.open` |
+| 4 | Operator | Opens `WS /incidents/INC-0042/stream`; the first viewer starts the agent run | `RunCoordinator.ensure_started` |
+| 5 | Agents | Orchestrator, monitor, diagnosis, spare_parts, scheduler, energy, decision work in turn; each step is an `AgentEvent` (thought, tool_call, tool_result, evidence, result) | `ReplayAgentRuntime` (P2 later) |
+| 6 | Agents | Every data request goes through the Tool Gateway (allow-list, validation, audit) | `ToolGateway` |
+| 7 | Backend | Each event is stored and broadcast on `incident.INC-0042.events`; the viewer sees them live | `RunCoordinator`, `EventBus` |
+| 8 | Backend | The orchestrator says `finished`; the incident becomes `awaiting_approval`; options OPT-A/B/C are ready | `RunCoordinator._record` |
+| 9 | Lead | Reads the options and approves OPT-B (`POST .../approve`) | see 0.5 |
+| 10 | Backend | Executes the actions: line speed 70 %, work order `WO-2026-0153`, stock transfer `STO-4500012`; status `executed` | `ActionExecutor`, `ToolGateway` |
+| 11 | Technician | Sends feedback "diagnosis correct" | `IncidentService.feedback` |
+| 12 | Backend | Similar-case confidence rises 0.60 -> 0.82; incident `resolved`; audit chain still valid | `ConfidenceUpdater`, `HashChainAuditLog` |
+
+### 0.7 Incident status: the states
+
+```
+                  ┌──────────────┐  agents finished,    ┌─────────────────────┐
+open ────────────►│ ANALYSING    │─────────────────────►│ AWAITING_APPROVAL   │
+                  └──────────────┘  options ready       └─────────────────────┘
+                                                              │         │
+                                                              │ approve │ reject
+                                                              ▼         ▼
+                                                    ┌──────────────┐  ┌──────────────┐
+              if one action fails, it stays here ──►│ APPROVED     │  │ REJECTED     │
+                                                    └──────────────┘  └──────────────┘
+                                                           │                 │
+                                                           │ all actions ok  │
+                                                           ▼                 │
+                                                    ┌──────────────┐         │
+                                                    │ EXECUTED     │         │
+                                                    └──────────────┘         │ feedback
+                                                           │                 │
+                                      technician feedback  │                 │
+                                                           ▼                 │
+                                                    ┌──────────────┐         │
+                                                    │ RESOLVED     │◄────────┘
+                                                    └──────────────┘
+
+
+Also: the simulator scene 'resolved' marks active incidents RESOLVED; 'calm' and 'reset' delete them.
+```
+
+
+### 0.8 Live data and alerts (the "scoring" path)
+
+```
+┌──────────────────────┐    ┌──────────────────────┐    ┌──────────────────────┐    ┌──────────────────────┐
+│ TELEMETRY SOURCE     │    │ OT GATEWAY           │    │ HEALTH SCORER        │    │ EVENT BUS            │
+├──────────────────────┤    ├──────────────────────┤    ├──────────────────────┤    ├──────────────────────┤
+│ 1 reading / second   │───►│ tag map: valid range │───►│ keeps the last 10 min│───►│ ot.telemetry.*       │
+│ per machine          │    │ marks each reading:  │    │ features -> model    │    │ ml.health.EQ-3012    │
+│ fake now, MQTT later │    │ good, stale or       │    │ -> risk_72h (0 to 1) │    │ alerts.raised        │
+└──────────────────────┘    │ out_of_range         │    └──────────────────────┘    └──────────────────────┘
+                            └──────────────────────┘                                    │      │
+           ┌────────────────────────────────────────────────────────────────────────────┘      │ no listener yet
+           ▼                  alerts.raised: the alert opener listens                          ▼
+┌──────────────────────┐    ┌──────────────────────────┐    ┌──────────────────────────────────────────────┐
+│ ALERT OPENER         │    │ INCIDENT SERVICE         │    │ OTHER CHANNELS (posted, not used yet)        │
+├──────────────────────┤    ├──────────────────────────┤    ├──────────────────────────────────────────────┤
+│ opens an incident    │───►│ INC-0042 starts as       │    │ ot.telemetry, ml.health, incident status and │
+│ for the machine      │    │ 'analysing'. Agents run  │    │ sim.scene are posted, but no backend part    │
+│ (one per machine)    │    │ when the 1st viewer opens│    │ listens yet. The UI gets live readings from  │
+└──────────────────────┘    │ the WebSocket            │    │ WS /ot/stream directly instead.              │
+                            └──────────────────────────┘    └──────────────────────────────────────────────┘
+
+Alert rule: risk_72h >= 0.7 and no alert for that machine in the last 30 minutes (debounce).
+The alert travels over the bus: scoring posts it, the alert opener listens. (lifespan starts both loops.)
+```
+
+
+This path only runs when `SCORING_ENABLED=true` and needs P4's model. Until then, the incident is opened by the simulator scene instead.
+
+### 0.9 The event bus: who posts, who listens
+
+| Channel | Posted by | Listened to by | Carries |
+|---|---|---|---|
+| `alerts.raised` | `HealthScorer._maybe_alert` | `AlertIncidentOpener` | "Machine X is at risk" |
+| `incident.{id}.events` | `RunCoordinator._record` | `RunCoordinator.follow` -> the incident WebSocket | Agent steps |
+| `ot.telemetry.{plant}.{line}` | `ScoringService` (ingest and stale loops) | Nobody yet (the UI reads `WS /ot/stream` directly) | One reading per machine |
+| `ml.health.{asset}` | `HealthScorer.evaluate` | Nobody yet | Health, risk, remaining life |
+| `incident.{id}.status` | `IncidentService` (open, decide, feedback, resolve), `RunCoordinator` | Nobody yet | Status changes |
+| `sim.scene` | `SceneController.set` | Nobody via the bus (scene listeners are called directly) | Scene changed |
+
+Only two things listen to the bus today (`AlertIncidentOpener` and `RunCoordinator.follow`). The other channels are posted for the contract (C8) and for future listeners such as the UI or Redis.
+
+> **bus** - a message board inside the backend. A part posts a message to a named channel; every part listening to that channel receives a copy.
+> The poster does not know who is listening. A message with no listener is lost, so listeners must start first (that is what `lifespan` is for).
+> Today it is memory only (`InMemoryEventBus`); Redis can replace it later without changing the callers.
+
+### 0.10 Security: the gates a request passes
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 1. NETWORK (TLS)                                                                                       │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Today plain http inside localhost / one Docker network. Caddy proxy for https is planned (BE-9)        │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                     │
+                                                     ▼
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 2. RATE LIMIT                                                                                          │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Token bucket per user or IP: 1200 per minute, bursts of 200 -> 429                                     │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                     │
+                                                     ▼
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 3. AUTHENTICATION                                                                                      │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Who are you? local: backend login, HS256 token.  keycloak: RS256 token checked with public keys        │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                     │
+                                                     ▼
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 4. PERMISSION (RBAC)                                                                                   │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ What may your ROLE do? operator, maintenance_lead, plant_manager, admin.  The backend decides, always  │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                     │
+                                                     ▼
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 5. PLANT SCOPE                                                                                         │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Which PLANTS may you see? A token for PLANT-A cannot read PLANT-B -> 403 PLANT_SCOPE                   │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                     │
+                                                     ▼
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 6. APPROVAL TOKEN  (writes only)                                                                       │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ 10 minutes, one incident, one option, one use per action kind. A login token is NOT one                │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                     │
+                                                     ▼
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 7. WRITE AUTHORIZER  (writes only)                                                                     │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ The draft being written must be identical to the approved option's draft                               │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                     │
+                                                     ▼
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 8. TOOL GATEWAY  (agents only)                                                                         │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Allow-list per agent, input and output validated, timeout. Agents never write directly                 │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                     │
+                                                     ▼
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 9. AUDIT LOG  (everything above)                                                                       │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Every login, denial, tool call and decision is chained with sha256; GET /audit/verify detects edits    │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+
+Two auth modes feed gate 3:
+
+| | `AUTH_MODE=local` | `AUTH_MODE=keycloak` |
+|---|---|---|
+| Who logs the user in | The backend (`POST /auth/token`, users from `fixtures/story/users.json`) | The Keycloak login page |
+| Token type | HS256 (shared secret `JWT_SECRET`) | RS256 (Keycloak's public key, fetched as JWKS) |
+| Who decides permissions | The backend (`ROLE_PERMISSIONS`) | The backend (same code); Keycloak only says who you are and which role names you have |
+| Approval tokens | Backend, HS256 | Backend, HS256 (never Keycloak) |
+
+Roles and what they may do: **operator** view, run agents, submit feedback; **maintenance_lead** also view costs and approve; **plant_manager** view, costs, run agents, approve, view audit; **admin** everything (including the simulator).
+
+### 0.11 Where the data lives today and tomorrow
+
+| Data | Today | Planned |
+|---|---|---|
+| ERP, MES, maintenance history, quality, energy, workforce, plants, alarms | JSON files in `fixtures/story/` | Real SAP / MES / CMMS connectors (replace a `Fixture*` class) |
+| Live machine readings | Generated by `SyntheticTelemetrySource` | MQTT from P4's simulator (Mosquitto) |
+| Machine health score | `health_EQ-3012.json` | P4's model (`SCORING_ENABLED=true`) |
+| Agent run | Replay of `agent_events_INC-0042.jsonl` | P2's real runtime + LLM |
+| Manual search | `docsearch_bearing.json` | P2's RAG on Qdrant |
+| Incidents, approvals, feedback | Memory (lost on restart) | Postgres |
+| Audit log | Memory, seeded from `audit_seed.json` (lost on restart) | Postgres (keep the hash chain) |
+| Created work orders and stock transfers | Memory lists on top of the JSON history | The real ERP / CMMS |
+| Event bus | Memory | Redis |
+| Users and passwords | `users.json` (local mode) | Keycloak (SSO mode) |
+
+### 0.12 Docker services
+
+| Service | Port | Purpose | Used by the backend today? |
+|---|---|---|---|
+| `api` | 8000 | This backend | (it is the backend) |
+| `timescale` | 5432 | Postgres + time-series storage | No (planned: incidents, audit, telemetry history) |
+| `redis` | 6379 | Cache / shared bus | No (planned) |
+| `qdrant` | 6333 | Vector search for manuals | No (planned, P2's RAG) |
+| `mosquitto` | 1883 | MQTT broker: the mailbox for machine readings | No (planned, P4 simulator publishes here) |
+| `keycloak` | 8080 | Login server (profile `sso`: `make up-sso`) | Yes, when `AUTH_MODE=keycloak` |
+
+> **MQTT** - a small publish/subscribe protocol for sensors. Machines publish readings to topics on a broker (Mosquitto). It is a mailbox, not a database.
+
+### 0.13 Words you will meet
+
+| Word | Meaning |
+|---|---|
+| asset | One machine, such as `EQ-3012` (a spindle). |
+| line / plant | A production line (`L3`) inside a plant (`PLANT-A`). |
+| telemetry | Live sensor readings from a machine. |
+| risk_72h | The model's chance (0 to 1) that the asset fails within 72 hours. |
+| incident | A problem being investigated and decided on (`INC-0042`). |
+| agent | An AI worker with one job (monitor, diagnosis, spare parts, scheduler, energy, decision) coordinated by the orchestrator. |
+| option | A proposed plan with actions, cost and risk (`OPT-A`, `OPT-B`, `OPT-C`). |
+| action | One step of an option: speed change, work order or stock transfer. |
+| tool | A function agents may call to read plant data (15 reads) or, via the executor, write (2 writes). |
+| approval token | A 10-minute, one-use pass proving a human approved a specific plan; required for every write. |
+| fixture | A saved sample data file used instead of a real system. |
+| connector | A class that reads from or writes to one system (ERP, MES...). |
+| Protocol | A list of method names a class must have; lets parts be swapped (a Python "interface"). |
+| composition root | The one place where objects are created and connected (`container.py`). |
+| audit log | An append-only record of who did what, chained with hashes so edits are detectable. |
+| RBAC | Role-based access control: what you may do depends on your role. |
+| JWT | A signed token (a text string) that proves who you are. |
+| SSO | Single sign-on: one login (Keycloak) for many apps. |
 
 ---
 
