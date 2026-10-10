@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Secrets and local config (copy .env.example to .env)
+.env
+.env.*
+!.env.example
+
+# ML artifacts and local data
+*.joblib
+*.npy
+p4-ml-data/models/*/
+!p4-ml-data/models/README.md
+*.log
+
+# Node / frontend
+node_modules/
+dist/
+build/
+.vite/
+.next/
+
+# Docker volumes
+postgres-data/
+redis-data/
+qdrant-storage/
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
