@@ -19,6 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.accessToken = account.access_token; // the Keycloak access token the backend verifies
         token.expiresAt = account.expires_at;
         token.refreshToken = account.refresh_token;
+        token.idToken = account.id_token; // lets logout end the Keycloak session too
         return token;
       }
       // FE-1: refresh the 15-min access token a minute before it expires.
@@ -51,6 +52,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async session({ session, token }) {
       (session as any).accessToken = token.accessToken; // pass to setToken() in api.ts
+      (session as any).idToken = token.idToken;
       (session as any).error = token.error;
       return session;
     },

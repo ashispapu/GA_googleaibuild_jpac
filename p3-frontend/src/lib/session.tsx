@@ -52,6 +52,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [me, setMe] = useState<User | null>(null);
   const [configError, setConfigError] = useState<string | null>(null);
   const modeRef = useRef<Mode | null>(null);
+  const logoutUrlRef = useRef<string | null>(null); // Keycloak end-session URL from GET /auth/config
 
   const clear = useCallback(() => {
     setToken("");
@@ -82,6 +83,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       try {
         const cfg = await backend.authConfig();
         m = cfg.mode;
+        logoutUrlRef.current = cfg.logout_url ?? null;
       } catch {
         setConfigError("Can't reach the PlantGuard server.");
       }
@@ -141,9 +143,25 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(async () => {
+    const idToken = modeRef.current === "keycloak" ? ((await getSession()) as { idToken?: string } | null)?.idToken : undefined;
     clear();
-    if (modeRef.current === "keycloak") await authJsSignOut({ callbackUrl: "/login" });
-    else router.replace("/login");
+    if (modeRef.current !== "keycloak") {
+      router.replace("/login");
+      return;
+    }
+    // signOut only clears this app's cookie. Keycloak keeps its own SSO cookie, so without the
+    // end-session redirect the next "Login with Keycloak" signs the old user straight back in.
+    await authJsSignOut({ redirect: false });
+    const logoutUrl = logoutUrlRef.current;
+    if (!logoutUrl) {
+      window.location.assign("/login");
+      return;
+    }
+    const url = new URL(logoutUrl);
+    url.searchParams.set("post_logout_redirect_uri", `${window.location.origin}/login`);
+    if (idToken) url.searchParams.set("id_token_hint", idToken);
+    else url.searchParams.set("client_id", "plantguard-web");
+    window.location.assign(url.toString());
   }, [clear, router]);
 
   const value = useMemo(

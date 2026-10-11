@@ -42,6 +42,20 @@ interface PresenterValue {
   next: () => Promise<void>;
 }
 
+/** Local mode: POST /auth/token. Keycloak mode: that call is off, so a small server route does the admin sign-in. */
+async function adminSignIn(username: string, password: string) {
+  const cfg = await backend.authConfig();
+  if (cfg.mode !== "keycloak") return backend.adminLogin(username, password);
+  const r = await fetch("/api/presenter-login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(body.message || "Sign-in failed.");
+  return body as Awaited<ReturnType<typeof backend.adminLogin>>;
+}
+
 const Ctx = createContext<PresenterValue | null>(null);
 const KEY = "pg.presenter";
 
@@ -76,7 +90,7 @@ export function PresenterProvider({ children }: { children: ReactNode }) {
 
   const enable = useCallback(async (username: string, password: string) => {
     setError(null);
-    const res = await backend.adminLogin(username, password);
+    const res = await adminSignIn(username, password);
     if (res.user.role !== "admin" && !res.user.permissions?.includes("run_simulator")) throw new Error("Only an admin can run the demo.");
     const token = res.access_token;
     setAdminToken(token);
