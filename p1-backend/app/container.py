@@ -158,7 +158,11 @@ def _enable_scoring(c: Container, clock) -> None:
 def _hours_since_service(c: Container, asset_id: str) -> float:
     """Hours since the asset's last completed work order ended (0 if none)."""
     from plantguard_contracts.schemas.maintenance import WorkOrderStatus
-    done = [w for w in c.maintenance.get_history(asset_id) if w.status == WorkOrderStatus.DONE and w.planned_start]
+    try:
+        history = c.maintenance.get_history(asset_id)
+    except KeyError:  # no history file for this machine yet
+        return 0.0
+    done = [w for w in history if w.status == WorkOrderStatus.DONE and w.planned_start]
     if not done:
         return 0.0
     last = max(done, key=lambda w: w.planned_start)

@@ -1,0 +1,3628 @@
+[
+  {
+    "id": "WO-2024-0021",
+    "asset_id": "EQ-3007",
+    "type": "preventive",
+    "title": "Robot EQ-3007: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-01-11T08:40:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-01-08T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0029",
+    "asset_id": "EQ-4003",
+    "type": "preventive",
+    "title": "Robot EQ-4003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2024-01-14T16:30:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-01-11T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0041",
+    "asset_id": "EQ-4001",
+    "type": "corrective",
+    "title": "Press EQ-4001 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~100% over 2 days before the stop; kurtosis peaked at 5.7. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 8.2 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2024-01-15T10:11:58.299542Z",
+    "duration_hours": 8.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-01-15T09:20:00Z"
+  },
+  {
+    "id": "WO-2024-0056",
+    "asset_id": "EQ-3013",
+    "type": "corrective",
+    "title": "Assembly robot EQ-3013 overheating",
+    "root_cause": "Axis motor overheating (cabinet fan failed)",
+    "findings": "Bearing and motor temperature climbed ~25 °C over 87 h; vibration almost unchanged. Cause: filter blocked. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 7.7 h.",
+    "parts": [
+      {
+        "sku": "FAN-RB6",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-01-20T20:31:39.352977Z",
+    "duration_hours": 7.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-01-20T20:00:00Z"
+  },
+  {
+    "id": "WO-2024-0060",
+    "asset_id": "EQ-4006",
+    "type": "preventive",
+    "title": "Belt conveyor EQ-4006: belt tracking, drum bearings and drive check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2024-01-25T22:00:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-01-22T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0064",
+    "asset_id": "EQ-3011",
+    "type": "corrective",
+    "title": "CNC spindle 1 EQ-3011 overheating",
+    "root_cause": "Spindle cooling flow loss (clogged coolant filter)",
+    "findings": "Bearing and motor temperature climbed ~25 °C over 122 h; vibration almost unchanged. Cause: cooling fins packed with dust and chips. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 7.9 h.",
+    "parts": [
+      {
+        "sku": "FLT-SPC-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-01-23T19:50:18.586005Z",
+    "duration_hours": 8.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-01-23T18:50:00Z"
+  },
+  {
+    "id": "WO-2024-0066",
+    "asset_id": "EQ-3006",
+    "type": "preventive",
+    "title": "Spindle EQ-3006: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-01-27T04:50:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-01-24T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0080",
+    "asset_id": "EQ-3008",
+    "type": "corrective",
+    "title": "Tester EQ-3008 bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~150% over 7 days before the stop; kurtosis peaked at 5.8. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 7.7 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-01-29T15:24:33.299176Z",
+    "duration_hours": 7.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-01-29T12:50:00Z"
+  },
+  {
+    "id": "WO-2024-0094",
+    "asset_id": "EQ-3008",
+    "type": "preventive",
+    "title": "Tester EQ-3008: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-02-06T14:50:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-02-03T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0097",
+    "asset_id": "EQ-3011",
+    "type": "preventive",
+    "title": "CNC spindle 1 EQ-3011: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-02-07T17:00:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-02-04T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0119",
+    "asset_id": "EQ-4002",
+    "type": "preventive",
+    "title": "Spindle EQ-4002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2024-02-15T18:40:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-02-12T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0128",
+    "asset_id": "EQ-4002",
+    "type": "corrective",
+    "title": "Spindle EQ-4002 bearing failure",
+    "root_cause": "Rear bearing outer race wear (lubrication breakdown)",
+    "findings": "Vibration rose ~110% over 7 days before the stop; kurtosis peaked at 5.9. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 3.8 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2024-02-15T12:37:51.946854Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-02-15T10:20:00Z"
+  },
+  {
+    "id": "WO-2024-0134",
+    "asset_id": "EQ-4001",
+    "type": "corrective",
+    "title": "Press EQ-4001 overheating",
+    "root_cause": "Hydraulic oil overheating (oil cooler fouled)",
+    "findings": "Bearing and motor temperature climbed ~23 °C over 42 h; vibration almost unchanged. Cause: filter blocked. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 4.0 h.",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      },
+      {
+        "sku": "OIL-HLP46-20L",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2024-02-17T14:22:24.079040Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-02-17T12:40:00Z"
+  },
+  {
+    "id": "WO-2024-0138",
+    "asset_id": "EQ-3006",
+    "type": "corrective",
+    "title": "Spindle EQ-3006 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~120% over 6 days before the stop; kurtosis peaked at 4.9. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.5 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2024-02-19T04:59:54.697642Z",
+    "duration_hours": 4.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-02-19T02:10:00Z"
+  },
+  {
+    "id": "WO-2024-0176",
+    "asset_id": "EQ-4004",
+    "type": "preventive",
+    "title": "Tester EQ-4004: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2024-03-06T11:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-03-03T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0204",
+    "asset_id": "EQ-3007",
+    "type": "preventive",
+    "title": "Robot EQ-3007: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-03-16T16:50:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-03-13T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0214",
+    "asset_id": "EQ-3004",
+    "type": "corrective",
+    "title": "Tester EQ-3004 bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~130% over 6 days before the stop; kurtosis peaked at 6.1. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.8 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-03-16T22:53:43.955358Z",
+    "duration_hours": 7.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-03-16T20:10:00Z"
+  },
+  {
+    "id": "WO-2024-0255",
+    "asset_id": "EQ-3014",
+    "type": "preventive",
+    "title": "Belt conveyor EQ-3014: belt tracking, drum bearings and drive check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-04-03T20:20:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-03-31T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0264",
+    "asset_id": "EQ-3011",
+    "type": "corrective",
+    "title": "CNC spindle 1 EQ-3011 overheating",
+    "root_cause": "Spindle cooling flow loss (clogged coolant filter)",
+    "findings": "Bearing and motor temperature climbed ~27 °C over 120 h; vibration almost unchanged. Cause: filter blocked. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 4.1 h.",
+    "parts": [
+      {
+        "sku": "FLT-SPC-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-04-03T19:39:30.610290Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-04-03T16:50:00Z"
+  },
+  {
+    "id": "WO-2024-0271",
+    "asset_id": "EQ-4002",
+    "type": "corrective",
+    "title": "Spindle EQ-4002 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~100% over 6 days before the stop; kurtosis peaked at 5.5. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 2.5 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2024-04-06T05:20:37.726229Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-04-06T04:00:00Z"
+  },
+  {
+    "id": "WO-2024-0285",
+    "asset_id": "EQ-3001",
+    "type": "corrective",
+    "title": "Press EQ-3001 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~110% over 3 days before the stop; kurtosis peaked at 5.5. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 3.4 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-04-11T05:23:07.849656Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-04-11T04:30:00Z"
+  },
+  {
+    "id": "WO-2024-0289",
+    "asset_id": "EQ-3015",
+    "type": "predictive",
+    "title": "Torque tester EQ-3015: planned repair, early signs of bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~130% over 1 days before the planned stop; kurtosis peaked at 6.0. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 8.0 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-04-12T12:59:51.477694Z",
+    "duration_hours": 8.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-04-12T10:40:00Z"
+  },
+  {
+    "id": "WO-2024-0300",
+    "asset_id": "EQ-4003",
+    "type": "preventive",
+    "title": "Robot EQ-4003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2024-04-19T22:10:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-04-16T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0322",
+    "asset_id": "EQ-3001",
+    "type": "preventive",
+    "title": "Press EQ-3001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2024-04-27T19:50:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-04-24T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0353",
+    "asset_id": "EQ-3001",
+    "type": "preventive",
+    "title": "Press EQ-3001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2024-05-08T04:00:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-05-05T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0449",
+    "asset_id": "EQ-4003",
+    "type": "preventive",
+    "title": "Robot EQ-4003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2024-06-11T22:50:00Z",
+    "duration_hours": 1.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-06-08T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0458",
+    "asset_id": "EQ-3005",
+    "type": "corrective",
+    "title": "Press EQ-3005 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~150% over 3 days before the stop; kurtosis peaked at 5.1. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 2.6 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-06-11T17:22:39.326682Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-06-11T14:30:00Z"
+  },
+  {
+    "id": "WO-2024-0497",
+    "asset_id": "EQ-3005",
+    "type": "preventive",
+    "title": "Press EQ-3005: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2024-06-28T16:10:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-06-25T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0499",
+    "asset_id": "EQ-3014",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-3014 overheating",
+    "root_cause": "Drive motor overload (jammed return rollers)",
+    "findings": "Bearing and motor temperature climbed ~28 °C over 156 h; vibration almost unchanged. Cause: cooling fan not turning. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 5.7 h.",
+    "parts": [
+      {
+        "sku": "MTR-CNV-075",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-06-26T08:02:58.086116Z",
+    "duration_hours": 5.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-06-26T05:40:00Z"
+  },
+  {
+    "id": "WO-2024-0552",
+    "asset_id": "EQ-4006",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-4006 bearing failure",
+    "root_cause": "Drive drum bearing wear",
+    "findings": "Vibration rose ~140% over 5 days before the stop; kurtosis peaked at 4.8. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 7.5 h.",
+    "parts": [
+      {
+        "sku": "SKF-6204",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2024-07-14T20:11:08.045749Z",
+    "duration_hours": 7.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-07-14T17:30:00Z"
+  },
+  {
+    "id": "WO-2024-0574",
+    "asset_id": "EQ-3004",
+    "type": "predictive",
+    "title": "Tester EQ-3004: planned repair, early signs of bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~80% over 5 days before the planned stop; kurtosis peaked at 5.3. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 8.9 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-07-22T20:10:27.706638Z",
+    "duration_hours": 9.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-07-22T17:20:00Z"
+  },
+  {
+    "id": "WO-2024-0601",
+    "asset_id": "EQ-4004",
+    "type": "preventive",
+    "title": "Tester EQ-4004: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2024-08-04T05:30:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-08-01T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0607",
+    "asset_id": "EQ-4002",
+    "type": "predictive",
+    "title": "Spindle EQ-4002: planned repair, early signs of bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~100% over 4 days before the planned stop; kurtosis peaked at 5.1. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 8.1 h.",
+    "parts": [
+      {
+        "sku": "SKF-7008",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2024-08-03T12:15:02.454714Z",
+    "duration_hours": 8.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-08-03T11:30:00Z"
+  },
+  {
+    "id": "WO-2024-0610",
+    "asset_id": "EQ-4002",
+    "type": "preventive",
+    "title": "Spindle EQ-4002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2024-08-07T21:00:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-08-04T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0623",
+    "asset_id": "EQ-3002",
+    "type": "predictive",
+    "title": "Spindle EQ-3002: planned repair, early signs of misalignment",
+    "root_cause": "Drive belt and pulley misalignment after belt change",
+    "findings": "Vibration rose ~140% over 7 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.20 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 6.9 h.",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2024-08-09T03:15:22.344348Z",
+    "duration_hours": 7.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-08-09T02:20:00Z"
+  },
+  {
+    "id": "WO-2024-0624",
+    "asset_id": "EQ-3004",
+    "type": "preventive",
+    "title": "Tester EQ-3004: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-08-12T17:30:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-08-09T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0670",
+    "asset_id": "EQ-4004",
+    "type": "predictive",
+    "title": "Tester EQ-4004: planned repair, early signs of bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~80% over 5 days before the planned stop; kurtosis peaked at 5.6. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 9.0 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2024-08-25T18:14:03.735678Z",
+    "duration_hours": 9.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-08-25T15:30:00Z"
+  },
+  {
+    "id": "WO-2024-0689",
+    "asset_id": "EQ-4005",
+    "type": "corrective",
+    "title": "CNC spindle EQ-4005 bearing failure",
+    "root_cause": "Rear bearing outer race wear (lubrication breakdown)",
+    "findings": "Vibration rose ~130% over 7 days before the stop; kurtosis peaked at 4.8. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.9 h.",
+    "parts": [
+      {
+        "sku": "SKF-7008",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2024-09-01T16:36:30.660016Z",
+    "duration_hours": 5.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-09-01T15:20:00Z"
+  },
+  {
+    "id": "WO-2024-0724",
+    "asset_id": "EQ-3001",
+    "type": "corrective",
+    "title": "Press EQ-3001 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~100% over 3 days before the stop; kurtosis peaked at 6.1. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 7.2 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-09-13T21:59:33.651484Z",
+    "duration_hours": 7.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-09-13T19:20:00Z"
+  },
+  {
+    "id": "WO-2024-0735",
+    "asset_id": "EQ-3003",
+    "type": "predictive",
+    "title": "Robot EQ-3003: planned repair, early signs of overheating",
+    "root_cause": "Axis motor overheating (cabinet fan failed)",
+    "findings": "Bearing and motor temperature climbed ~32 °C over 107 h; vibration almost unchanged. Cause: cooling fan not turning. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 3.9 h.",
+    "parts": [
+      {
+        "sku": "FAN-RB6",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-09-18T00:36:09.592316Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-09-17T23:50:00Z"
+  },
+  {
+    "id": "WO-2024-0740",
+    "asset_id": "EQ-3008",
+    "type": "predictive",
+    "title": "Tester EQ-3008: planned repair, early signs of bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~80% over 5 days before the planned stop; kurtosis peaked at 5.2. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 7.4 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-09-19T17:10:48.559442Z",
+    "duration_hours": 7.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-09-19T16:00:00Z"
+  },
+  {
+    "id": "WO-2024-0790",
+    "asset_id": "EQ-3011",
+    "type": "preventive",
+    "title": "CNC spindle 1 EQ-3011: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-10-10T23:30:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-10-07T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0794",
+    "asset_id": "EQ-3013",
+    "type": "predictive",
+    "title": "Assembly robot EQ-3013: planned repair, early signs of bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~100% over 2 days before the planned stop; kurtosis peaked at 5.5. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 3.6 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-10-08T20:42:05.162857Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-10-08T18:00:00Z"
+  },
+  {
+    "id": "WO-2024-0815",
+    "asset_id": "EQ-4002",
+    "type": "preventive",
+    "title": "Spindle EQ-4002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2024-10-19T05:50:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-10-16T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0818",
+    "asset_id": "EQ-3004",
+    "type": "preventive",
+    "title": "Tester EQ-3004: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-10-20T10:30:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-10-17T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0824",
+    "asset_id": "EQ-4001",
+    "type": "preventive",
+    "title": "Press EQ-4001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2024-10-22T22:30:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-10-19T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0830",
+    "asset_id": "EQ-3001",
+    "type": "corrective",
+    "title": "Press EQ-3001 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~90% over 6 days before the stop; kurtosis peaked at 5.2. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.9 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-10-21T13:53:44.824143Z",
+    "duration_hours": 5.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-10-21T12:00:00Z"
+  },
+  {
+    "id": "WO-2024-0835",
+    "asset_id": "EQ-3002",
+    "type": "preventive",
+    "title": "Spindle EQ-3002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2024-10-26T16:30:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-10-23T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0844",
+    "asset_id": "EQ-3002",
+    "type": "preventive",
+    "title": "Spindle EQ-3002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2024-10-29T02:40:00Z",
+    "duration_hours": 1.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-10-26T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0849",
+    "asset_id": "EQ-3011",
+    "type": "preventive",
+    "title": "CNC spindle 1 EQ-3011: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-10-31T16:40:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-10-28T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0855",
+    "asset_id": "EQ-3011",
+    "type": "corrective",
+    "title": "CNC spindle 1 EQ-3011 bearing failure",
+    "root_cause": "Rear bearing outer race wear (lubrication breakdown)",
+    "findings": "Vibration rose ~140% over 5 days before the stop; kurtosis peaked at 6.0. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 5.6 h.",
+    "parts": [
+      {
+        "sku": "SKF-7008",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2024-10-30T09:40:46.286294Z",
+    "duration_hours": 5.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-10-30T07:50:00Z"
+  },
+  {
+    "id": "WO-2024-0863",
+    "asset_id": "EQ-3003",
+    "type": "preventive",
+    "title": "Robot EQ-3003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-11-05T08:10:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-11-02T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0871",
+    "asset_id": "EQ-3012",
+    "type": "corrective",
+    "title": "Spindle 2 rear bearing failure",
+    "root_cause": "Rear bearing outer race wear (lubrication breakdown)",
+    "findings": "Vibration rose ~120% over 3 days before seizure; line stopped 14 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2024-11-05T06:00:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-11-05T02:00:00Z"
+  },
+  {
+    "id": "WO-2024-0872",
+    "asset_id": "EQ-3001",
+    "type": "preventive",
+    "title": "Press EQ-3001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2024-11-08T13:30:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-11-05T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0903",
+    "asset_id": "EQ-3013",
+    "type": "preventive",
+    "title": "Assembly robot EQ-3013: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-11-30T00:30:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-11-27T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0910",
+    "asset_id": "EQ-4002",
+    "type": "preventive",
+    "title": "Spindle EQ-4002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2024-12-05T00:30:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-12-02T09:00:00Z"
+  },
+  {
+    "id": "WO-2024-0916",
+    "asset_id": "EQ-3004",
+    "type": "corrective",
+    "title": "Tester EQ-3004 misalignment",
+    "root_cause": "Coupling misalignment between motor and torque sensor",
+    "findings": "Vibration rose ~190% over 2 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.12 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 2.2 h.",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2024-12-07T00:38:12.508193Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-12-06T22:50:00Z"
+  },
+  {
+    "id": "WO-2024-0927",
+    "asset_id": "EQ-3001",
+    "type": "corrective",
+    "title": "Press EQ-3001 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~80% over 7 days before the stop; kurtosis peaked at 5.8. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 8.1 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2024-12-14T16:06:42.679277Z",
+    "duration_hours": 8.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-12-14T14:30:00Z"
+  },
+  {
+    "id": "WO-2024-0935",
+    "asset_id": "EQ-3005",
+    "type": "corrective",
+    "title": "Press EQ-3005 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~140% over 3 days before the stop; kurtosis peaked at 5.0. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 7.0 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2024-12-20T00:01:11.314636Z",
+    "duration_hours": 7.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2024-12-19T22:10:00Z"
+  },
+  {
+    "id": "WO-2025-0016",
+    "asset_id": "EQ-3006",
+    "type": "corrective",
+    "title": "Spindle EQ-3006 misalignment",
+    "root_cause": "Drive belt and pulley misalignment after belt change",
+    "findings": "Vibration rose ~130% over 7 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.24 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 8.9 h.",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2025-01-14T21:04:03.209979Z",
+    "duration_hours": 9.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-01-14T18:10:00Z"
+  },
+  {
+    "id": "WO-2025-0032",
+    "asset_id": "EQ-4004",
+    "type": "corrective",
+    "title": "Tester EQ-4004 overheating",
+    "root_cause": "Drive motor overheating (cooling fan failed)",
+    "findings": "Bearing and motor temperature climbed ~27 °C over 129 h; vibration almost unchanged. Cause: cooling fins packed with dust and chips. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 5.3 h.",
+    "parts": [
+      {
+        "sku": "FAN-TT2",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-01-28T01:57:42.315674Z",
+    "duration_hours": 5.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-01-28T00:30:00Z"
+  },
+  {
+    "id": "WO-2025-0036",
+    "asset_id": "EQ-3003",
+    "type": "corrective",
+    "title": "Robot EQ-3003 bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~90% over 2 days before the stop; kurtosis peaked at 5.5. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 7.2 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-01-31T10:44:47.010665Z",
+    "duration_hours": 7.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-01-31T08:00:00Z"
+  },
+  {
+    "id": "WO-2025-0050",
+    "asset_id": "EQ-3004",
+    "type": "corrective",
+    "title": "Tester EQ-3004 bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~150% over 1 days before the stop; kurtosis peaked at 5.7. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 2.6 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-02-12T12:40:41.389254Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-02-12T11:40:00Z"
+  },
+  {
+    "id": "WO-2025-0059",
+    "asset_id": "EQ-3005",
+    "type": "preventive",
+    "title": "Press EQ-3005: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2025-02-23T16:40:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-02-20T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0060",
+    "asset_id": "EQ-4006",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-4006 overheating",
+    "root_cause": "Drive motor overload (jammed return rollers)",
+    "findings": "Bearing and motor temperature climbed ~31 °C over 50 h; vibration almost unchanged. Cause: cooling fins packed with dust and chips. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 8.3 h.",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2025-02-21T05:31:59.509985Z",
+    "duration_hours": 8.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-02-21T04:10:00Z"
+  },
+  {
+    "id": "WO-2025-0069",
+    "asset_id": "EQ-3001",
+    "type": "preventive",
+    "title": "Press EQ-3001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2025-03-03T22:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-02-28T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0074",
+    "asset_id": "EQ-3001",
+    "type": "preventive",
+    "title": "Press EQ-3001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2025-03-07T12:40:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-03-04T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0080",
+    "asset_id": "EQ-4002",
+    "type": "corrective",
+    "title": "Spindle EQ-4002 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~90% over 7 days before the stop; kurtosis peaked at 6.0. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 3.5 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-03-09T14:06:46.743680Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-03-09T12:20:00Z"
+  },
+  {
+    "id": "WO-2025-0088",
+    "asset_id": "EQ-3007",
+    "type": "predictive",
+    "title": "Robot EQ-3007: planned repair, early signs of bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~100% over 1 days before the planned stop; kurtosis peaked at 5.8. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 5.3 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-03-16T11:12:35.919699Z",
+    "duration_hours": 5.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-03-16T09:30:00Z"
+  },
+  {
+    "id": "WO-2025-0115",
+    "asset_id": "EQ-3010",
+    "type": "predictive",
+    "title": "Hydraulic press EQ-3010: planned repair, early signs of bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~110% over 6 days before the planned stop; kurtosis peaked at 5.1. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.6 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-04-08T01:44:48.219607Z",
+    "duration_hours": 4.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-04-08T00:00:00Z"
+  },
+  {
+    "id": "WO-2025-0123",
+    "asset_id": "EQ-3003",
+    "type": "preventive",
+    "title": "Robot EQ-3003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-04-18T15:30:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-04-15T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0124",
+    "asset_id": "EQ-4002",
+    "type": "preventive",
+    "title": "Spindle EQ-4002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2025-04-19T23:20:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-04-16T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0145",
+    "asset_id": "EQ-3002",
+    "type": "corrective",
+    "title": "Spindle EQ-3002 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~150% over 2 days before the stop; kurtosis peaked at 5.2. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 7.3 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2025-05-04T03:33:49.114471Z",
+    "duration_hours": 7.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-05-04T02:20:00Z"
+  },
+  {
+    "id": "WO-2025-0155",
+    "asset_id": "EQ-3006",
+    "type": "preventive",
+    "title": "Spindle EQ-3006: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2025-05-15T13:40:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-05-12T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0173",
+    "asset_id": "EQ-4003",
+    "type": "preventive",
+    "title": "Robot EQ-4003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2025-05-30T04:30:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-05-27T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0174",
+    "asset_id": "EQ-3008",
+    "type": "preventive",
+    "title": "Tester EQ-3008: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-05-30T06:30:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-05-27T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0186",
+    "asset_id": "EQ-3002",
+    "type": "corrective",
+    "title": "Spindle EQ-3002 misalignment",
+    "root_cause": "Drive belt and pulley misalignment after belt change",
+    "findings": "Vibration rose ~140% over 2 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.14 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 7.2 h.",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2025-06-07T18:08:44.426361Z",
+    "duration_hours": 7.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-06-07T16:50:00Z"
+  },
+  {
+    "id": "WO-2025-0205",
+    "asset_id": "EQ-3005",
+    "type": "preventive",
+    "title": "Press EQ-3005: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2025-06-26T11:40:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-06-23T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0213",
+    "asset_id": "EQ-4006",
+    "type": "preventive",
+    "title": "Belt conveyor EQ-4006: belt tracking, drum bearings and drive check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2025-07-03T05:00:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-06-30T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0215",
+    "asset_id": "EQ-4001",
+    "type": "corrective",
+    "title": "Press EQ-4001 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~130% over 7 days before the stop; kurtosis peaked at 5.1. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 8.5 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-07-01T21:16:07.699596Z",
+    "duration_hours": 8.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-07-01T18:20:00Z"
+  },
+  {
+    "id": "WO-2025-0230",
+    "asset_id": "EQ-3008",
+    "type": "preventive",
+    "title": "Tester EQ-3008: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-07-17T20:00:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-07-14T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0233",
+    "asset_id": "EQ-3011",
+    "type": "predictive",
+    "title": "CNC spindle 1 EQ-3011: planned repair, early signs of bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~100% over 7 days before the planned stop; kurtosis peaked at 5.4. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 8.7 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-07-17T05:28:47.073874Z",
+    "duration_hours": 8.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-07-17T03:20:00Z"
+  },
+  {
+    "id": "WO-2025-0241",
+    "asset_id": "EQ-4005",
+    "type": "corrective",
+    "title": "CNC spindle EQ-4005 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~120% over 4 days before the stop; kurtosis peaked at 4.7. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.2 h.",
+    "parts": [
+      {
+        "sku": "SKF-7008",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-07-24T03:21:14.448655Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-07-24T01:30:00Z"
+  },
+  {
+    "id": "WO-2025-0257",
+    "asset_id": "EQ-3008",
+    "type": "corrective",
+    "title": "Tester EQ-3008 misalignment",
+    "root_cause": "Coupling misalignment between motor and torque sensor",
+    "findings": "Vibration rose ~160% over 2 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.11 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 7.7 h.",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2025-08-06T08:34:17.953533Z",
+    "duration_hours": 7.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-08-06T07:50:00Z"
+  },
+  {
+    "id": "WO-2025-0259",
+    "asset_id": "EQ-3005",
+    "type": "preventive",
+    "title": "Press EQ-3005: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2025-08-11T14:30:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-08-08T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0267",
+    "asset_id": "EQ-3015",
+    "type": "predictive",
+    "title": "Torque tester EQ-3015: planned repair, early signs of overheating",
+    "root_cause": "Drive motor overheating (cooling fan failed)",
+    "findings": "Bearing and motor temperature climbed ~31 °C over 93 h; vibration almost unchanged. Cause: cooling fins packed with dust and chips. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 3.2 h.",
+    "parts": [
+      {
+        "sku": "FAN-TT2",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-08-14T23:54:20.114123Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-08-14T22:10:00Z"
+  },
+  {
+    "id": "WO-2025-0268",
+    "asset_id": "EQ-4002",
+    "type": "predictive",
+    "title": "Spindle EQ-4002: planned repair, early signs of bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~90% over 6 days before the planned stop; kurtosis peaked at 5.1. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.7 h.",
+    "parts": [
+      {
+        "sku": "SKF-7008",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-08-15T04:03:39.504496Z",
+    "duration_hours": 4.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-08-15T02:30:00Z"
+  },
+  {
+    "id": "WO-2025-0273",
+    "asset_id": "EQ-3007",
+    "type": "preventive",
+    "title": "Robot EQ-3007: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-08-23T03:20:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-08-20T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0280",
+    "asset_id": "EQ-3014",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-3014 bearing failure",
+    "root_cause": "Drive drum bearing wear",
+    "findings": "Vibration rose ~90% over 4 days before the stop; kurtosis peaked at 6.1. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 8.6 h.",
+    "parts": [
+      {
+        "sku": "SKF-6204",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2025-08-26T09:35:14.114994Z",
+    "duration_hours": 8.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-08-26T07:50:00Z"
+  },
+  {
+    "id": "WO-2025-0281",
+    "asset_id": "EQ-4001",
+    "type": "preventive",
+    "title": "Press EQ-4001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-08-29T08:00:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-08-26T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0282",
+    "asset_id": "EQ-4001",
+    "type": "predictive",
+    "title": "Press EQ-4001: planned repair, early signs of misalignment",
+    "root_cause": "Pump-motor coupling misalignment",
+    "findings": "Vibration rose ~190% over 2 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.16 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 6.4 h.",
+    "parts": [
+      {
+        "sku": "CPL-42",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-08-27T08:21:50.345924Z",
+    "duration_hours": 6.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-08-27T06:20:00Z"
+  },
+  {
+    "id": "WO-2025-0283",
+    "asset_id": "EQ-4004",
+    "type": "predictive",
+    "title": "Tester EQ-4004: planned repair, early signs of bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~130% over 1 days before the planned stop; kurtosis peaked at 5.8. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.8 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-08-28T09:06:31.947631Z",
+    "duration_hours": 7.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-08-28T06:40:00Z"
+  },
+  {
+    "id": "WO-2025-0294",
+    "asset_id": "EQ-4003",
+    "type": "preventive",
+    "title": "Robot EQ-4003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2025-09-10T18:00:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-09-07T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0312",
+    "asset_id": "EQ-3010",
+    "type": "preventive",
+    "title": "Hydraulic press EQ-3010: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2025-09-25T09:40:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-09-22T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0313",
+    "asset_id": "EQ-3014",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-3014 bearing failure",
+    "root_cause": "Drive drum bearing wear",
+    "findings": "Vibration rose ~100% over 7 days before the stop; kurtosis peaked at 5.0. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 2.5 h.",
+    "parts": [
+      {
+        "sku": "SKF-6204",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2025-09-22T12:03:46.844399Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-09-22T11:10:00Z"
+  },
+  {
+    "id": "WO-2025-0320",
+    "asset_id": "EQ-3004",
+    "type": "preventive",
+    "title": "Tester EQ-3004: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-10-02T12:40:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-09-29T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0323",
+    "asset_id": "EQ-3010",
+    "type": "corrective",
+    "title": "Hydraulic press EQ-3010 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~150% over 4 days before the stop; kurtosis peaked at 5.0. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.0 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2025-10-01T08:37:29.547000Z",
+    "duration_hours": 6.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-10-01T08:00:00Z"
+  },
+  {
+    "id": "WO-2025-0328",
+    "asset_id": "EQ-4002",
+    "type": "corrective",
+    "title": "Spindle EQ-4002 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~110% over 5 days before the stop; kurtosis peaked at 4.7. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.3 h.",
+    "parts": [
+      {
+        "sku": "SKF-7008",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-10-06T02:58:56.144812Z",
+    "duration_hours": 6.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-10-06T00:00:00Z"
+  },
+  {
+    "id": "WO-2025-0351",
+    "asset_id": "EQ-4004",
+    "type": "corrective",
+    "title": "Tester EQ-4004 misalignment",
+    "root_cause": "Coupling misalignment between motor and torque sensor",
+    "findings": "Vibration rose ~160% over 4 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.23 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 8.9 h.",
+    "parts": [
+      {
+        "sku": "CPL-19",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-10-25T18:12:34.555212Z",
+    "duration_hours": 9.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-10-25T16:00:00Z"
+  },
+  {
+    "id": "WO-2025-0366",
+    "asset_id": "EQ-4002",
+    "type": "corrective",
+    "title": "Spindle EQ-4002 overheating",
+    "root_cause": "Spindle cooling flow loss (clogged coolant filter)",
+    "findings": "Bearing and motor temperature climbed ~20 °C over 120 h; vibration almost unchanged. Cause: cooling fan not turning. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 5.8 h.",
+    "parts": [
+      {
+        "sku": "FLT-SPC-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-11-07T09:27:31.827677Z",
+    "duration_hours": 6.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-11-07T07:50:00Z"
+  },
+  {
+    "id": "WO-2025-0377",
+    "asset_id": "EQ-4002",
+    "type": "preventive",
+    "title": "Spindle EQ-4002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2025-11-19T16:20:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-11-16T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0378",
+    "asset_id": "EQ-4005",
+    "type": "corrective",
+    "title": "CNC spindle EQ-4005 overheating",
+    "root_cause": "Spindle cooling flow loss (clogged coolant filter)",
+    "findings": "Bearing and motor temperature climbed ~30 °C over 115 h; vibration almost unchanged. Cause: filter blocked. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 3.7 h.",
+    "parts": [
+      {
+        "sku": "FLT-SPC-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-11-17T08:28:33.435659Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-11-17T07:30:00Z"
+  },
+  {
+    "id": "WO-2025-0383",
+    "asset_id": "EQ-3005",
+    "type": "corrective",
+    "title": "Press EQ-3005 misalignment",
+    "root_cause": "Pump-motor coupling misalignment",
+    "findings": "Vibration rose ~140% over 6 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.18 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 9.0 h.",
+    "parts": [
+      {
+        "sku": "CPL-42",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2025-11-21T01:41:38.483632Z",
+    "duration_hours": 9.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-11-21T00:50:00Z"
+  },
+  {
+    "id": "WO-2025-0388",
+    "asset_id": "EQ-4003",
+    "type": "corrective",
+    "title": "Robot EQ-4003 bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~130% over 6 days before the stop; kurtosis peaked at 5.2. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 5.1 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2025-11-25T13:19:34.065950Z",
+    "duration_hours": 5.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-11-25T12:20:00Z"
+  },
+  {
+    "id": "WO-2025-0394",
+    "asset_id": "EQ-3013",
+    "type": "corrective",
+    "title": "Assembly robot EQ-3013 bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~120% over 6 days before the stop; kurtosis peaked at 5.1. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 3.0 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-11-30T10:25:04.087689Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-11-30T08:50:00Z"
+  },
+  {
+    "id": "WO-2025-0396",
+    "asset_id": "EQ-3011",
+    "type": "predictive",
+    "title": "CNC spindle 1 EQ-3011: planned repair, early signs of bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~140% over 3 days before the planned stop; kurtosis peaked at 5.5. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 2.1 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2025-12-02T10:14:44.956472Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-12-02T08:30:00Z"
+  },
+  {
+    "id": "WO-2025-0398",
+    "asset_id": "EQ-3001",
+    "type": "corrective",
+    "title": "Press EQ-3001 overheating",
+    "root_cause": "Hydraulic oil overheating (oil cooler fouled)",
+    "findings": "Bearing and motor temperature climbed ~24 °C over 77 h; vibration almost unchanged. Cause: coolant flow below 60% of nominal. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 5.1 h.",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      },
+      {
+        "sku": "OIL-HLP46-20L",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2025-12-04T06:08:47.488838Z",
+    "duration_hours": 5.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-12-04T03:40:00Z"
+  },
+  {
+    "id": "WO-2025-0401",
+    "asset_id": "EQ-3001",
+    "type": "preventive",
+    "title": "Press EQ-3001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2025-12-09T19:50:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-12-06T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0403",
+    "asset_id": "EQ-3002",
+    "type": "preventive",
+    "title": "Spindle EQ-3002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-12-11T12:20:00Z",
+    "duration_hours": 1.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-12-08T09:00:00Z"
+  },
+  {
+    "id": "WO-2025-0419",
+    "asset_id": "EQ-3004",
+    "type": "corrective",
+    "title": "Tester EQ-3004 bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~100% over 4 days before the stop; kurtosis peaked at 5.4. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.8 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2025-12-21T19:40:27.225555Z",
+    "duration_hours": 5.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-12-21T19:10:00Z"
+  },
+  {
+    "id": "WO-2025-0427",
+    "asset_id": "EQ-4006",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-4006 misalignment",
+    "root_cause": "Belt tracking and drum misalignment",
+    "findings": "Vibration rose ~130% over 4 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.17 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 5.6 h.",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2025-12-29T01:54:43.827659Z",
+    "duration_hours": 5.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-12-29T00:40:00Z"
+  },
+  {
+    "id": "WO-2025-0429",
+    "asset_id": "EQ-3004",
+    "type": "preventive",
+    "title": "Tester EQ-3004: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-01-02T21:20:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2025-12-30T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0003",
+    "asset_id": "EQ-3007",
+    "type": "preventive",
+    "title": "Robot EQ-3007: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-01-09T04:50:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-01-06T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0008",
+    "asset_id": "EQ-3007",
+    "type": "preventive",
+    "title": "Robot EQ-3007: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-01-17T07:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-01-14T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0013",
+    "asset_id": "EQ-4003",
+    "type": "preventive",
+    "title": "Robot EQ-4003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-01-25T21:50:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-01-22T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0015",
+    "asset_id": "EQ-4003",
+    "type": "preventive",
+    "title": "Robot EQ-4003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-01-28T06:30:00Z",
+    "duration_hours": 1.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-01-25T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0018",
+    "asset_id": "EQ-4005",
+    "type": "corrective",
+    "title": "CNC spindle EQ-4005 misalignment",
+    "root_cause": "Drive belt and pulley misalignment after belt change",
+    "findings": "Vibration rose ~160% over 4 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.18 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 6.2 h.",
+    "parts": [
+      {
+        "sku": "BLT-HTD-8M",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-01-30T19:31:47.499219Z",
+    "duration_hours": 6.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-01-30T18:30:00Z"
+  },
+  {
+    "id": "WO-2026-0028",
+    "asset_id": "EQ-4005",
+    "type": "preventive",
+    "title": "CNC spindle EQ-4005: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-02-19T10:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-02-16T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0034",
+    "asset_id": "EQ-3008",
+    "type": "predictive",
+    "title": "Tester EQ-3008: planned repair, early signs of bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~140% over 5 days before the planned stop; kurtosis peaked at 5.9. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 2.2 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-02-26T17:23:00.901780Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-02-26T16:50:00Z"
+  },
+  {
+    "id": "WO-2026-0037",
+    "asset_id": "EQ-3013",
+    "type": "predictive",
+    "title": "Assembly robot EQ-3013: planned repair, early signs of bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~80% over 2 days before the planned stop; kurtosis peaked at 6.2. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.6 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-03-03T12:27:11.514355Z",
+    "duration_hours": 4.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-03-03T10:10:00Z"
+  },
+  {
+    "id": "WO-2026-0039",
+    "asset_id": "EQ-3007",
+    "type": "preventive",
+    "title": "Robot EQ-3007: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-03-09T20:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-03-06T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0040",
+    "asset_id": "EQ-3004",
+    "type": "corrective",
+    "title": "Tester EQ-3004 bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~80% over 4 days before the stop; kurtosis peaked at 5.8. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 2.8 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-03-08T22:06:53.931085Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-03-08T19:20:00Z"
+  },
+  {
+    "id": "WO-2026-0042",
+    "asset_id": "EQ-3014",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-3014 overheating",
+    "root_cause": "Drive motor overload (jammed return rollers)",
+    "findings": "Bearing and motor temperature climbed ~28 °C over 151 h; vibration almost unchanged. Cause: cooling fins packed with dust and chips. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 1.8 h.",
+    "parts": [
+      {
+        "sku": "MTR-CNV-075",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-03-12T07:05:34.075906Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-03-12T04:20:00Z"
+  },
+  {
+    "id": "WO-2026-0046",
+    "asset_id": "EQ-3004",
+    "type": "preventive",
+    "title": "Tester EQ-3004: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-03-21T10:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-03-18T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0048",
+    "asset_id": "EQ-4004",
+    "type": "preventive",
+    "title": "Tester EQ-4004: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-03-24T00:40:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-03-21T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0050",
+    "asset_id": "EQ-4004",
+    "type": "preventive",
+    "title": "Tester EQ-4004: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-03-27T02:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-03-24T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0051",
+    "asset_id": "EQ-4006",
+    "type": "preventive",
+    "title": "Belt conveyor EQ-4006: belt tracking, drum bearings and drive check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-03-27T06:10:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-03-24T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0052",
+    "asset_id": "EQ-3013",
+    "type": "preventive",
+    "title": "Assembly robot EQ-3013: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-03-28T14:30:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-03-25T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0056",
+    "asset_id": "EQ-3015",
+    "type": "preventive",
+    "title": "Torque tester EQ-3015: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-04-06T04:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-04-03T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0057",
+    "asset_id": "EQ-3013",
+    "type": "corrective",
+    "title": "Assembly robot EQ-3013 bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~80% over 2 days before the stop; kurtosis peaked at 5.1. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 8.5 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-04-03T16:21:49.660744Z",
+    "duration_hours": 8.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-04-03T15:20:00Z"
+  },
+  {
+    "id": "WO-2026-0058",
+    "asset_id": "EQ-4001",
+    "type": "preventive",
+    "title": "Press EQ-4001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-04-10T09:00:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-04-07T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0062",
+    "asset_id": "EQ-3008",
+    "type": "corrective",
+    "title": "Tester EQ-3008 bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~90% over 7 days before the stop; kurtosis peaked at 6.1. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.4 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-04-14T17:32:49.550104Z",
+    "duration_hours": 6.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-04-14T17:00:00Z"
+  },
+  {
+    "id": "WO-2026-0066",
+    "asset_id": "EQ-4001",
+    "type": "preventive",
+    "title": "Press EQ-4001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-04-23T15:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-04-20T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0068",
+    "asset_id": "EQ-4006",
+    "type": "preventive",
+    "title": "Belt conveyor EQ-4006: belt tracking, drum bearings and drive check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-04-26T02:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-04-23T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0069",
+    "asset_id": "EQ-3008",
+    "type": "corrective",
+    "title": "Tester EQ-3008 overheating",
+    "root_cause": "Drive motor overheating (cooling fan failed)",
+    "findings": "Bearing and motor temperature climbed ~26 °C over 106 h; vibration almost unchanged. Cause: filter blocked. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 4.9 h.",
+    "parts": [
+      {
+        "sku": "FAN-TT2",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-04-25T22:17:41.851006Z",
+    "duration_hours": 5.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-04-25T20:40:00Z"
+  },
+  {
+    "id": "WO-2026-0070",
+    "asset_id": "EQ-3006",
+    "type": "preventive",
+    "title": "Spindle EQ-3006: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-04-29T02:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-04-26T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0072",
+    "asset_id": "EQ-4002",
+    "type": "preventive",
+    "title": "Spindle EQ-4002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-05-04T11:30:00Z",
+    "duration_hours": 1.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-05-01T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0074",
+    "asset_id": "EQ-3010",
+    "type": "preventive",
+    "title": "Hydraulic press EQ-3010: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2026-05-06T03:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-05-03T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0077",
+    "asset_id": "EQ-3001",
+    "type": "preventive",
+    "title": "Press EQ-3001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2026-05-12T21:10:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-05-09T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0078",
+    "asset_id": "EQ-3003",
+    "type": "preventive",
+    "title": "Robot EQ-3003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-05-13T05:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-05-10T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0089",
+    "asset_id": "EQ-4003",
+    "type": "preventive",
+    "title": "Robot EQ-4003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-06-01T07:40:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-05-29T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0090",
+    "asset_id": "EQ-3001",
+    "type": "preventive",
+    "title": "Press EQ-3001: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2026-06-03T03:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-05-31T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0091",
+    "asset_id": "EQ-3012",
+    "type": "preventive",
+    "title": "Spindle 2 lubrication and inspection",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-06-02T06:00:00Z",
+    "duration_hours": 1.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-06-01T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0092",
+    "asset_id": "EQ-3011",
+    "type": "preventive",
+    "title": "CNC spindle 1 EQ-3011: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-06-06T07:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-06-03T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0093",
+    "asset_id": "EQ-3005",
+    "type": "preventive",
+    "title": "Press EQ-3005: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2026-06-06T15:50:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-06-03T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0094",
+    "asset_id": "EQ-3008",
+    "type": "preventive",
+    "title": "Tester EQ-3008: calibration check and coupling inspection",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-06-09T07:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-06-06T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0096",
+    "asset_id": "EQ-3002",
+    "type": "preventive",
+    "title": "Spindle EQ-3002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-06-15T01:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-06-12T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0097",
+    "asset_id": "EQ-3013",
+    "type": "preventive",
+    "title": "Assembly robot EQ-3013: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-06-16T09:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-06-13T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0098",
+    "asset_id": "EQ-4003",
+    "type": "preventive",
+    "title": "Robot EQ-4003: reducer grease change and cable check",
+    "root_cause": null,
+    "findings": "Minor wear noted, no action needed",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-06-16T21:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-06-13T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0102",
+    "asset_id": "EQ-3005",
+    "type": "preventive",
+    "title": "Press EQ-3005: hydraulic oil and filter change, pump coupling check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2026-06-29T01:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-06-26T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0103",
+    "asset_id": "EQ-3014",
+    "type": "preventive",
+    "title": "Belt conveyor EQ-3014: belt tracking, drum bearings and drive check",
+    "root_cause": null,
+    "findings": "OK, all values within limits",
+    "parts": [],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-07-03T19:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-06-30T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0104",
+    "asset_id": "EQ-4002",
+    "type": "preventive",
+    "title": "Spindle EQ-4002: lubrication, belt tension and bearing check",
+    "root_cause": null,
+    "findings": "OK; vibration and temperature normal",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-07-05T18:00:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-07-02T09:00:00Z"
+  },
+  {
+    "id": "WO-2026-0105",
+    "asset_id": "EQ-4004",
+    "type": "corrective",
+    "title": "Tester EQ-4004 overheating",
+    "root_cause": "Drive motor overheating (cooling fan failed)",
+    "findings": "Bearing and motor temperature climbed ~29 °C over 27 h; vibration almost unchanged. Cause: filter blocked. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 3.0 h.",
+    "parts": [
+      {
+        "sku": "FAN-TT2",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-07-20T19:51:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-07-20T18:58:00Z"
+  },
+  {
+    "id": "WO-2026-0106",
+    "asset_id": "EQ-3007",
+    "type": "corrective",
+    "title": "Robot EQ-3007 bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~270% over 7 days before the stop; kurtosis peaked at 5.0. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 8.0 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-07-20T23:28:00Z",
+    "duration_hours": 8.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-07-20T21:54:00Z"
+  },
+  {
+    "id": "WO-2026-0107",
+    "asset_id": "EQ-3010",
+    "type": "corrective",
+    "title": "Hydraulic press EQ-3010 overheating",
+    "root_cause": "Hydraulic oil overheating (oil cooler fouled)",
+    "findings": "Bearing and motor temperature climbed ~28 °C over 52 h; vibration almost unchanged. Cause: filter blocked. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 5.8 h.",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      },
+      {
+        "sku": "OIL-HLP46-20L",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2026-07-21T19:23:00Z",
+    "duration_hours": 6.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-07-21T17:50:00Z"
+  },
+  {
+    "id": "WO-2026-0108",
+    "asset_id": "EQ-4005",
+    "type": "corrective",
+    "title": "CNC spindle EQ-4005 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~240% over 6 days before the stop; kurtosis peaked at 4.7. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.4 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-07-22T02:42:00Z",
+    "duration_hours": 6.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-07-22T01:12:00Z"
+  },
+  {
+    "id": "WO-2026-0109",
+    "asset_id": "EQ-3013",
+    "type": "corrective",
+    "title": "Assembly robot EQ-3013 bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~110% over 6 days before the stop; kurtosis peaked at 4.6. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.3 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-07-23T04:50:00Z",
+    "duration_hours": 6.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-07-23T02:47:00Z"
+  },
+  {
+    "id": "WO-2026-0110",
+    "asset_id": "EQ-3001",
+    "type": "corrective",
+    "title": "Press EQ-3001 misalignment",
+    "root_cause": "Pump-motor coupling misalignment",
+    "findings": "Vibration rose ~160% over 5 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.25 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 3.6 h.",
+    "parts": [],
+    "technician_id": "TECH-120",
+    "planned_start": "2026-07-24T13:55:00Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-07-24T11:58:00Z"
+  },
+  {
+    "id": "WO-2026-0111",
+    "asset_id": "EQ-3004",
+    "type": "corrective",
+    "title": "Tester EQ-3004 bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~230% over 6 days before the stop; kurtosis peaked at 5.0. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.2 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-07-27T07:45:00Z",
+    "duration_hours": 6.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-07-27T06:06:00Z"
+  },
+  {
+    "id": "WO-2026-0112",
+    "asset_id": "EQ-3006",
+    "type": "corrective",
+    "title": "Spindle EQ-3006 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~130% over 5 days before the stop; kurtosis peaked at 4.4. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 3.7 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-07-29T10:41:00Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-07-29T08:51:00Z"
+  },
+  {
+    "id": "WO-2026-0113",
+    "asset_id": "EQ-3003",
+    "type": "corrective",
+    "title": "Robot EQ-3003 bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~230% over 6 days before the stop; kurtosis peaked at 5.6. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.9 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-07-30T12:02:00Z",
+    "duration_hours": 5.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-07-30T11:41:00Z"
+  },
+  {
+    "id": "WO-2026-0114",
+    "asset_id": "EQ-4006",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-4006 misalignment",
+    "root_cause": "Belt tracking and drum misalignment",
+    "findings": "Vibration rose ~190% over 7 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.11 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 3.3 h.",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-08-02T00:00:00Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-01T23:19:00Z"
+  },
+  {
+    "id": "WO-2026-0115",
+    "asset_id": "EQ-3002",
+    "type": "corrective",
+    "title": "Spindle EQ-3002 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~250% over 7 days before the stop; kurtosis peaked at 4.6. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.5 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-08-04T18:04:00Z",
+    "duration_hours": 4.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-04T16:09:00Z"
+  },
+  {
+    "id": "WO-2026-0116",
+    "asset_id": "EQ-3013",
+    "type": "corrective",
+    "title": "Assembly robot EQ-3013 overheating",
+    "root_cause": "Axis motor overheating (cabinet fan failed)",
+    "findings": "Bearing and motor temperature climbed ~30 °C over 53 h; vibration almost unchanged. Cause: coolant flow below 60% of nominal. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 5.1 h.",
+    "parts": [
+      {
+        "sku": "FAN-RB6",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-08-06T07:39:00Z",
+    "duration_hours": 5.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-06T05:29:00Z"
+  },
+  {
+    "id": "WO-2026-0117",
+    "asset_id": "EQ-4004",
+    "type": "corrective",
+    "title": "Tester EQ-4004 misalignment",
+    "root_cause": "Coupling misalignment between motor and torque sensor",
+    "findings": "Vibration rose ~150% over 5 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.15 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 2.4 h.",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-08-07T05:02:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-07T04:04:00Z"
+  },
+  {
+    "id": "WO-2026-0118",
+    "asset_id": "EQ-3015",
+    "type": "corrective",
+    "title": "Torque tester EQ-3015 misalignment",
+    "root_cause": "Coupling misalignment between motor and torque sensor",
+    "findings": "Vibration rose ~80% over 4 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.14 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 1.7 h.",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-08-07T16:35:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-07T15:48:00Z"
+  },
+  {
+    "id": "WO-2026-0119",
+    "asset_id": "EQ-4006",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-4006 misalignment",
+    "root_cause": "Belt tracking and drum misalignment",
+    "findings": "Vibration rose ~130% over 4 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.23 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 3.7 h.",
+    "parts": [
+      {
+        "sku": "BLT-CNV-600",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-08-08T07:06:00Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-08T05:03:00Z"
+  },
+  {
+    "id": "WO-2026-0120",
+    "asset_id": "EQ-3005",
+    "type": "corrective",
+    "title": "Press EQ-3005 overheating",
+    "root_cause": "Hydraulic oil overheating (oil cooler fouled)",
+    "findings": "Bearing and motor temperature climbed ~28 °C over 32 h; vibration almost unchanged. Cause: cooling fins packed with dust and chips. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 4.0 h.",
+    "parts": [
+      {
+        "sku": "FLT-HYD-10",
+        "quantity": 1
+      },
+      {
+        "sku": "OIL-HLP46-20L",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2026-08-08T15:10:00Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-08T12:58:00Z"
+  },
+  {
+    "id": "WO-2026-0121",
+    "asset_id": "EQ-4003",
+    "type": "corrective",
+    "title": "Robot EQ-4003 bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~210% over 4 days before the stop; kurtosis peaked at 5.7. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 3.8 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-08-10T10:08:00Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-10T09:30:00Z"
+  },
+  {
+    "id": "WO-2026-0122",
+    "asset_id": "EQ-3007",
+    "type": "corrective",
+    "title": "Robot EQ-3007 overheating",
+    "root_cause": "Axis motor overheating (cabinet fan failed)",
+    "findings": "Bearing and motor temperature climbed ~25 °C over 36 h; vibration almost unchanged. Cause: cooling fins packed with dust and chips. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 4.5 h.",
+    "parts": [
+      {
+        "sku": "FAN-RB6",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-08-12T14:51:00Z",
+    "duration_hours": 4.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-12T13:32:00Z"
+  },
+  {
+    "id": "WO-2026-0123",
+    "asset_id": "EQ-3004",
+    "type": "corrective",
+    "title": "Tester EQ-3004 overheating",
+    "root_cause": "Drive motor overheating (cooling fan failed)",
+    "findings": "Bearing and motor temperature climbed ~22 °C over 40 h; vibration almost unchanged. Cause: cooling fan not turning. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 2.8 h.",
+    "parts": [
+      {
+        "sku": "FAN-TT2",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-08-15T08:08:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-15T06:28:00Z"
+  },
+  {
+    "id": "WO-2026-0124",
+    "asset_id": "EQ-4005",
+    "type": "corrective",
+    "title": "CNC spindle EQ-4005 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~270% over 4 days before the stop; kurtosis peaked at 4.9. Found inner race pitting. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 7.6 h.",
+    "parts": [
+      {
+        "sku": "SKF-7008",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-08-18T05:57:00Z",
+    "duration_hours": 7.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-18T05:01:00Z"
+  },
+  {
+    "id": "WO-2026-0125",
+    "asset_id": "EQ-4006",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-4006 overheating",
+    "root_cause": "Drive motor overload (jammed return rollers)",
+    "findings": "Bearing and motor temperature climbed ~26 °C over 23 h; vibration almost unchanged. Cause: cooling fins packed with dust and chips. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 3.3 h.",
+    "parts": [],
+    "technician_id": null,
+    "planned_start": "2026-08-21T08:11:00Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-21T07:18:00Z"
+  },
+  {
+    "id": "WO-2026-0126",
+    "asset_id": "EQ-3013",
+    "type": "corrective",
+    "title": "Assembly robot EQ-3013 bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~220% over 7 days before the stop; kurtosis peaked at 5.4. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.5 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-08-21T19:34:00Z",
+    "duration_hours": 4.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-21T17:46:00Z"
+  },
+  {
+    "id": "WO-2026-0127",
+    "asset_id": "EQ-3007",
+    "type": "corrective",
+    "title": "Robot EQ-3007 bearing failure",
+    "root_cause": "Axis 2 reducer bearing wear",
+    "findings": "Vibration rose ~250% over 7 days before the stop; kurtosis peaked at 4.9. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 7.5 h.",
+    "parts": [
+      {
+        "sku": "HDG-32-BRG",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-08-24T08:04:00Z",
+    "duration_hours": 7.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-24T06:36:00Z"
+  },
+  {
+    "id": "WO-2026-0128",
+    "asset_id": "EQ-3008",
+    "type": "corrective",
+    "title": "Tester EQ-3008 bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~100% over 5 days before the stop; kurtosis peaked at 4.2. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 5.8 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-08-25T08:00:00Z",
+    "duration_hours": 6.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-25T06:34:00Z"
+  },
+  {
+    "id": "WO-2026-0129",
+    "asset_id": "EQ-4002",
+    "type": "corrective",
+    "title": "Spindle EQ-4002 bearing failure",
+    "root_cause": "Rear bearing outer race wear (lubrication breakdown)",
+    "findings": "Vibration rose ~190% over 7 days before the stop; kurtosis peaked at 5.2. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.6 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-08-26T05:03:00Z",
+    "duration_hours": 6.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-26T03:29:00Z"
+  },
+  {
+    "id": "WO-2026-0130",
+    "asset_id": "EQ-3010",
+    "type": "corrective",
+    "title": "Hydraulic press EQ-3010 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~270% over 7 days before the stop; kurtosis peaked at 5.8. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 5.2 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-08-28T01:26:00Z",
+    "duration_hours": 5.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-28T00:43:00Z"
+  },
+  {
+    "id": "WO-2026-0131",
+    "asset_id": "EQ-3004",
+    "type": "corrective",
+    "title": "Tester EQ-3004 overheating",
+    "root_cause": "Drive motor overheating (cooling fan failed)",
+    "findings": "Bearing and motor temperature climbed ~29 °C over 24 h; vibration almost unchanged. Cause: cooling fins packed with dust and chips. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 2.5 h.",
+    "parts": [
+      {
+        "sku": "FAN-TT2",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-08-28T14:41:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-28T12:23:00Z"
+  },
+  {
+    "id": "WO-2026-0132",
+    "asset_id": "EQ-4003",
+    "type": "corrective",
+    "title": "Robot EQ-4003 overheating",
+    "root_cause": "Axis motor overheating (cabinet fan failed)",
+    "findings": "Bearing and motor temperature climbed ~31 °C over 29 h; vibration almost unchanged. Cause: cooling fan not turning. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 4.9 h.",
+    "parts": [
+      {
+        "sku": "FAN-RB6",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-08-30T00:44:00Z",
+    "duration_hours": 5.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-08-29T23:51:00Z"
+  },
+  {
+    "id": "WO-2026-0133",
+    "asset_id": "EQ-3014",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-3014 bearing failure",
+    "root_cause": "Drive drum bearing wear",
+    "findings": "Vibration rose ~230% over 7 days before the stop; kurtosis peaked at 5.9. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.2 h.",
+    "parts": [
+      {
+        "sku": "SKF-6204",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-09-01T10:21:00Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-09-01T08:12:00Z"
+  },
+  {
+    "id": "WO-2026-0134",
+    "asset_id": "EQ-3002",
+    "type": "corrective",
+    "title": "Spindle EQ-3002 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~210% over 5 days before the stop; kurtosis peaked at 4.5. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.3 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-09-06T01:13:00Z",
+    "duration_hours": 6.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-09-06T00:01:00Z"
+  },
+  {
+    "id": "WO-2026-0135",
+    "asset_id": "EQ-4005",
+    "type": "corrective",
+    "title": "CNC spindle EQ-4005 misalignment",
+    "root_cause": "Drive belt and pulley misalignment after belt change",
+    "findings": "Vibration rose ~200% over 5 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.10 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 4.0 h.",
+    "parts": [
+      {
+        "sku": "BLT-HTD-8M",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-09-09T20:07:00Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-09-09T19:26:00Z"
+  },
+  {
+    "id": "WO-2026-0136",
+    "asset_id": "EQ-3010",
+    "type": "corrective",
+    "title": "Hydraulic press EQ-3010 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~260% over 5 days before the stop; kurtosis peaked at 4.8. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 3.8 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-09-11T17:54:00Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-09-11T16:58:00Z"
+  },
+  {
+    "id": "WO-2026-0137",
+    "asset_id": "EQ-3001",
+    "type": "corrective",
+    "title": "Press EQ-3001 misalignment",
+    "root_cause": "Pump-motor coupling misalignment",
+    "findings": "Vibration rose ~200% over 4 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.09 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 3.4 h.",
+    "parts": [],
+    "technician_id": "TECH-120",
+    "planned_start": "2026-09-12T11:42:00Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-09-12T10:44:00Z"
+  },
+  {
+    "id": "WO-2026-0138",
+    "asset_id": "EQ-3011",
+    "type": "corrective",
+    "title": "CNC spindle 1 EQ-3011 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~250% over 6 days before the stop; kurtosis peaked at 5.3. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 6.4 h.",
+    "parts": [
+      {
+        "sku": "SKF-7008",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-09-13T03:09:00Z",
+    "duration_hours": 6.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-09-13T01:10:00Z"
+  },
+  {
+    "id": "WO-2026-0139",
+    "asset_id": "EQ-3006",
+    "type": "corrective",
+    "title": "Spindle EQ-3006 bearing failure",
+    "root_cause": "Rear bearing outer race wear (lubrication breakdown)",
+    "findings": "Vibration rose ~230% over 6 days before the stop; kurtosis peaked at 4.7. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.2 h.",
+    "parts": [
+      {
+        "sku": "SKF-7008",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-09-16T10:31:00Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-09-16T09:22:00Z"
+  },
+  {
+    "id": "WO-2026-0140",
+    "asset_id": "EQ-3008",
+    "type": "corrective",
+    "title": "Tester EQ-3008 bearing failure",
+    "root_cause": "Torque sensor drive bearing wear",
+    "findings": "Vibration rose ~100% over 6 days before the stop; kurtosis peaked at 4.3. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 3.1 h.",
+    "parts": [
+      {
+        "sku": "SKF-6202",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-09-20T05:32:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-09-20T04:44:00Z"
+  },
+  {
+    "id": "WO-2026-0141",
+    "asset_id": "EQ-3006",
+    "type": "corrective",
+    "title": "Spindle EQ-3006 misalignment",
+    "root_cause": "Drive belt and pulley misalignment after belt change",
+    "findings": "Vibration rose ~210% over 7 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.10 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 3.0 h.",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-09-27T18:57:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-09-27T18:27:00Z"
+  },
+  {
+    "id": "WO-2026-0142",
+    "asset_id": "EQ-3013",
+    "type": "corrective",
+    "title": "Assembly robot EQ-3013 misalignment",
+    "root_cause": "Axis 3 gearbox mounting bolts loose (misalignment)",
+    "findings": "Vibration rose ~170% over 4 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.13 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 3.3 h.",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-09-29T11:56:00Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-09-29T10:23:00Z"
+  },
+  {
+    "id": "WO-2026-0143",
+    "asset_id": "EQ-3011",
+    "type": "corrective",
+    "title": "CNC spindle 1 EQ-3011 bearing failure",
+    "root_cause": "Front angular contact bearing wear (coolant ingress)",
+    "findings": "Vibration rose ~290% over 6 days before the stop; kurtosis peaked at 5.7. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 2.9 h.",
+    "parts": [
+      {
+        "sku": "SKF-6205",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-10-01T16:35:00Z",
+    "duration_hours": 3.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-10-01T15:11:00Z"
+  },
+  {
+    "id": "WO-2026-0144",
+    "asset_id": "EQ-3008",
+    "type": "corrective",
+    "title": "Tester EQ-3008 misalignment",
+    "root_cause": "Coupling misalignment between motor and torque sensor",
+    "findings": "Vibration rose ~180% over 4 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.21 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 2.6 h.",
+    "parts": [
+      {
+        "sku": "CPL-19",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-10-01T19:29:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-10-01T17:21:00Z"
+  },
+  {
+    "id": "WO-2026-0145",
+    "asset_id": "EQ-4001",
+    "type": "corrective",
+    "title": "Press EQ-4001 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~240% over 6 days before the stop; kurtosis peaked at 5.5. Found cage wear and discoloured grease. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 3.5 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-10-02T06:57:00Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-10-02T05:47:00Z"
+  },
+  {
+    "id": "WO-2026-0146",
+    "asset_id": "EQ-3010",
+    "type": "corrective",
+    "title": "Hydraulic press EQ-3010 bearing failure",
+    "root_cause": "Hydraulic pump motor bearing wear",
+    "findings": "Vibration rose ~240% over 6 days before the stop; kurtosis peaked at 4.9. Found outer race worn, grease dry. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 4.2 h.",
+    "parts": [
+      {
+        "sku": "SKF-6308",
+        "quantity": 2
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-10-03T00:52:00Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-10-02T22:38:00Z"
+  },
+  {
+    "id": "WO-2026-0147",
+    "asset_id": "EQ-4005",
+    "type": "corrective",
+    "title": "CNC spindle EQ-4005 bearing failure",
+    "root_cause": "Rear bearing outer race wear (lubrication breakdown)",
+    "findings": "Vibration rose ~230% over 5 days before the stop; kurtosis peaked at 4.7. Found outer race spalling. Bearing replaced, run-in at 50% speed for 30 min, new baseline recorded. Machine down 7.9 h.",
+    "parts": [
+      {
+        "sku": "SKF-7008",
+        "quantity": 2
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-10-04T06:32:00Z",
+    "duration_hours": 8.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-10-04T04:50:00Z"
+  },
+  {
+    "id": "WO-2026-0148",
+    "asset_id": "EQ-3007",
+    "type": "corrective",
+    "title": "Robot EQ-3007 misalignment",
+    "root_cause": "Axis 3 gearbox mounting bolts loose (misalignment)",
+    "findings": "Vibration rose ~80% over 5 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.13 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 4.1 h.",
+    "parts": [],
+    "technician_id": "TECH-104",
+    "planned_start": "2026-10-05T08:51:00Z",
+    "duration_hours": 4.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-10-05T08:08:00Z"
+  },
+  {
+    "id": "WO-2026-0149",
+    "asset_id": "EQ-3011",
+    "type": "corrective",
+    "title": "CNC spindle 1 EQ-3011 overheating",
+    "root_cause": "Spindle cooling flow loss (clogged coolant filter)",
+    "findings": "Bearing and motor temperature climbed ~29 °C over 40 h; vibration almost unchanged. Cause: cooling fan not turning. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 2.5 h.",
+    "parts": [
+      {
+        "sku": "FLT-SPC-10",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-10-06T11:23:00Z",
+    "duration_hours": 2.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-10-06T09:07:00Z"
+  },
+  {
+    "id": "WO-2026-0150",
+    "asset_id": "EQ-3008",
+    "type": "corrective",
+    "title": "Tester EQ-3008 overheating",
+    "root_cause": "Drive motor overheating (cooling fan failed)",
+    "findings": "Bearing and motor temperature climbed ~31 °C over 31 h; vibration almost unchanged. Cause: cooling fins packed with dust and chips. Cleaned and replaced parts, temperatures back to normal after 1 h. Machine down 1.6 h.",
+    "parts": [
+      {
+        "sku": "FAN-TT2",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-112",
+    "planned_start": "2026-10-06T12:15:00Z",
+    "duration_hours": 1.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-10-06T10:24:00Z"
+  },
+  {
+    "id": "WO-2026-0151",
+    "asset_id": "EQ-4006",
+    "type": "corrective",
+    "title": "Belt conveyor EQ-4006 misalignment",
+    "root_cause": "Belt tracking and drum misalignment",
+    "findings": "Vibration rose ~70% over 3 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.14 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 3.5 h.",
+    "parts": [
+      {
+        "sku": "BLT-CNV-600",
+        "quantity": 1
+      }
+    ],
+    "technician_id": null,
+    "planned_start": "2026-10-07T03:31:00Z",
+    "duration_hours": 3.5,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-10-07T02:31:00Z"
+  },
+  {
+    "id": "WO-2026-0152",
+    "asset_id": "EQ-3001",
+    "type": "corrective",
+    "title": "Press EQ-3001 misalignment",
+    "root_cause": "Pump-motor coupling misalignment",
+    "findings": "Vibration rose ~90% over 4 days with normal kurtosis (~3), strongest at 2x running speed. Measured offset 0.21 mm (limit 0.05 mm). Re-aligned with the laser tool, checked mounting bolts. Machine down 2.0 h.",
+    "parts": [
+      {
+        "sku": "CPL-42",
+        "quantity": 1
+      }
+    ],
+    "technician_id": "TECH-120",
+    "planned_start": "2026-10-08T12:57:00Z",
+    "duration_hours": 2.0,
+    "status": "done",
+    "incident_id": null,
+    "created_at": "2026-10-08T12:22:00Z"
+  }
+]

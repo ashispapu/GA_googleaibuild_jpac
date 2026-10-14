@@ -1,0 +1,11 @@
+# Add these to the root requirements.txt (versions this was built and tested with)
+numpy>=2.0
+pandas>=2.2
+pyarrow>=17
+scipy>=1.13
+scikit-learn>=1.5
+xgboost>=3.4   # the trained model needs 3.4 or newer
+joblib>=1.4
+reportlab>=4.0
+pypdf>=4.0
+pyyaml>=6.0

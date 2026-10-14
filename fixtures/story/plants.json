@@ -397,6 +397,57 @@
             ]
           }
         ]
+      },
+      {
+        "id": "L2",
+        "plant_id": "PLANT-B",
+        "name": "Line 2 — Hammer drill",
+        "product": "Hammer drill HD-24",
+        "state": "run",
+        "health": "ok",
+        "speed_pct": 100,
+        "oee": 0.88,
+        "current_order_id": null,
+        "stations": [
+          {
+            "id": "L2-ST1",
+            "name": "Spindle machining",
+            "order": 1,
+            "assets": [
+              {
+                "id": "EQ-4005",
+                "name": "CNC spindle",
+                "type": "spindle",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  4.0,
+                  12.0
+                ]
+              }
+            ]
+          },
+          {
+            "id": "L2-ST2",
+            "name": "Conveyor",
+            "order": 2,
+            "assets": [
+              {
+                "id": "EQ-4006",
+                "name": "Belt conveyor",
+                "type": "conveyor",
+                "state": "run",
+                "health": "ok",
+                "risk_72h": 0.04,
+                "position": [
+                  12.0,
+                  12.0
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

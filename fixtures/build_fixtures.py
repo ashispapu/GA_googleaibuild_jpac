@@ -1,9 +1,12 @@
 """Golden story data. Run: python fixtures/build_fixtures.py
 Every object is built through the contract models, so fixtures can never drift from schemas.
 Owner: ML & Data. Everyone reads these; change numbers here only."""
-import json, math, random
+import json, math, random, sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "p4-ml-data"))
+from data_gen import story  # EQ-3012 story curve, shared with the training data generator  # noqa: E402
 
 from plantguard_contracts.schemas.common import *  # noqa
 from plantguard_contracts.schemas.plants import Asset, Line, Plant, Station
@@ -67,7 +70,11 @@ plants = [
         simple_line("PLANT-A", "L2", "Line 2 — Impact driver", "Impact driver ID-12", 3005, 0.89),
         line3]),
     Plant(id="PLANT-B", name="Plant B", location="Chennai", lines=[
-        simple_line("PLANT-B", "L1", "Line 1 — Drill assembly", "Cordless drill CD-18", 4001, 0.85)]),
+        simple_line("PLANT-B", "L1", "Line 1 — Drill assembly", "Cordless drill CD-18", 4001, 0.85),
+        Line(id="L2", plant_id="PLANT-B", name="Line 2 — Hammer drill", product="Hammer drill HD-24",
+             state=MachineState.RUN, health=Health.OK, speed_pct=100, oee=0.88, stations=[
+            Station(id="L2-ST1", name="Spindle machining", order=1, assets=[asset(4005, "CNC spindle", "spindle", 4)]),
+            Station(id="L2-ST2", name="Conveyor", order=2, assets=[asset(4006, "Belt conveyor", "conveyor", 12)])])]),
 ]
 dump("plants", plants)
 
@@ -79,21 +86,17 @@ users = [
 ]
 dump("users", users)
 
-# ---------------- OT signals for EQ-3012 (last 6 h, 1 point / 5 min) ----------------
-def series(signal, unit, tag, f):
-    pts = [SignalPoint(ts=NOW - timedelta(minutes=5 * k), value=round(f(k), 3)) for k in range(72)][::-1]
-    return SignalSeries(asset_id="EQ-3012", signal=signal, unit=unit, source_tag=tag, points=pts)
-
-ramp = lambda k: max(0.0, (72 - k) / 72) ** 2  # 0 six hours ago -> 1 now
-signals = [
-    series(Signal.VIBRATION_RMS, "mm/s", "L3.ST2.SPDL2.VIB_RMS", lambda k: 2.1 + 2.6 * ramp(k) + random.gauss(0, .08)),
-    series(Signal.VIBRATION_PEAK, "mm/s", "L3.ST2.SPDL2.VIB_PK", lambda k: 5.8 + 6.0 * ramp(k) + random.gauss(0, .2)),
-    series(Signal.VIBRATION_KURTOSIS, "", "L3.ST2.SPDL2.VIB_KURT", lambda k: 3.0 + 2.4 * ramp(k) + random.gauss(0, .1)),
-    series(Signal.BEARING_TEMP, "°C", "L3.ST2.SPDL2.BRG_T", lambda k: 58 + 9 * ramp(k) + random.gauss(0, .3)),
-    series(Signal.MOTOR_CURRENT, "A", "L3.ST2.SPDL2.MTR_I", lambda k: 21 + 1.7 * ramp(k) + random.gauss(0, .1)),
-    series(Signal.POWER_KW, "kW", "L3.ST2.SPDL2.PWR", lambda k: 11.0 + 0.9 * ramp(k) + random.gauss(0, .05)),
-    series(Signal.SPINDLE_RPM, "rpm", "L3.ST2.SPDL2.RPM", lambda k: 12000 + random.gauss(0, 15)),
-]
+# ---------------- OT signals for EQ-3012 (last 48 h, 1 point / 5 min) ----------------
+# The curve lives in p4-ml-data/data_gen/story.py so the chart and the ML training data are the same story:
+# normal 2.1 mm/s until 3 days before, 3.2 mm/s six hours before, 4.3 mm/s at the alert (+34 % in 6 h).
+TAGS = {Signal.VIBRATION_RMS: ("mm/s", "VIB_RMS"), Signal.VIBRATION_PEAK: ("mm/s", "VIB_PK"),
+        Signal.VIBRATION_KURTOSIS: ("", "VIB_KURT"), Signal.BEARING_TEMP: ("°C", "BRG_T"),
+        Signal.MOTOR_CURRENT: ("A", "MTR_I"), Signal.POWER_KW: ("kW", "PWR"), Signal.SPINDLE_RPM: ("rpm", "RPM")}
+times = [NOW - timedelta(minutes=5 * k) for k in range(48 * 12)][::-1]
+levels = [story.means(t) for t in times]
+signals = [SignalSeries(asset_id="EQ-3012", signal=sig, unit=unit, source_tag=f"L3.ST2.SPDL2.{tag}", points=[
+    SignalPoint(ts=t, value=round(lv[sig.value] + random.gauss(0, story.NOISE[sig.value]), 3))
+    for t, lv in zip(times, levels)]) for sig, (unit, tag) in TAGS.items()]
 dump("signals_EQ-3012", signals)
 # Threshold rule (ISO 10816 zone C) = 4.5 mm/s RMS sustained 30 min -> not yet breached at NOW; ML warns earlier.
 
@@ -194,13 +197,22 @@ health = AssetHealth(asset_id="EQ-3012", health=Health.CRITICAL, risk_72h=0.78, 
                      predicted_failure_mode="bearing_wear", rule_threshold_breached=False, top_features=shap,
                      model_version="fp-xgb-1.0.0", evaluated_at=NOW)
 dump("health_EQ-3012", health)
+# Model page numbers come from the trained model (p4-ml-data/models/latest) when it exists, so the mock and the
+# real backend show the same figures. Retrain -> `make export` -> fixtures follow.
+_mdir = Path(__file__).resolve().parent.parent / "p4-ml-data" / "models"
+_ver = (_mdir / "latest").read_text().strip() if (_mdir / "latest").is_file() else "fp-xgb-1.0.0"
+_clf_m = {"precision": 0.88, "recall": 0.83, "f1": 0.85, "roc_auc": 0.94, "lead_time_gain_hours": 31}
+_an_m, _trained = {"precision": 0.79, "recall": 0.86, "f1": 0.82}, datetime(2026, 10, 10, tzinfo=UTC)
+if (_mdir / _ver / "metrics.json").exists():
+    _clf_m = json.loads((_mdir / _ver / "metrics.json").read_text())
+    _meta = json.loads((_mdir / _ver / "model_meta.json").read_text())
+    _an_m = _meta.get("anomaly_metrics", _an_m)
+    _trained = datetime.fromisoformat(_meta["trained_at"])
 dump("models", [
-    ModelInfo(version="fp-xgb-1.0.0", kind="failure_classifier", algorithm="xgboost",
-              metrics={"precision": 0.88, "recall": 0.83, "f1": 0.85, "roc_auc": 0.94, "lead_time_gain_hours": 31},
-              feature_names=list(FEATURES), trained_at=datetime(2026, 10, 10, tzinfo=UTC)),
-    ModelInfo(version="an-if-1.0.0", kind="anomaly", algorithm="isolation_forest",
-              metrics={"precision": 0.79, "recall": 0.86, "f1": 0.82}, feature_names=list(FEATURES),
-              trained_at=datetime(2026, 10, 10, tzinfo=UTC))])
+    ModelInfo(version="fp-xgb-1.0.0", kind="failure_classifier", algorithm="xgboost", metrics=_clf_m,
+              feature_names=list(FEATURES), trained_at=_trained),
+    ModelInfo(version="an-if-1.0.0", kind="anomaly", algorithm="isolation_forest", metrics=_an_m,
+              feature_names=list(FEATURES), trained_at=_trained)])
 
 # ---------------- Incident + options ----------------
 evid = {

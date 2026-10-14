@@ -1,0 +1,5 @@
+# Model files, PDFs and data are binary: git must never change their line endings
+*.joblib binary
+*.npy binary
+*.pdf binary
+*.parquet binary

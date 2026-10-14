@@ -26,3 +26,28 @@
 
 ## You provide
 C5 model (to P1) · C6 OT feed (to P1) · C9 story data + corpus (to everyone)
+
+## What's here now
+
+| Task | Status | Where |
+|---|---|---|
+| ML-1 synthetic data | done | `data_gen/` → `data/train.parquet` (not in git; `python -m data_gen.generate --only data`, ~15 s). See `data/README.md` |
+| ML-2 features | done | `ml/features.py`: exactly `FEATURES`; live and offline paths agree (tested) |
+| ML-3 model | done | `ml/train.py`, `ml/serving.py`, `models/fp-xgb-1.0.0/`. Story window → risk 0.98, rule not breached, ~15 ms |
+| ML-4 metrics | done | `models/fp-xgb-1.0.0/metrics.json`: lead_time_gain_hours 30.8. See `models/README.md` |
+| ML-5 simulator | **to do** | `simulator/publisher.py` (use `data_gen/story.py` for the EQ-3012 curve) |
+| ML-6 corpus | done | `corpus/manuals/` (5 PDFs + `index.json`), `corpus/work_orders/work_orders.json` (200) |
+
+```bash
+pip install -r requirements-ml.txt          # or merge it into the root requirements.txt
+cd p4-ml-data
+python -m data_gen.generate                 # data/ + corpus/ + ../fixtures/security/, then runs its checks
+python -m ml.train                          # models/fp-xgb-1.0.0 + models/latest
+cd .. && make export && make test           # fixtures pick up the model numbers; p4-ml-data/tests run with the rest
+```
+
+**One source for each fact:**
+- **Machine list:** `fixtures/story/plants.json`, built by `fixtures/build_fixtures.py`.
+- **EQ-3012 story curve:** `data_gen/story.py`. `build_fixtures.py` imports it for `signals_EQ-3012.json`.
+- **Model-page numbers:** `models/latest/metrics.json`. `build_fixtures.py` copies them into `models.json`.
+

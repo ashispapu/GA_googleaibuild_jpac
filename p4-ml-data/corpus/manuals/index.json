@@ -1,0 +1,672 @@
+[
+  {
+    "doc_id": "MAN-SPINDLE-200",
+    "title": "CNC Spindle 200 Maintenance Manual",
+    "file": "MAN-SPINDLE-200_CNC_Spindle_200_Maintenance_Manual.pdf",
+    "revision": "Rev C, 2023",
+    "applies_to": [
+      "EQ-3002",
+      "EQ-3006",
+      "EQ-3011",
+      "EQ-3012",
+      "EQ-4002",
+      "EQ-4005"
+    ],
+    "pages": 66,
+    "sections": [
+      {
+        "section": "1",
+        "title": "Safety",
+        "page": 4
+      },
+      {
+        "section": "1.1",
+        "title": "Intended use",
+        "page": 4
+      },
+      {
+        "section": "1.2",
+        "title": "Qualified personnel",
+        "page": 4
+      },
+      {
+        "section": "1.3",
+        "title": "Safety symbols",
+        "page": 4
+      },
+      {
+        "section": "1.4",
+        "title": "Lockout and tagout",
+        "page": 4
+      },
+      {
+        "section": "1.5",
+        "title": "Personal protective equipment",
+        "page": 5
+      },
+      {
+        "section": "1.6",
+        "title": "Residual risks",
+        "page": 5
+      },
+      {
+        "section": "1.7",
+        "title": "Emergency stop and fire",
+        "page": 5
+      },
+      {
+        "section": "2",
+        "title": "Description",
+        "page": 6
+      },
+      {
+        "section": "2.1",
+        "title": "Overview",
+        "page": 6
+      },
+      {
+        "section": "2.2",
+        "title": "Main components",
+        "page": 7
+      },
+      {
+        "section": "2.3",
+        "title": "Technical data",
+        "page": 8
+      },
+      {
+        "section": "2.4",
+        "title": "Bearing arrangement",
+        "page": 9
+      },
+      {
+        "section": "2.5",
+        "title": "Sensors and signal tags",
+        "page": 10
+      },
+      {
+        "section": "2.6",
+        "title": "Nameplate",
+        "page": 11
+      },
+      {
+        "section": "2.7",
+        "title": "Dimensions and interfaces",
+        "page": 12
+      },
+      {
+        "section": "2.8",
+        "title": "Input and output signals",
+        "page": 13
+      },
+      {
+        "section": "2.9",
+        "title": "Declaration of conformity",
+        "page": 15
+      },
+      {
+        "section": "3",
+        "title": "Transport and installation",
+        "page": 16
+      },
+      {
+        "section": "3.1",
+        "title": "Transport and lifting",
+        "page": 16
+      },
+      {
+        "section": "3.2",
+        "title": "Storage",
+        "page": 17
+      },
+      {
+        "section": "3.3",
+        "title": "Mounting",
+        "page": 18
+      },
+      {
+        "section": "3.4",
+        "title": "Belt and pulley alignment",
+        "page": 19
+      },
+      {
+        "section": "3.5",
+        "title": "Electrical connection",
+        "page": 20
+      },
+      {
+        "section": "3.6",
+        "title": "Commissioning checklist",
+        "page": 21
+      },
+      {
+        "section": "3.7",
+        "title": "Recording the vibration baseline",
+        "page": 22
+      },
+      {
+        "section": "3.8",
+        "title": "Drive parameters",
+        "page": 23
+      },
+      {
+        "section": "4",
+        "title": "Operation",
+        "page": 25
+      },
+      {
+        "section": "4.1",
+        "title": "Start-up and warm-up",
+        "page": 25
+      },
+      {
+        "section": "4.2",
+        "title": "Normal operating values",
+        "page": 26
+      },
+      {
+        "section": "4.3",
+        "title": "Speed and load limits",
+        "page": 27
+      },
+      {
+        "section": "4.4",
+        "title": "Reduced-speed operation",
+        "page": 28
+      },
+      {
+        "section": "4.5",
+        "title": "Shutdown",
+        "page": 29
+      },
+      {
+        "section": "4.6",
+        "title": "HMI messages",
+        "page": 30
+      },
+      {
+        "section": "4.7",
+        "title": "Cutting data for drilling",
+        "page": 31
+      },
+      {
+        "section": "4.8",
+        "title": "Cutting data for milling",
+        "page": 33
+      },
+      {
+        "section": "4.9",
+        "title": "Tool holders and balancing",
+        "page": 35
+      },
+      {
+        "section": "5",
+        "title": "Lubrication",
+        "page": 36
+      },
+      {
+        "section": "5.1",
+        "title": "Lubrication system",
+        "page": 36
+      },
+      {
+        "section": "5.2",
+        "title": "Grease specification",
+        "page": 37
+      },
+      {
+        "section": "5.3",
+        "title": "Intervals and quantities",
+        "page": 38
+      },
+      {
+        "section": "5.4",
+        "title": "Re-greasing procedure",
+        "page": 39
+      },
+      {
+        "section": "5.5",
+        "title": "Over-greasing and run-in",
+        "page": 40
+      },
+      {
+        "section": "5.6",
+        "title": "Lubrication records",
+        "page": 41
+      },
+      {
+        "section": "5.7",
+        "title": "Approved lubricants",
+        "page": 42
+      },
+      {
+        "section": "6",
+        "title": "Condition monitoring",
+        "page": 43
+      },
+      {
+        "section": "6.1",
+        "title": "Signals and what they show",
+        "page": 43
+      },
+      {
+        "section": "6.2",
+        "title": "Normal ranges",
+        "page": 44
+      },
+      {
+        "section": "6.3",
+        "title": "Vibration severity zones",
+        "page": 45
+      },
+      {
+        "section": "6.4",
+        "title": "Reading trends",
+        "page": 46
+      },
+      {
+        "section": "6.5",
+        "title": "Kurtosis and peak values",
+        "page": 47
+      },
+      {
+        "section": "6.6",
+        "title": "Temperature, current and power",
+        "page": 48
+      },
+      {
+        "section": "6.7",
+        "title": "Alarm limits",
+        "page": 49
+      },
+      {
+        "section": "6.8",
+        "title": "Data quality",
+        "page": 50
+      },
+      {
+        "section": "6.9",
+        "title": "Predictive warnings",
+        "page": 51
+      },
+      {
+        "section": "6.10",
+        "title": "Bearing defect frequencies",
+        "page": 52
+      },
+      {
+        "section": "6.11",
+        "title": "Example trend patterns",
+        "page": 54
+      },
+      {
+        "section": "6.12",
+        "title": "Measuring with a handheld analyser",
+        "page": 55
+      },
+      {
+        "section": "7",
+        "title": "Maintenance",
+        "page": 56
+      },
+      {
+        "section": "7.1",
+        "title": "Daily checks",
+        "page": 56
+      },
+      {
+        "section": "7.2",
+        "title": "Weekly checks",
+        "page": 56
+      },
+      {
+        "section": "7.3",
+        "title": "Semi-annual service",
+        "page": 56
+      },
+      {
+        "section": "7.4",
+        "title": "Bearing wear",
+        "page": 58
+      },
+      {
+        "section": "7.5",
+        "title": "Rear bearing replacement",
+        "page": 59
+      },
+      {
+        "section": "7.6",
+        "title": "Misalignment",
+        "page": 61
+      },
+      {
+        "section": "7.7",
+        "title": "Drive belt replacement",
+        "page": 62
+      },
+      {
+        "section": "7.8",
+        "title": "Spindle cooling",
+        "page": 62
+      },
+      {
+        "section": "7.9",
+        "title": "Encoder and sensors",
+        "page": 62
+      },
+      {
+        "section": "8",
+        "title": "Troubleshooting",
+        "page": 63
+      },
+      {
+        "section": "8.1",
+        "title": "Symptoms",
+        "page": 63
+      },
+      {
+        "section": "8.2",
+        "title": "Alarm list",
+        "page": 63
+      },
+      {
+        "section": "9",
+        "title": "Spare parts",
+        "page": 65
+      },
+      {
+        "section": "9.1",
+        "title": "Recommended spares on site",
+        "page": 65
+      },
+      {
+        "section": "9.2",
+        "title": "Ordering",
+        "page": 65
+      },
+      {
+        "section": "10",
+        "title": "Appendices",
+        "page": 66
+      },
+      {
+        "section": "10.1",
+        "title": "Tightening torques",
+        "page": 66
+      },
+      {
+        "section": "10.2",
+        "title": "Maintenance log",
+        "page": 66
+      },
+      {
+        "section": "10.3",
+        "title": "Glossary",
+        "page": 66
+      }
+    ]
+  },
+  {
+    "doc_id": "MAN-PRESS-50",
+    "title": "Hydraulic Press HP-50 Maintenance Manual",
+    "file": "MAN-PRESS-50_Hydraulic_Press_HP-50_Maintenance_Manual.pdf",
+    "revision": "Rev B, 2022",
+    "applies_to": [
+      "EQ-3001",
+      "EQ-3005",
+      "EQ-3010",
+      "EQ-4001"
+    ],
+    "pages": 8,
+    "sections": [
+      {
+        "section": "1",
+        "title": "Safety",
+        "page": 3
+      },
+      {
+        "section": "2",
+        "title": "Description and technical data",
+        "page": 4
+      },
+      {
+        "section": "3",
+        "title": "Operation",
+        "page": 5
+      },
+      {
+        "section": "4",
+        "title": "Hydraulic system",
+        "page": 6
+      },
+      {
+        "section": "4.1",
+        "title": "Oil and filters",
+        "page": 6
+      },
+      {
+        "section": "4.2",
+        "title": "Oil cooler",
+        "page": 6
+      },
+      {
+        "section": "4.3",
+        "title": "Leaks",
+        "page": 6
+      },
+      {
+        "section": "5",
+        "title": "Pump unit",
+        "page": 7
+      },
+      {
+        "section": "5.1",
+        "title": "Coupling alignment",
+        "page": 7
+      },
+      {
+        "section": "5.2",
+        "title": "Motor bearings",
+        "page": 7
+      },
+      {
+        "section": "6",
+        "title": "Maintenance plan",
+        "page": 8
+      },
+      {
+        "section": "6.1",
+        "title": "Overheating",
+        "page": 8
+      },
+      {
+        "section": "6.2",
+        "title": "Troubleshooting",
+        "page": 8
+      }
+    ]
+  },
+  {
+    "doc_id": "MAN-ROBOT-6",
+    "title": "Assembly Robot AR-6 Maintenance Manual",
+    "file": "MAN-ROBOT-6_Assembly_Robot_AR-6_Maintenance_Manual.pdf",
+    "revision": "Rev A, 2024",
+    "applies_to": [
+      "EQ-3003",
+      "EQ-3007",
+      "EQ-3013",
+      "EQ-4003"
+    ],
+    "pages": 6,
+    "sections": [
+      {
+        "section": "1",
+        "title": "Safety",
+        "page": 3
+      },
+      {
+        "section": "2",
+        "title": "Technical data",
+        "page": 4
+      },
+      {
+        "section": "3",
+        "title": "Maintenance",
+        "page": 5
+      },
+      {
+        "section": "3.1",
+        "title": "Gearbox grease",
+        "page": 5
+      },
+      {
+        "section": "3.2",
+        "title": "Cabinet cooling",
+        "page": 5
+      },
+      {
+        "section": "3.3",
+        "title": "Mounting and alignment",
+        "page": 5
+      },
+      {
+        "section": "3.4",
+        "title": "Cables",
+        "page": 5
+      },
+      {
+        "section": "4",
+        "title": "Troubleshooting",
+        "page": 6
+      }
+    ]
+  },
+  {
+    "doc_id": "MAN-DRIVE-30",
+    "title": "Conveyor and Test Bench Drives — Maintenance Guide",
+    "file": "MAN-DRIVE-30_Conveyor_and_Test_Bench_Drives_Guide.pdf",
+    "revision": "Issue 2, 2024",
+    "applies_to": [
+      "EQ-3004",
+      "EQ-3008",
+      "EQ-3014",
+      "EQ-3015",
+      "EQ-4004",
+      "EQ-4006"
+    ],
+    "pages": 7,
+    "sections": [
+      {
+        "section": "1",
+        "title": "Scope",
+        "page": 3
+      },
+      {
+        "section": "2",
+        "title": "Normal values",
+        "page": 4
+      },
+      {
+        "section": "3",
+        "title": "Conveyors",
+        "page": 5
+      },
+      {
+        "section": "3.1",
+        "title": "Belt tracking",
+        "page": 5
+      },
+      {
+        "section": "3.2",
+        "title": "Drum bearings",
+        "page": 5
+      },
+      {
+        "section": "3.3",
+        "title": "Motor overload",
+        "page": 5
+      },
+      {
+        "section": "4",
+        "title": "Test benches",
+        "page": 6
+      },
+      {
+        "section": "4.1",
+        "title": "Coupling",
+        "page": 6
+      },
+      {
+        "section": "4.2",
+        "title": "Cooling",
+        "page": 6
+      },
+      {
+        "section": "5",
+        "title": "Maintenance plan",
+        "page": 7
+      }
+    ]
+  },
+  {
+    "doc_id": "PS-VIB-01",
+    "title": "Vibration Monitoring and Alignment Standard PS-VIB-01",
+    "file": "PS-VIB-01_Vibration_Monitoring_Standard.pdf",
+    "revision": "Issue 4, 2025",
+    "applies_to": [
+      "EQ-3001",
+      "EQ-3002",
+      "EQ-3003",
+      "EQ-3004",
+      "EQ-3005",
+      "EQ-3006",
+      "EQ-3007",
+      "EQ-3008",
+      "EQ-3010",
+      "EQ-3011",
+      "EQ-3012",
+      "EQ-3013",
+      "EQ-3014",
+      "EQ-3015",
+      "EQ-4001",
+      "EQ-4002",
+      "EQ-4003",
+      "EQ-4004",
+      "EQ-4005",
+      "EQ-4006"
+    ],
+    "pages": 8,
+    "sections": [
+      {
+        "section": "1",
+        "title": "Purpose",
+        "page": 3
+      },
+      {
+        "section": "2",
+        "title": "Fixed alarm limit",
+        "page": 4
+      },
+      {
+        "section": "3",
+        "title": "Limits relative to the machine's own baseline",
+        "page": 5
+      },
+      {
+        "section": "4",
+        "title": "Reading the signals",
+        "page": 6
+      },
+      {
+        "section": "5",
+        "title": "Shaft alignment",
+        "page": 7
+      },
+      {
+        "section": "6",
+        "title": "Predictive monitoring",
+        "page": 8
+      }
+    ]
+  }
+]

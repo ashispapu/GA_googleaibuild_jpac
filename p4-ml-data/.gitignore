@@ -1,0 +1,4 @@
+# Training data is made on each laptop: python -m data_gen.generate --only data
+data/*
+!data/README.md
+__pycache__/
