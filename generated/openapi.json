@@ -9257,6 +9257,11 @@
             "minLength": 2,
             "title": "Message",
             "type": "string"
+          },
+          "only_if_plan": {
+            "default": false,
+            "title": "Only If Plan",
+            "type": "boolean"
           }
         },
         "required": [

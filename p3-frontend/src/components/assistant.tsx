@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * "Ask PlantGuard" — always available, from every screen (v1.2).
+ * "PlantGuard Assistant" — always available, from every screen (v1.2).
  *
  * A question is a small incident of its own (trigger user_question). When it is about an open issue,
  * it carries parent_id, so the agents read that issue first (get_incident: diagnosis, approved option,
@@ -16,6 +16,8 @@ import { backend, errorCode } from "@/lib/backend";
 import { formatTime } from "@/lib/format";
 import { agentName } from "@/lib/labels";
 import { useAppState } from "@/lib/app-state";
+import { useSession } from "@/lib/session";
+import { can } from "@/lib/permissions";
 import { useIncidents, usePlants } from "@/lib/queries";
 import { useIncidentStream } from "@/lib/stream";
 import { cn } from "@/lib/utils";
@@ -82,6 +84,10 @@ function AssistantPanel({ initial }: { initial: OpenArgs }) {
   const [error, setError] = useState<unknown>(null);
 
   const ctxIncident = openIncidents.find((o) => o.incident.id === incidentId);
+  const { me } = useSession();
+  // a question about an issue is always about that issue's machine (the machine picker is only for "no issue")
+  const askAsset = incidentId ? (ctxIncident?.incident.asset_id ?? initial.assetId ?? "") : assetId;
+  const [optionNote, setOptionNote] = useState<{ incidentId: string; optionId: string; text: string } | null>(null);
   // a question about an issue is about that issue's machine
   useEffect(() => {
     if (ctxIncident) setAssetId(ctxIncident.incident.asset_id);
@@ -94,11 +100,19 @@ function AssistantPanel({ initial }: { initial: OpenArgs }) {
 
   const send = async () => {
     const q = draft.trim();
-    if (!q || !assetId) return;
+    if (!q || !askAsset) return;
     setSending(true);
     setError(null);
+    setOptionNote(null);
     try {
-      const created = await backend.ask(assetId, q, incidentId || null);
+      const created = await backend.ask(askAsset, q, incidentId || null);
+      // an approver describing another plan ("repair tomorrow morning instead") also gets it as a new option
+      if (incidentId && ctxIncident?.stage === "awaiting_approval" && can(me, "approve")) {
+        backend
+          .postOptionChat(incidentId, q, true)
+          .then((r) => r.added_option_id && setOptionNote({ incidentId, optionId: r.added_option_id, text: r.reply.text }))
+          .catch(() => undefined);
+      }
       setAskedId(created.id);
       setAsked({ q, at: created.created_at });
       setDraft("");
@@ -119,7 +133,7 @@ function AssistantPanel({ initial }: { initial: OpenArgs }) {
           <MessageCircleQuestion className="h-[18px] w-[18px] text-brand" aria-hidden />
         </span>
         <div className="flex flex-1 flex-col">
-          <DialogPrimitive.Title className="m-0 text-base font-semibold">Ask PlantGuard</DialogPrimitive.Title>
+          <DialogPrimitive.Title className="m-0 text-base font-semibold">PlantGuard Assistant</DialogPrimitive.Title>
           <span className="text-[13px] text-ink-4">The AI team answers from live plant data, manuals and the issue’s history.</span>
         </div>
         <DialogPrimitive.Close aria-label="Close" className="flex h-10 w-10 items-center justify-center rounded-md border border-line text-ink-3 hover:bg-subtle">
@@ -167,6 +181,12 @@ function AssistantPanel({ initial }: { initial: OpenArgs }) {
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 py-4">
+        {optionNote && (
+          <div role="status" className="rounded-md border border-brand-border bg-brand-tint px-3 py-2.5 text-sm">
+            <strong>Options updated.</strong> {optionNote.text}{" "}
+            <Link href={`/options/${optionNote.incidentId}#opt-${optionNote.optionId}`}>See option {optionNote.optionId.replace("OPT-", "")} →</Link>
+          </div>
+        )}
         {askedId && asked ? (
           <Conversation id={askedId} question={asked.q} at={asked.at} />
         ) : (
@@ -225,7 +245,7 @@ function AssistantPanel({ initial }: { initial: OpenArgs }) {
             placeholder="Ask about this issue or machine…"
             className="min-h-[44px] flex-1 resize-none rounded-md border border-line bg-surface px-3 py-2 text-[15px] focus:border-brand focus:outline-none"
           />
-          <Button type="submit" disabled={sending || !draft.trim() || !assetId} aria-label="Send question">
+          <Button type="submit" disabled={sending || !draft.trim() || !askAsset} aria-label="Send question">
             {sending ? <Loader2 className="animate-spin" /> : <Send />}
           </Button>
         </div>
@@ -240,7 +260,9 @@ function Conversation({ id, question, at }: { id: string; question: string; at: 
   const by = useMemo(() => answeringAgent(events), [events]);
   const evidence = useEvidence(events);
   const endRef = useRef<HTMLDivElement>(null);
-  useEffect(() => endRef.current?.scrollIntoView({ block: "end" }), [answer?.message]);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ block: "end" }); // braces: newer browsers return a Promise here, not a cleanup
+  }, [answer?.message]);
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-end">

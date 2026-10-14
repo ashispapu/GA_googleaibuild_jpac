@@ -275,6 +275,9 @@ class OptionChatMessage(Contract):
 
 class OptionChatRequest(Contract):
     message: str = Field(min_length=2, max_length=1000)
+    # true: a message from another chat (Ask panel / assistant). Only act when it asks for a different plan;
+    # anything else is left alone and nothing is stored.
+    only_if_plan: bool = False
 
 
 class OptionChatResponse(Contract):

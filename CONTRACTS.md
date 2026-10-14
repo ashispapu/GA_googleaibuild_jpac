@@ -91,7 +91,7 @@ Owners: **BE** Backend core · **AG** Agents & RAG · **FE** Frontend · **ML** 
 | /incidents | POST /{id}/reanalyse (after `repair_failed`) | perform_work (assignee) or approve |
 | /incidents | POST (create) also takes `parent_id`: a question about an open incident | run_agents |
 | /incidents | GET /signoffs → `SignoffTask[]` (approval steps waiting for you) | view_plant |
-| /incidents | GET /{id}/options/chat → `OptionChatMessage[]`; POST /{id}/options/chat `{message}` → `OptionChatResponse` (only while `awaiting_approval`, else 409) | view_plant / **approve** + own plant |
+| /incidents | GET /{id}/options/chat → `OptionChatMessage[]`; POST /{id}/options/chat `{message, only_if_plan?}` → `OptionChatResponse` (only while `awaiting_approval`, else 409). `only_if_plan=true` (used by the Ask panel and the PlantGuard Assistant for an approver's question about an incident): acts only when the text asks for a different plan, otherwise returns an empty reply and stores nothing | view_plant / **approve** + own plant |
 | /engineering | GET /docs[?kind=manual\|work_order], GET /docs/{id} (sections with page numbers) | view_plant |
 | /garden | GET /garden → `GardenSnapshot`, WS /garden/stream → `GardenAgent` frames | view_plant (own plants only) |
 | /simulator | GET /status → `SimStatus`; POST /faults `{asset_id?, failure_mode?}`; POST /speed `{scale}` (0 pauses) | status: view_plant; faults/speed: run_simulator |

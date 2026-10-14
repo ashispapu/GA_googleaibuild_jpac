@@ -125,7 +125,9 @@ function PlantClock() {
   const { simMode, plantScale } = useAppState();
   const now = usePlantNow(1000);
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   if (!mounted) return null;
   return (
     <span className="flex items-center gap-1.5 whitespace-nowrap font-mono text-[13px] text-ink-4" title={simMode ? `Simulated plant time: ${plantScale}× real time` : undefined}>
@@ -183,7 +185,7 @@ function TopBar({ onOpenMenu }: { onOpenMenu: () => void }) {
         onClick={() => assistant.open({ incidentId: activeIncidentId })}
         className="flex h-[38px] items-center gap-2 whitespace-nowrap rounded-md border border-brand-border bg-brand-soft px-3 text-[13px] font-semibold text-brand-text hover:bg-brand-soft/70"
       >
-        <MessageCircleQuestion className="h-4 w-4" aria-hidden /> Ask PlantGuard
+        <MessageCircleQuestion className="h-4 w-4" aria-hidden /> PlantGuard Assistant
       </button>
       <button
         type="button"

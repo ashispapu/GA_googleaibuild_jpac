@@ -20,6 +20,12 @@ class OptionChat:
     def __init__(self, incidents, it, audit, clock, users):
         self.incidents, self.it, self.audit, self.clock, self.users = incidents, it, audit, clock, users
 
+    def _nothing(self, inc):
+        from plantguard_contracts.schemas.incidents import OptionsResponse
+        return OptionChatResponse(reply=OptionChatMessage(seq=0, role="assistant", text="", ts=self.clock()),
+                                  added_option_id=None,
+                                  options=OptionsResponse(incident_id=inc.id, options=[], needs_human_review=True, reason=""))
+
     def history(self, incident_id: str, claims: AccessClaims) -> list[OptionChatMessage]:
         rec = self.incidents.scoped_record(incident_id, claims)
         return self._rows(rec.incident.id, rec.incident.round)
@@ -39,10 +45,17 @@ class OptionChat:
                   "VALUES(?,?,?,?,?,?,?,?)", (incident_id, rnd, seq, role, author, text, option_id, iso(self.clock())))
         return seq
 
-    async def post(self, incident_id: str, message: str, claims: AccessClaims) -> OptionChatResponse:
+    async def post(self, incident_id: str, message: str, claims: AccessClaims, only_if_plan: bool = False) -> OptionChatResponse:
         svc = self.incidents
         rec = svc.scoped_record(incident_id, claims)
         inc = rec.incident
+        if only_if_plan:
+            looks = getattr(svc.runtime, "looks_like_plan", None)
+            if (rec.options is None or inc.status != IncidentStatus.AWAITING_APPROVAL or inc.plant_id not in claims.plant_ids
+                    or looks is None or not looks(message)):
+                return OptionChatResponse(reply=OptionChatMessage(seq=0, role="assistant", text="", ts=self.clock()),
+                                          added_option_id=None, options=svc.options(inc.id, claims)) \
+                    if rec.options is not None else self._nothing(inc)
         if rec.options is None or inc.status != IncidentStatus.AWAITING_APPROVAL:
             what = ("is being signed off; decline it first to change the plan" if inc.status == IncidentStatus.AWAITING_SIGNOFF
                     else f"is {inc.status.value.replace('_', ' ')}")

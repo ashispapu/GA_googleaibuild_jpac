@@ -53,6 +53,11 @@ class PlantAgentRuntime:  # implements interfaces.AgentRuntime
         return await OptionRefiner(self.config, self.gateway, self.llm, self.clock).refine(
             incident, options, history, message, author)
 
+    def looks_like_plan(self, message: str) -> bool:
+        """Does this text ask for a different repair plan (timing, speed, part source, technician)?"""
+        from agents.decision.refine import parse_rules
+        return not parse_rules(message, self.clock(), {}).empty()
+
     # ------------------------------------------------------------------ AgentRuntime
     async def run(self, incident: Incident) -> AsyncIterator[AgentEvent]:
         queue: asyncio.Queue = asyncio.Queue()

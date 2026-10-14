@@ -200,7 +200,9 @@ export function OptionsChat({ incidentId, canChat, locked }: { incidentId: strin
   const [draft, setDraft] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
   const msgs = chat.data ?? [];
-  useEffect(() => endRef.current?.scrollIntoView({ block: "nearest" }), [msgs.length, post.isPending]);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ block: "nearest" }); // braces: newer browsers return a Promise here
+  }, [msgs.length, post.isPending]);
   if (!canChat && !msgs.length) return null;
   const send = () => {
     const m = draft.trim();

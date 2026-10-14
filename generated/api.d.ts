@@ -2894,6 +2894,11 @@ export interface components {
         OptionChatRequest: {
             /** Message */
             message: string;
+            /**
+             * Only If Plan
+             * @default false
+             */
+            only_if_plan: boolean;
         };
         /** OptionChatResponse */
         OptionChatResponse: {

@@ -72,7 +72,7 @@ export function CommandMenu({ open, onOpenChange }: { open: boolean; onOpenChang
                   </CommandGroup>
                 )}
                 <CommandGroup heading="Actions">
-                  <CommandItem onSelect={() => { onOpenChange(false); assistant.open({ incidentId: activeIncidentId }); }}><MessageCircleQuestion /> Ask PlantGuard</CommandItem>
+                  <CommandItem onSelect={() => { onOpenChange(false); assistant.open({ incidentId: activeIncidentId }); }}><MessageCircleQuestion /> PlantGuard Assistant</CommandItem>
                   {presenter.enabled ? (
                     <CommandItem onSelect={() => { presenter.disable(); onOpenChange(false); }}><MonitorPlay /> Turn off demo controls</CommandItem>
                   ) : (

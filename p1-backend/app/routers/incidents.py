@@ -223,7 +223,7 @@ async def option_chat_post(incident_id: str, body: OptionChatRequest,
     plan is workable, adds it as a new costed option. The AI's options stay as they are."""
     if c.option_chat is None:
         raise ApiError(409, ErrorCode.CONFLICT, "The options chat needs the simulated plant (DATA_MODE=sim)")
-    return await c.option_chat.post(incident_id, body.message, claims)
+    return await c.option_chat.post(incident_id, body.message, claims, body.only_if_plan)
 
 
 @router.post("/{incident_id}/approve", response_model=Approval)

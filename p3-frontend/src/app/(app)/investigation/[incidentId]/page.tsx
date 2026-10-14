@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { can } from "@/lib/permissions";
 import { useState } from "react";
 import { ArrowRight, Wrench } from "lucide-react";
 import { AgentGraph, AskPanel, EventFeed } from "@/components/investigation";
@@ -24,6 +25,8 @@ export default function InvestigationPage() {
   const { incidentId } = useParams<{ incidentId: string }>();
   const router = useRouter();
   const { me } = useSession();
+  const params = useSearchParams();
+  const addedOption = params.get("option");
   const incident = useIncident(incidentId);
   const [speed, setSpeed] = useState(1);
   const { simMode } = useAppState();
@@ -48,8 +51,13 @@ export default function InvestigationPage() {
     try {
       // a follow-up on an issue carries parent_id, so the agents read the issue first (v1.2)
       const parent = inc.question ? (inc.parent_id ?? null) : inc.id;
-      const created = await backend.ask(inc.asset_id, question, parent);
-      router.push(`/investigation/${created.id}`);
+      // an approver describing another plan ("repair tomorrow morning instead") also gets it as a new option
+      const optionCall = parent && can(me, "approve")
+        ? backend.postOptionChat(parent, question, true).catch(() => null)
+        : Promise.resolve(null);
+      const [created, opt] = await Promise.all([backend.ask(inc.asset_id, question, parent), optionCall]);
+      const q = opt?.added_option_id ? `?option=${opt.added_option_id}&about=${parent}&note=${encodeURIComponent(opt.reply.text)}` : "";
+      router.push(`/investigation/${created.id}${q}`);
     } catch (e) {
       setAskError(e);
     } finally {
@@ -119,6 +127,13 @@ export default function InvestigationPage() {
           </>
         }
       />
+
+      {addedOption && params.get("about") && (
+        <div role="status" className="rounded-lg border border-brand-border bg-brand-tint px-4 py-3 text-sm">
+          <strong>Options updated.</strong> {params.get("note")}{" "}
+          <Link href={`/options/${params.get("about")}#opt-${addedOption}`}>See option {addedOption.replace("OPT-", "")} →</Link>
+        </div>
+      )}
 
       {simMode && overview.data && !isQuestion && (
         <Card className="flex flex-col gap-2.5">

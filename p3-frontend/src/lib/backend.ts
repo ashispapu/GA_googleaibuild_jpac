@@ -199,7 +199,9 @@ export const backend = {
   maintenanceLog: () => get<MaintenanceLogEntry[]>("/incidents/log"),
   signoffs: () => get<SignoffTask[]>("/incidents/signoffs"),
   optionChat: (id: string) => get<OptionChatMessage[]>(`/incidents/${enc(id)}/options/chat`),
-  postOptionChat: (id: string, message: string) => post<OptionChatResponse>(`/incidents/${enc(id)}/options/chat`, { message }),
+  /** onlyIfPlan: a message from another chat — the options change only if it asks for a different plan */
+  postOptionChat: (id: string, message: string, onlyIfPlan = false) =>
+    post<OptionChatResponse>(`/incidents/${enc(id)}/options/chat`, { message, only_if_plan: onlyIfPlan }),
   ask: (assetId: string, question: string, parentId?: string | null) =>
     post<Incident>("/incidents", { asset_id: assetId, trigger: "user_question", question, parent_id: parentId ?? null }),
 
