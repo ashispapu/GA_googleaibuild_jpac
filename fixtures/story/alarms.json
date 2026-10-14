@@ -1,0 +1,11 @@
+[
+  {
+    "id": "ALM-9001",
+    "asset_id": "EQ-3012",
+    "code": "VIB-HI-W",
+    "severity": "warning",
+    "message": "Vibration RMS above 4.0 mm/s (warning band)",
+    "raised_at": "2026-10-13T21:28:00Z",
+    "acknowledged": false
+  }
+]

@@ -1,0 +1,227 @@
+{
+  "incident_id": "INC-0042",
+  "options": [
+    {
+      "id": "OPT-A",
+      "label": "Stop now, repair today",
+      "summary": "Stop Line 3, express the bearing from Plant B, repair as soon as it arrives.",
+      "actions": [
+        {
+          "kind": "speed_change",
+          "description": "Stop Line 3",
+          "line_id": "L3",
+          "speed_pct": 0,
+          "start": "2026-10-13T21:40:00Z",
+          "end": "2026-10-14T05:40:00Z"
+        },
+        {
+          "kind": "stock_transfer",
+          "description": "Express 1× SKF-6205 Plant B → A",
+          "draft": {
+            "sku": "SKF-6205",
+            "from_plant": "PLANT-B",
+            "to_plant": "PLANT-A",
+            "quantity": 1,
+            "mode": "express",
+            "incident_id": "INC-0042"
+          }
+        },
+        {
+          "kind": "work_order",
+          "description": "Bearing swap on arrival",
+          "draft": {
+            "asset_id": "EQ-3012",
+            "type": "predictive",
+            "title": "Replace rear spindle bearing EQ-3012",
+            "root_cause": "Rear spindle bearing (SKF-6205) wear",
+            "parts": [
+              {
+                "sku": "SKF-6205",
+                "quantity": 1
+              }
+            ],
+            "technician_id": "TECH-104",
+            "planned_start": "2026-10-14T03:40:00Z",
+            "duration_hours": 2.5,
+            "incident_id": "INC-0042"
+          }
+        }
+      ],
+      "cost": {
+        "downtime": {
+          "amount": 16000.0,
+          "currency": "EUR"
+        },
+        "parts": {
+          "amount": 85.0,
+          "currency": "EUR"
+        },
+        "logistics": {
+          "amount": 900.0,
+          "currency": "EUR"
+        },
+        "labour": {
+          "amount": 400.0,
+          "currency": "EUR"
+        },
+        "late_penalty": {
+          "amount": 5000.0,
+          "currency": "EUR"
+        },
+        "total": {
+          "amount": 22385.0,
+          "currency": "EUR"
+        }
+      },
+      "downtime_hours": 8.0,
+      "deadline_met": false,
+      "energy_kwh": 0.0,
+      "co2_kg": 0.0,
+      "failure_risk_until_repair": 0.0,
+      "confidence": 0.9,
+      "risks": [
+        "Order ORD-5521 misses Friday by ~1 shift",
+        "€5,000 late penalty"
+      ],
+      "recommended": false,
+      "approvals_needed": [],
+      "origin": "ai",
+      "suggested_by": null
+    },
+    {
+      "id": "OPT-B",
+      "label": "Run at 70%, repair Wednesday night",
+      "summary": "Slow Line 3 to 70% to cut bearing load, standard transfer from Plant B, swap on the night shift.",
+      "actions": [
+        {
+          "kind": "speed_change",
+          "description": "Line 3 to 70% until repair",
+          "line_id": "L3",
+          "speed_pct": 70,
+          "start": "2026-10-13T21:40:00Z",
+          "end": "2026-10-14T22:00:00Z"
+        },
+        {
+          "kind": "stock_transfer",
+          "description": "Standard transfer 1× SKF-6205 Plant B → A",
+          "draft": {
+            "sku": "SKF-6205",
+            "from_plant": "PLANT-B",
+            "to_plant": "PLANT-A",
+            "quantity": 1,
+            "mode": "standard",
+            "incident_id": "INC-0042"
+          }
+        },
+        {
+          "kind": "work_order",
+          "description": "Bearing swap Wed 22:00 (night shift, TECH-104)",
+          "draft": {
+            "asset_id": "EQ-3012",
+            "type": "predictive",
+            "title": "Replace rear spindle bearing EQ-3012",
+            "root_cause": "Rear spindle bearing (SKF-6205) wear",
+            "parts": [
+              {
+                "sku": "SKF-6205",
+                "quantity": 1
+              }
+            ],
+            "technician_id": "TECH-104",
+            "planned_start": "2026-10-14T22:00:00Z",
+            "duration_hours": 2.5,
+            "incident_id": "INC-0042"
+          }
+        }
+      ],
+      "cost": {
+        "downtime": {
+          "amount": 1400.0,
+          "currency": "EUR"
+        },
+        "parts": {
+          "amount": 85.0,
+          "currency": "EUR"
+        },
+        "logistics": {
+          "amount": 350.0,
+          "currency": "EUR"
+        },
+        "labour": {
+          "amount": 650.0,
+          "currency": "EUR"
+        },
+        "late_penalty": {
+          "amount": 0.0,
+          "currency": "EUR"
+        },
+        "total": {
+          "amount": 2485.0,
+          "currency": "EUR"
+        }
+      },
+      "downtime_hours": 2.5,
+      "deadline_met": true,
+      "energy_kwh": -140.0,
+      "co2_kg": -58.8,
+      "failure_risk_until_repair": 0.12,
+      "confidence": 0.6,
+      "risks": [
+        "12% chance bearing fails before Wednesday night",
+        "Diagnosis only 60% certain"
+      ],
+      "recommended": true,
+      "approvals_needed": [],
+      "origin": "ai",
+      "suggested_by": null
+    },
+    {
+      "id": "OPT-C",
+      "label": "Keep running, order from supplier",
+      "summary": "Run at full speed and wait 21 days for the supplier.",
+      "actions": [],
+      "cost": {
+        "downtime": {
+          "amount": 28000.0,
+          "currency": "EUR"
+        },
+        "parts": {
+          "amount": 85.0,
+          "currency": "EUR"
+        },
+        "logistics": {
+          "amount": 0.0,
+          "currency": "EUR"
+        },
+        "labour": {
+          "amount": 400.0,
+          "currency": "EUR"
+        },
+        "late_penalty": {
+          "amount": 5000.0,
+          "currency": "EUR"
+        },
+        "total": {
+          "amount": 33485.0,
+          "currency": "EUR"
+        }
+      },
+      "downtime_hours": 14.0,
+      "deadline_met": false,
+      "energy_kwh": 0.0,
+      "co2_kg": 0.0,
+      "failure_risk_until_repair": 0.78,
+      "confidence": 0.85,
+      "risks": [
+        "78% chance of seizure within 72 h",
+        "Repeat of WO-2024-0871 (14 h stop)"
+      ],
+      "recommended": false,
+      "approvals_needed": [],
+      "origin": "ai",
+      "suggested_by": null
+    }
+  ],
+  "needs_human_review": true,
+  "reason": "Diagnosis confidence 0.60 is below 0.70 and the plan creates work orders."
+}

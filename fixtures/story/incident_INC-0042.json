@@ -1,0 +1,73 @@
+{
+  "id": "INC-0042",
+  "title": "EQ-3012 spindle bearing wear risk",
+  "plant_id": "PLANT-A",
+  "line_id": "L3",
+  "asset_id": "EQ-3012",
+  "trigger": "ml_alert",
+  "severity": "high",
+  "status": "awaiting_approval",
+  "created_at": "2026-10-13T21:40:00Z",
+  "updated_at": "2026-10-13T21:40:48Z",
+  "diagnosis": {
+    "root_cause": "Rear spindle bearing (SKF-6205) wear",
+    "failure_mode": "bearing_wear",
+    "confidence": 0.6,
+    "evidence": [
+      {
+        "kind": "sensor",
+        "ref_id": "EQ-3012:vibration_rms",
+        "title": "Vibration 4.3 mm/s",
+        "snippet": "Rising for 6 h; rule threshold 4.5 not yet hit",
+        "link": "/assets/EQ-3012?signal=vibration_rms"
+      },
+      {
+        "kind": "ml",
+        "ref_id": "EQ-3012:fp-xgb-1.0.0",
+        "title": "Failure risk 78% in 72 h",
+        "snippet": "Top drivers: vibration +34% in 6 h, kurtosis 5.1",
+        "link": "/assets/EQ-3012"
+      },
+      {
+        "kind": "manual",
+        "ref_id": "MAN-SPINDLE-200#7.4",
+        "title": "Manual §7.4 Bearing wear",
+        "snippet": "RMS +30% in 24 h with kurtosis > 4 → inspect rear bearing 6205-2RS",
+        "link": "/docs/MAN-SPINDLE-200?section=7.4"
+      },
+      {
+        "kind": "work_order",
+        "ref_id": "WO-2024-0871",
+        "title": "Same failure in Nov 2024",
+        "snippet": "Rear bearing outer race worn; line stopped 14 h",
+        "link": "/work-orders/WO-2024-0871"
+      },
+      {
+        "kind": "quality",
+        "ref_id": "L3:bore_diameter",
+        "title": "Bore defects +220%",
+        "snippet": "9 drills out of tolerance since 15:40",
+        "link": "/quality/L3"
+      }
+    ],
+    "alternatives": [
+      "Spindle misalignment (manual §7.6) — kurtosis argues against it",
+      "Sensor drift — ruled out, bearing temperature also rising"
+    ],
+    "required_parts": [
+      "SKF-6205"
+    ]
+  },
+  "selected_option_id": null,
+  "question": null,
+  "parent_id": null,
+  "round": 1,
+  "excluded_failure_modes": [],
+  "previous_findings": null,
+  "assigned_technician_id": null,
+  "work_order_id": null,
+  "approved_by": null,
+  "opened_by": null,
+  "resolved_at": null,
+  "signoff": null
+}

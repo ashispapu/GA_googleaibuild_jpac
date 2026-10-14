@@ -1,0 +1,215 @@
+# The simulated plant (DATA_MODE=sim). Seeded into the OT and IT databases on first start.
+# IDs match the golden story (fixtures/story) so EQ-3012, SKF-6205, SUP-17, TECH-104 ... mean the same everywhere.
+
+# ---------------------------------------------------------------- machine models (OT behaviour + IT master data)
+models:
+  spindle:
+    model: CNC Spindle 200
+    manufacturer: Kessler Spindeltechnik
+    manual: MAN-SPINDLE-200
+    controller: Siemens S7-1500
+    device: SPDL
+    baseline: {vibration_rms: 2.1, bearing_temp: 58, motor_temp: 62, spindle_rpm: 12000, motor_current: 21, power_kw: 11.0}
+    alarm: {vibration_warn: 4.0, vibration_crit: 4.5, temp_warn: 76, temp_crit: 84}
+    defect: {type: bore_diameter, spec_min: 9.98, spec_max: 10.03, nominal: 10.005}
+    bom: [SKF-6205, SKF-7008, BLT-HTD-8M, ALN-KIT-200, CLT-PUMP-24]
+    modes:
+      bearing_wear: {part: SKF-6205, root_cause: "Rear spindle bearing (SKF-6205) outer race wear"}
+      misalignment: {part: ALN-KIT-200, root_cause: "Spindle to motor coupling misaligned"}
+      overheating: {part: CLT-PUMP-24, root_cause: "Spindle coolant pump (CLT-PUMP-24) delivering low flow"}
+  press:
+    model: HP-400 Hydraulic Press
+    manufacturer: Hydropress AG
+    manual: MAN-PRESS-400
+    controller: Rockwell ControlLogix
+    device: HPRS
+    baseline: {vibration_rms: 1.6, bearing_temp: 52, motor_temp: 60, spindle_rpm: 1450, motor_current: 38, power_kw: 22.0}
+    alarm: {vibration_warn: 3.0, vibration_crit: 3.4, temp_warn: 74, temp_crit: 82}
+    defect: {type: press_depth, spec_min: 24.9, spec_max: 25.1, nominal: 25.0}
+    bom: [HYD-CLR-400, SKF-6308, PRS-GDE-KIT, HYD-FLT-10]
+    modes:
+      overheating: {part: HYD-CLR-400, root_cause: "Hydraulic oil cooler (HYD-CLR-400) fouled, oil running hot"}
+      bearing_wear: {part: SKF-6308, root_cause: "Pump motor bearing (SKF-6308) wear"}
+      misalignment: {part: PRS-GDE-KIT, root_cause: "Ram guide gibs worn, ram running out of line"}
+  robot:
+    model: AR-6 Assembly Robot
+    manufacturer: Motoko Robotics
+    manual: MAN-ROBOT-6
+    controller: AR-6 controller
+    device: ROB
+    baseline: {vibration_rms: 1.2, bearing_temp: 45, motor_temp: 55, spindle_rpm: 3000, motor_current: 9, power_kw: 4.0}
+    alarm: {vibration_warn: 2.3, vibration_crit: 2.6, temp_warn: 69, temp_crit: 77}
+    defect: {type: screw_torque, spec_min: 2.9, spec_max: 3.3, nominal: 3.1}
+    bom: [SRV-FAN-80, RV-BRG-40, CAL-KIT-AR6]
+    modes:
+      overheating: {part: SRV-FAN-80, root_cause: "Axis 2 servo cooling fan (SRV-FAN-80) failing"}
+      bearing_wear: {part: RV-BRG-40, root_cause: "Axis 2 reducer bearing (RV-BRG-40) wear"}
+      misalignment: {part: CAL-KIT-AR6, root_cause: "Tool centre point drifted, robot out of calibration"}
+  conveyor:
+    model: BC-1200 Belt Conveyor
+    manufacturer: Transflow
+    manual: MAN-CONV-1200
+    controller: Siemens S7-1200
+    device: CONV
+    baseline: {vibration_rms: 1.8, bearing_temp: 40, motor_temp: 48, spindle_rpm: 1450, motor_current: 6, power_kw: 2.2}
+    alarm: {vibration_warn: 3.4, vibration_crit: 3.9, temp_warn: 62, temp_crit: 70}
+    defect: {type: part_damage, spec_min: 0.0, spec_max: 0.2, nominal: 0.05}
+    bom: [BLT-TRK-KIT, SKF-6204, MTR-DRV-15]
+    modes:
+      misalignment: {part: BLT-TRK-KIT, root_cause: "Belt tracking off, belt running against the side frame"}
+      bearing_wear: {part: SKF-6204, root_cause: "Drive roller bearing (SKF-6204) wear"}
+      overheating: {part: MTR-DRV-15, root_cause: "Drive motor (MTR-DRV-15) winding overheating"}
+  inspection:
+    model: TT-50 Torque Tester
+    manufacturer: Measurix
+    manual: MAN-TESTER-50
+    controller: TT-50 controller
+    device: TST
+    baseline: {vibration_rms: 0.6, bearing_temp: 35, motor_temp: 40, spindle_rpm: 600, motor_current: 2, power_kw: 0.8}
+    alarm: {vibration_warn: 1.2, vibration_crit: 1.3, temp_warn: 54, temp_crit: 62}
+    defect: {type: false_reject, spec_min: 0.0, spec_max: 0.5, nominal: 0.1}
+    bom: [PSU-TT50, FIX-TT50, SKF-6001]
+    modes:
+      overheating: {part: PSU-TT50, root_cause: "Measuring head power supply (PSU-TT50) overheating"}
+      misalignment: {part: FIX-TT50, root_cause: "Test fixture worn, parts seated off-centre"}
+      bearing_wear: {part: SKF-6001, root_cause: "Rotary table bearing (SKF-6001) wear"}
+
+# ---------------------------------------------------------------- how a failure mode shows in the signals (at progress 1.0, full speed)
+# multipliers (x) apply to the baseline, offsets (+) are added. kurtosis baseline is 3.0.
+signatures:
+  # vibration crosses the classic rule (alarm.vibration_crit) at ~75% progress; motor temperature at ~76%
+  bearing_wear: {vibration_rms_x: 2.55, kurtosis_add: 3.0, bearing_temp_add: 12, motor_temp_add: 3, current_x: 1.04, power_x: 1.10}
+  misalignment: {vibration_rms_x: 2.40, kurtosis_add: 0.4, bearing_temp_add: 5, motor_temp_add: 2, current_x: 1.06, power_x: 1.06}
+  # a misalignment that also loosened the mount: impulsive like a bearing fault (the AI can be fooled)
+  misalignment_loose: {vibration_rms_x: 2.40, kurtosis_add: 2.4, bearing_temp_add: 6, motor_temp_add: 2, current_x: 1.06, power_x: 1.07}
+  overheating: {vibration_rms_x: 1.15, kurtosis_add: 0.2, bearing_temp_add: 10, motor_temp_add: 29, current_x: 1.18, power_x: 1.12}
+
+# ---------------------------------------------------------------- skills a repair needs (by part)
+skills:
+  SKF-6205: bearing_replacement
+  SKF-7008: bearing_replacement
+  SKF-6308: bearing_replacement
+  SKF-6204: bearing_replacement
+  SKF-6001: bearing_replacement
+  RV-BRG-40: bearing_replacement
+  ALN-KIT-200: alignment
+  PRS-GDE-KIT: alignment
+  CAL-KIT-AR6: alignment
+  BLT-TRK-KIT: alignment
+  FIX-TT50: alignment
+  BLT-HTD-8M: alignment
+  HYD-CLR-400: hydraulics
+  HYD-FLT-10: hydraulics
+  CLT-PUMP-24: electrical
+  SRV-FAN-80: electrical
+  MTR-DRV-15: electrical
+  PSU-TT50: electrical
+
+# ---------------------------------------------------------------- ERP: suppliers and parts (stock per plant)
+suppliers:
+  SUP-17: {name: Bearing Supply Co., lead_time_days: 21, express_available: false}
+  SUP-22: {name: Precision Tools GmbH, lead_time_days: 7, express_available: true, express_lead_time_days: 2}
+  SUP-31: {name: Hydraulik Service KG, lead_time_days: 12, express_available: true, express_lead_time_days: 4}
+  SUP-40: {name: Motoko Robotics Parts, lead_time_days: 9, express_available: true, express_lead_time_days: 3}
+  SUP-45: {name: Drive Systems Ltd, lead_time_days: 14, express_available: false}
+
+parts:
+  SKF-6205: {description: "Rear spindle bearing 6205-2RS", cost: 85.0, supplier: SUP-17, stock: {PLANT-A: 0, PLANT-B: 4}}
+  SKF-7008: {description: "Front spindle bearing pair 7008", cost: 140.0, supplier: SUP-17, stock: {PLANT-A: 2, PLANT-B: 2}}
+  BLT-HTD-8M: {description: "Spindle drive belt HTD 8M", cost: 38.0, supplier: SUP-22, stock: {PLANT-A: 3, PLANT-B: 2}}
+  ALN-KIT-200: {description: "Coupling alignment shim kit", cost: 140.0, supplier: SUP-22, stock: {PLANT-A: 2, PLANT-B: 1}}
+  CLT-PUMP-24: {description: "Spindle coolant pump 24 V", cost: 320.0, supplier: SUP-31, stock: {PLANT-A: 1, PLANT-B: 0}}
+  HYD-CLR-400: {description: "Hydraulic oil cooler HP-400", cost: 610.0, supplier: SUP-31, stock: {PLANT-A: 0, PLANT-B: 1}}
+  HYD-FLT-10: {description: "Hydraulic return filter 10 µm", cost: 45.0, supplier: SUP-31, stock: {PLANT-A: 6, PLANT-B: 4}}
+  SKF-6308: {description: "Pump motor bearing 6308-2Z", cost: 60.0, supplier: SUP-17, stock: {PLANT-A: 3, PLANT-B: 2}}
+  PRS-GDE-KIT: {description: "Ram guide gib kit HP-400", cost: 450.0, supplier: SUP-22, stock: {PLANT-A: 0, PLANT-B: 1}}
+  SRV-FAN-80: {description: "Servo cooling fan 80 mm", cost: 95.0, supplier: SUP-40, stock: {PLANT-A: 2, PLANT-B: 2}}
+  RV-BRG-40: {description: "Axis 2 reducer bearing", cost: 780.0, supplier: SUP-40, stock: {PLANT-A: 0, PLANT-B: 1}}
+  CAL-KIT-AR6: {description: "Robot calibration kit AR-6", cost: 60.0, supplier: SUP-40, stock: {PLANT-A: 1, PLANT-B: 1}}
+  BLT-TRK-KIT: {description: "Belt tracking roller kit", cost: 75.0, supplier: SUP-22, stock: {PLANT-A: 2, PLANT-B: 1}}
+  SKF-6204: {description: "Drive roller bearing 6204-2RS", cost: 40.0, supplier: SUP-17, stock: {PLANT-A: 6, PLANT-B: 4}}
+  MTR-DRV-15: {description: "Conveyor drive motor 1.5 kW", cost: 520.0, supplier: SUP-45, stock: {PLANT-A: 0, PLANT-B: 1}}
+  PSU-TT50: {description: "Measuring head power supply TT-50", cost: 230.0, supplier: SUP-45, stock: {PLANT-A: 1, PLANT-B: 0}}
+  FIX-TT50: {description: "Torque test fixture TT-50", cost: 180.0, supplier: SUP-22, stock: {PLANT-A: 1, PLANT-B: 1}}
+  SKF-6001: {description: "Rotary table bearing 6001-2RS", cost: 25.0, supplier: SUP-17, stock: {PLANT-A: 4, PLANT-B: 2}}
+
+# ---------------------------------------------------------------- plants, lines, stations, machines (positions in metres)
+plants:
+  - id: PLANT-A
+    name: Plant A
+    location: Pune, IN
+    storage: A-MRO-03
+    lines:
+      - {id: L1, name: "Line 1 — Grinder", product: "Angle grinder AG-9", stations: [
+          {id: L1-ST1, name: Press, assets: [{id: EQ-3001, name: Press, type: press, position: [4, 4]}]},
+          {id: L1-ST2, name: Spindle, assets: [{id: EQ-3002, name: Spindle, type: spindle, position: [10, 4]}]},
+          {id: L1-ST3, name: Robot, assets: [{id: EQ-3003, name: Robot, type: robot, position: [16, 4]}]},
+          {id: L1-ST4, name: Tester, assets: [{id: EQ-3004, name: Tester, type: inspection, position: [22, 4]}]}]}
+      - {id: L2, name: "Line 2 — Impact driver", product: "Impact driver ID-12", stations: [
+          {id: L2-ST1, name: Press, assets: [{id: EQ-3005, name: Press, type: press, position: [4, 12]}]},
+          {id: L2-ST2, name: Spindle, assets: [{id: EQ-3006, name: Spindle, type: spindle, position: [10, 12]}]},
+          {id: L2-ST3, name: Robot, assets: [{id: EQ-3007, name: Robot, type: robot, position: [16, 12]}]},
+          {id: L2-ST4, name: Tester, assets: [{id: EQ-3008, name: Tester, type: inspection, position: [22, 12]}]}]}
+      - {id: L3, name: "Line 3 — Drill assembly", product: "Cordless drill CD-18", stations: [
+          {id: L3-ST1, name: Housing press, assets: [{id: EQ-3010, name: Hydraulic press, type: press, position: [4, 20]}]},
+          {id: L3-ST2, name: Spindle machining, assets: [{id: EQ-3011, name: CNC spindle 1, type: spindle, position: [10, 19]},
+                                                         {id: EQ-3012, name: CNC spindle 2, type: spindle, position: [10, 22]}]},
+          {id: L3-ST3, name: Gearbox assembly, assets: [{id: EQ-3013, name: Assembly robot, type: robot, position: [16, 20]}]},
+          {id: L3-ST4, name: Conveyor, assets: [{id: EQ-3014, name: Belt conveyor, type: conveyor, position: [21, 20]}]},
+          {id: L3-ST5, name: End-of-line test, assets: [{id: EQ-3015, name: Torque tester, type: inspection, position: [26, 20]}]}]}
+  - id: PLANT-B
+    name: Plant B
+    location: Chennai, IN
+    storage: B-MRO-11
+    lines:
+      - {id: L1, name: "Line 1 — Drill assembly", product: "Cordless drill CD-18", stations: [
+          {id: L1-ST1, name: Press, assets: [{id: EQ-4001, name: Press, type: press, position: [4, 4]}]},
+          {id: L1-ST2, name: Spindle, assets: [{id: EQ-4002, name: Spindle, type: spindle, position: [10, 4]}]},
+          {id: L1-ST3, name: Robot, assets: [{id: EQ-4003, name: Robot, type: robot, position: [16, 4]}]},
+          {id: L1-ST4, name: Tester, assets: [{id: EQ-4004, name: Tester, type: inspection, position: [22, 4]}]}]}
+
+# ---------------------------------------------------------------- people
+technicians:
+  - {id: TECH-104, name: Suresh, plant: PLANT-A, skills: [bearing_replacement, spindle_alignment, alignment], certifications: [spindle-200], crew: 0}
+  - {id: TECH-112, name: Meera, plant: PLANT-A, skills: [bearing_replacement, electrical], certifications: [spindle-200], crew: 1}
+  - {id: TECH-131, name: Priya, plant: PLANT-A, skills: [alignment, electrical], certifications: [robot-ar6], crew: 1}
+  - {id: TECH-120, name: Arjun, plant: PLANT-A, skills: [hydraulics, bearing_replacement], certifications: [press-hp400], crew: 2}
+  - {id: TECH-140, name: Vikram, plant: PLANT-B, skills: [bearing_replacement, hydraulics], certifications: [press-hp400], crew: 0}
+  - {id: TECH-152, name: Lakshmi, plant: PLANT-B, skills: [electrical, alignment], certifications: [robot-ar6], crew: 1}
+  - {id: TECH-163, name: Rahul, plant: PLANT-B, skills: [bearing_replacement, alignment, electrical], certifications: [spindle-200], crew: 2}
+
+# crews rotate through the shifts every day (crew c works shift (c + day) % 3)
+shifts: {morning: [6, 14], evening: [14, 22], night: [22, 6]}
+
+users:
+  - {username: op, name: Ravi (Operator), role: operator, plants: [PLANT-A]}
+  - {username: lead, name: Anita (Maintenance Lead), role: maintenance_lead, plants: [PLANT-A]}
+  - {username: leadb, name: Dev (Maintenance Lead), role: maintenance_lead, plants: [PLANT-B]}
+  - {username: manager, name: Karan (Plant Manager), role: plant_manager, plants: [PLANT-A, PLANT-B]}
+  - {username: admin, name: Admin, role: admin, plants: [PLANT-A, PLANT-B]}
+  - {username: suresh, name: Suresh (Technician), role: technician, plants: [PLANT-A], technician: TECH-104}
+  - {username: meera, name: Meera (Technician), role: technician, plants: [PLANT-A], technician: TECH-112}
+  - {username: priya, name: Priya (Technician), role: technician, plants: [PLANT-A], technician: TECH-131}
+  - {username: arjun, name: Arjun (Technician), role: technician, plants: [PLANT-A], technician: TECH-120}
+  - {username: vikram, name: Vikram (Technician), role: technician, plants: [PLANT-B], technician: TECH-140}
+  - {username: lakshmi, name: Lakshmi (Technician), role: technician, plants: [PLANT-B], technician: TECH-152}
+  - {username: rahul, name: Rahul (Technician), role: technician, plants: [PLANT-B], technician: TECH-163}
+# every demo user's password
+default_password: demo
+
+# ---------------------------------------------------------------- production orders (hours are relative to the first start)
+orders:
+  - {id: ORD-5521, plant: PLANT-A, line: L3, product: Cordless drill CD-18, quantity: 5000, completed: 2900, due_in_h: 80}
+  - {id: ORD-5522, plant: PLANT-A, line: L3, product: Cordless drill CD-18, quantity: 3000, completed: 0, due_in_h: 160}
+  - {id: ORD-5530, plant: PLANT-A, line: L1, product: Angle grinder AG-9, quantity: 3000, completed: 1200, due_in_h: 80}
+  - {id: ORD-5531, plant: PLANT-A, line: L1, product: Angle grinder AG-9, quantity: 2500, completed: 0, due_in_h: 170}
+  - {id: ORD-5540, plant: PLANT-A, line: L2, product: Impact driver ID-12, quantity: 4000, completed: 1800, due_in_h: 75}
+  - {id: ORD-5541, plant: PLANT-A, line: L2, product: Impact driver ID-12, quantity: 2000, completed: 0, due_in_h: 150}
+  - {id: ORD-6110, plant: PLANT-B, line: L1, product: Cordless drill CD-18, quantity: 3500, completed: 900, due_in_h: 90}
+  - {id: ORD-6111, plant: PLANT-B, line: L1, product: Cordless drill CD-18, quantity: 2500, completed: 0, due_in_h: 180}
+
+# ---------------------------------------------------------------- energy
+tariffs:
+  - {name: peak, start_hour: 6, end_hour: 22, price: 0.28}
+  - {name: off_peak, start_hour: 22, end_hour: 6, price: 0.12}
+co2_kg_per_kwh: 0.42

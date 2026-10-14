@@ -1,0 +1,35 @@
+[
+  {
+    "id": "TECH-104",
+    "name": "Suresh",
+    "skills": [
+      "bearing_replacement",
+      "spindle_alignment"
+    ],
+    "certifications": [
+      "spindle-200"
+    ],
+    "on_shift": false
+  },
+  {
+    "id": "TECH-112",
+    "name": "Meera",
+    "skills": [
+      "bearing_replacement",
+      "electrical"
+    ],
+    "certifications": [
+      "spindle-200"
+    ],
+    "on_shift": true
+  },
+  {
+    "id": "TECH-120",
+    "name": "Arjun",
+    "skills": [
+      "hydraulics"
+    ],
+    "certifications": [],
+    "on_shift": true
+  }
+]

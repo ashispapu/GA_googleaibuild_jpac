@@ -1,0 +1,49 @@
+[
+  {
+    "actor_type": "agent",
+    "actor": "diagnosis",
+    "action": "llm_call_redacted",
+    "resource": "INC-0042",
+    "details": {
+      "redacted": [
+        "serial_number",
+        "person_name"
+      ],
+      "model": "claude-sonnet-4-5"
+    }
+  },
+  {
+    "actor_type": "agent",
+    "actor": "spare_parts",
+    "action": "tool_call",
+    "resource": "check_stock",
+    "details": {
+      "sku": "SKF-6205"
+    }
+  },
+  {
+    "actor_type": "user",
+    "actor": "USR-op",
+    "action": "approve_denied",
+    "resource": "INC-0042",
+    "details": {
+      "reason": "role operator lacks approve"
+    }
+  },
+  {
+    "actor_type": "user",
+    "actor": "USR-lead",
+    "action": "approve",
+    "resource": "INC-0042",
+    "details": {
+      "option_id": "OPT-B"
+    }
+  },
+  {
+    "actor_type": "system",
+    "actor": "executor",
+    "action": "create_work_order",
+    "resource": "WO-2026-0153",
+    "details": {}
+  }
+]

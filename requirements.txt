@@ -1,0 +1,11 @@
+fastapi>=0.115
+pydantic>=2.7
+uvicorn[standard]
+pyjwt[crypto]
+pytest
+httpx
+pyyaml
+litellm>=1.75
+google-auth>=2.30   # Vertex AI sign-in (GOOGLE_GENAI_USE_ENTERPRISE=True)
+numpy
+faiss-cpu

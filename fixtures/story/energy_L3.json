@@ -1,0 +1,27 @@
+{
+  "line_id": "L3",
+  "window": {
+    "start": "2026-10-12T21:40:00Z",
+    "end": "2026-10-13T21:40:00Z"
+  },
+  "kwh": 1840.0,
+  "cost": {
+    "amount": 386.4,
+    "currency": "EUR"
+  },
+  "co2_kg": 772.8,
+  "by_asset": [
+    {
+      "asset_id": "EQ-3012",
+      "kwh": 268.0,
+      "avg_power_kw": 11.9,
+      "baseline_power_kw": 11.0
+    },
+    {
+      "asset_id": "EQ-3011",
+      "kwh": 262.0,
+      "avg_power_kw": 10.9,
+      "baseline_power_kw": 10.9
+    }
+  ]
+}

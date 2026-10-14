@@ -1,0 +1,601 @@
+{
+  "realm": "plantguard",
+  "enabled": true,
+  "displayName": "PlantGuard AI",
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "bruteForceProtected": true,
+  "failureFactor": 5,
+  "accessTokenLifespan": 900,
+  "ssoSessionIdleTimeout": 3600,
+  "ssoSessionMaxLifespan": 36000,
+  "roles": {
+    "realm": [
+      {
+        "name": "operator",
+        "description": "Views plant, runs agents, gives feedback"
+      },
+      {
+        "name": "maintenance_lead",
+        "description": "Approves maintenance actions"
+      },
+      {
+        "name": "plant_manager",
+        "description": "Approves, sees costs and audit"
+      },
+      {
+        "name": "admin",
+        "description": "Everything, incl. demo simulator"
+      },
+      {
+        "name": "technician",
+        "description": "Does the repair; only the assigned technician closes an incident"
+      },
+      {
+        "name": "default-roles-plantguard",
+        "description": "Keycloak default role",
+        "composite": true,
+        "composites": {
+          "realm": [
+            "offline_access",
+            "uma_authorization"
+          ]
+        }
+      },
+      {
+        "name": "offline_access"
+      },
+      {
+        "name": "uma_authorization"
+      }
+    ]
+  },
+  "defaultRole": {
+    "name": "default-roles-plantguard"
+  },
+  "clients": [
+    {
+      "clientId": "plantguard-web",
+      "name": "PlantGuard web UI",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "plantguard-web-dev-secret",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:3000/*"
+      },
+      "protocolMappers": [
+        {
+          "name": "audience-plantguard-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "plantguard-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        },
+        {
+          "name": "user_id",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "user_id",
+            "claim.name": "user_id",
+            "jsonType.label": "String",
+            "multivalued": "false",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "plant_ids",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "plant_ids",
+            "claim.name": "plant_ids",
+            "jsonType.label": "String",
+            "multivalued": "true",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "claim.name": "roles",
+            "multivalued": "true",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "full name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-full-name-mapper",
+          "consentRequired": false,
+          "config": {
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "username",
+            "claim.name": "preferred_username",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "plantguard-dev",
+      "name": "Scripts and tests (password grant, dev only)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "protocolMappers": [
+        {
+          "name": "audience-plantguard-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "plantguard-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        },
+        {
+          "name": "user_id",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "user_id",
+            "claim.name": "user_id",
+            "jsonType.label": "String",
+            "multivalued": "false",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "plant_ids",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "plant_ids",
+            "claim.name": "plant_ids",
+            "jsonType.label": "String",
+            "multivalued": "true",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "claim.name": "roles",
+            "multivalued": "true",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "full name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-full-name-mapper",
+          "consentRequired": false,
+          "config": {
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "username",
+            "claim.name": "preferred_username",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "plantguard-api",
+      "name": "PlantGuard API (token audience)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "bearerOnly": true
+    }
+  ],
+  "users": [
+    {
+      "username": "op",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "op@plantguard.local",
+      "firstName": "Ravi",
+      "lastName": "Operator",
+      "attributes": {
+        "user_id": [
+          "USR-op"
+        ],
+        "plant_ids": [
+          "PLANT-A"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "operator",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "lead",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "lead@plantguard.local",
+      "firstName": "Anita",
+      "lastName": "Maintenance Lead",
+      "attributes": {
+        "user_id": [
+          "USR-lead"
+        ],
+        "plant_ids": [
+          "PLANT-A"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "maintenance_lead",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "manager",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "manager@plantguard.local",
+      "firstName": "Karan",
+      "lastName": "Plant Manager",
+      "attributes": {
+        "user_id": [
+          "USR-manager"
+        ],
+        "plant_ids": [
+          "PLANT-A",
+          "PLANT-B"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "plant_manager",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "admin",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "admin@plantguard.local",
+      "firstName": "Admin",
+      "lastName": "-",
+      "attributes": {
+        "user_id": [
+          "USR-admin"
+        ],
+        "plant_ids": [
+          "PLANT-A",
+          "PLANT-B"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "admin",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "leadb",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "leadb@plantguard.local",
+      "firstName": "Dev",
+      "lastName": "Maintenance Lead",
+      "attributes": {
+        "user_id": [
+          "USR-leadb"
+        ],
+        "plant_ids": [
+          "PLANT-B"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "maintenance_lead",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "suresh",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "suresh@plantguard.local",
+      "firstName": "Suresh",
+      "lastName": "Technician",
+      "attributes": {
+        "user_id": [
+          "USR-suresh"
+        ],
+        "plant_ids": [
+          "PLANT-A"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "technician",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "meera",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "meera@plantguard.local",
+      "firstName": "Meera",
+      "lastName": "Technician",
+      "attributes": {
+        "user_id": [
+          "USR-meera"
+        ],
+        "plant_ids": [
+          "PLANT-A"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "technician",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "priya",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "priya@plantguard.local",
+      "firstName": "Priya",
+      "lastName": "Technician",
+      "attributes": {
+        "user_id": [
+          "USR-priya"
+        ],
+        "plant_ids": [
+          "PLANT-A"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "technician",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "arjun",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "arjun@plantguard.local",
+      "firstName": "Arjun",
+      "lastName": "Technician",
+      "attributes": {
+        "user_id": [
+          "USR-arjun"
+        ],
+        "plant_ids": [
+          "PLANT-A"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "technician",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "vikram",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "vikram@plantguard.local",
+      "firstName": "Vikram",
+      "lastName": "Technician",
+      "attributes": {
+        "user_id": [
+          "USR-vikram"
+        ],
+        "plant_ids": [
+          "PLANT-B"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "technician",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "lakshmi",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "lakshmi@plantguard.local",
+      "firstName": "Lakshmi",
+      "lastName": "Technician",
+      "attributes": {
+        "user_id": [
+          "USR-lakshmi"
+        ],
+        "plant_ids": [
+          "PLANT-B"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "technician",
+        "default-roles-plantguard"
+      ]
+    },
+    {
+      "username": "rahul",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "rahul@plantguard.local",
+      "firstName": "Rahul",
+      "lastName": "Technician",
+      "attributes": {
+        "user_id": [
+          "USR-rahul"
+        ],
+        "plant_ids": [
+          "PLANT-B"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "technician",
+        "default-roles-plantguard"
+      ]
+    }
+  ],
+  "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\": [{\"name\": \"username\", \"displayName\": \"${username}\", \"multivalued\": false, \"validations\": {\"length\": {\"min\": 2, \"max\": 255}, \"username-prohibited-characters\": {}, \"up-username-not-idn-homograph\": {}}, \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"email\", \"displayName\": \"${email}\", \"multivalued\": false, \"validations\": {\"email\": {}, \"length\": {\"max\": 255}}, \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"firstName\", \"displayName\": \"${firstName}\", \"multivalued\": false, \"validations\": {\"length\": {\"max\": 255}}, \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"lastName\", \"displayName\": \"${lastName}\", \"multivalued\": false, \"validations\": {\"length\": {\"max\": 255}}, \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"user_id\", \"displayName\": \"PlantGuard user id\", \"multivalued\": false, \"validations\": {\"pattern\": {\"pattern\": \"^USR-[a-z]+$\", \"error-message\": \"Must look like USR-lead\"}}, \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}}, {\"name\": \"plant_ids\", \"displayName\": \"Plants\", \"multivalued\": true, \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}}], \"unmanagedAttributePolicy\": \"ADMIN_VIEW\"}"
+          ]
+        }
+      }
+    ]
+  }
+}

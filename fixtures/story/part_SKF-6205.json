@@ -1,0 +1,22 @@
+{
+  "sku": "SKF-6205",
+  "description": "Deep groove ball bearing 6205-2RS, spindle rear",
+  "unit_cost": {
+    "amount": 85.0,
+    "currency": "EUR"
+  },
+  "stock": [
+    {
+      "plant_id": "PLANT-A",
+      "quantity": 0,
+      "storage_location": "A-MRO-03"
+    },
+    {
+      "plant_id": "PLANT-B",
+      "quantity": 4,
+      "storage_location": "B-MRO-11"
+    }
+  ],
+  "supplier_id": "SUP-17",
+  "supplier_lead_time_days": 21
+}

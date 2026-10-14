@@ -1,0 +1,29 @@
+{
+  "query": "spindle vibration rising bearing",
+  "chunks": [
+    {
+      "doc_id": "MAN-SPINDLE-200",
+      "title": "CNC Spindle 200 Maintenance Manual",
+      "section": "7.4",
+      "page": 58,
+      "text": "If vibration RMS rises more than 30% within 24 h together with kurtosis above 4, inspect the rear bearing (6205-2RS). Continued operation above 4.5 mm/s may cause seizure within 48–96 h. Reducing spindle speed to 70% lowers bearing load and extends safe run time.",
+      "score": 0.91
+    },
+    {
+      "doc_id": "WO-2024-0871",
+      "title": "Work order: Spindle 2 rear bearing failure",
+      "section": "findings",
+      "page": 1,
+      "text": "Vibration rose ~120% over 3 days before seizure; rear bearing outer race worn.",
+      "score": 0.86
+    },
+    {
+      "doc_id": "MAN-SPINDLE-200",
+      "title": "CNC Spindle 200 Maintenance Manual",
+      "section": "7.6",
+      "page": 61,
+      "text": "Misalignment shows as high vibration at 2× running speed with normal kurtosis.",
+      "score": 0.62
+    }
+  ]
+}

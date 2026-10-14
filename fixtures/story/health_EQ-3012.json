@@ -1,0 +1,43 @@
+{
+  "asset_id": "EQ-3012",
+  "health": "critical",
+  "risk_72h": 0.78,
+  "rul_hours": 70.0,
+  "anomaly_score": 0.91,
+  "predicted_failure_mode": "bearing_wear",
+  "rule_threshold_breached": false,
+  "top_features": [
+    {
+      "name": "vib_rms_trend_6h",
+      "value": 0.34,
+      "contribution": 0.21,
+      "description": "Vibration RMS +34% in 6 h"
+    },
+    {
+      "name": "vib_kurtosis_mean",
+      "value": 5.1,
+      "contribution": 0.14,
+      "description": "Kurtosis 5.1 (impulsive, bearing wear)"
+    },
+    {
+      "name": "bearing_temp_trend_6h",
+      "value": 8.6,
+      "contribution": 0.09,
+      "description": "Bearing temp +8.6 °C in 6 h"
+    },
+    {
+      "name": "power_kw_vs_baseline",
+      "value": 0.08,
+      "contribution": 0.05,
+      "description": "Power draw +8% vs baseline"
+    },
+    {
+      "name": "hours_since_service",
+      "value": 3150.0,
+      "contribution": 0.03,
+      "description": "3,150 h since last service"
+    }
+  ],
+  "model_version": "fp-xgb-1.0.0",
+  "evaluated_at": "2026-10-13T21:40:00Z"
+}

@@ -1,0 +1,60 @@
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-sans/700.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/ibm-plex-mono/600.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light theme only. shadcn/ui variables map onto the PlantGuard palette. */
+@layer base {
+  :root {
+    --background: 216 26% 97%;
+    --foreground: 213 33% 13%;
+    --card: 0 0% 100%;
+    --card-foreground: 213 33% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 213 33% 13%;
+    --primary: 218 76% 47%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 25% 95%;
+    --secondary-foreground: 213 18% 30%;
+    --accent: 218 85% 95%;
+    --accent-foreground: 218 74% 39%;
+    --destructive: 4 71% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 22% 91%;
+    --input: 214 19% 82%;
+    --ring: 218 76% 47%;
+    color-scheme: light;
+  }
+
+  html,
+  body {
+    background: #f4f6f9;
+    color: #16202c;
+  }
+
+  body {
+    @apply font-sans antialiased;
+  }
+
+  a {
+    color: #1d5fd1;
+  }
+  a:hover {
+    color: #164ca8;
+  }
+}
+
+/* React Flow: keep the agent graph on-brand and quiet */
+.react-flow__attribution {
+  display: none;
+}
+.react-flow__handle {
+  opacity: 0;
+}

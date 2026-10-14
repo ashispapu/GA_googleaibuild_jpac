@@ -1,0 +1,44 @@
+[
+  {
+    "username": "op",
+    "password": "demo",
+    "id": "USR-op",
+    "name": "Ravi (Operator)",
+    "role": "operator",
+    "plant_ids": [
+      "PLANT-A"
+    ]
+  },
+  {
+    "username": "lead",
+    "password": "demo",
+    "id": "USR-lead",
+    "name": "Anita (Maintenance Lead)",
+    "role": "maintenance_lead",
+    "plant_ids": [
+      "PLANT-A"
+    ]
+  },
+  {
+    "username": "manager",
+    "password": "demo",
+    "id": "USR-manager",
+    "name": "Karan (Plant Manager)",
+    "role": "plant_manager",
+    "plant_ids": [
+      "PLANT-A",
+      "PLANT-B"
+    ]
+  },
+  {
+    "username": "admin",
+    "password": "demo",
+    "id": "USR-admin",
+    "name": "Admin",
+    "role": "admin",
+    "plant_ids": [
+      "PLANT-A",
+      "PLANT-B"
+    ]
+  }
+]

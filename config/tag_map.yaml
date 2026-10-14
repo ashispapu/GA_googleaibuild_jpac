@@ -1,0 +1,15 @@
+# OT tag -> contract mapping. Owner: ML & Data (simulator) + Backend (gateway). Same file, both sides.
+# Raw PLC/MQTT tag : {asset_id, signal (schemas.ot.Signal), unit, protocol, range}
+L3.ST2.SPDL2.VIB_RMS:  {asset_id: EQ-3012, signal: vibration_rms,      unit: mm/s, protocol: mqtt,   range: [0, 20]}
+L3.ST2.SPDL2.VIB_PK:   {asset_id: EQ-3012, signal: vibration_peak,     unit: mm/s, protocol: mqtt,   range: [0, 50]}
+L3.ST2.SPDL2.VIB_KURT: {asset_id: EQ-3012, signal: vibration_kurtosis, unit: "",   protocol: mqtt,   range: [1, 20]}
+L3.ST2.SPDL2.BRG_T:    {asset_id: EQ-3012, signal: bearing_temp,       unit: degC, protocol: modbus, range: [0, 120]}
+L3.ST2.SPDL2.MTR_I:    {asset_id: EQ-3012, signal: motor_current,      unit: A,    protocol: opcua,  range: [0, 60]}
+L3.ST2.SPDL2.PWR:      {asset_id: EQ-3012, signal: power_kw,           unit: kW,   protocol: opcua,  range: [0, 30]}
+L3.ST2.SPDL2.RPM:      {asset_id: EQ-3012, signal: spindle_rpm,        unit: rpm,  protocol: opcua,  range: [0, 15000]}
+# Pattern for every other asset: L{line}.ST{station}.<DEVICE>.<SIGNAL>
+
+# MQTT topic contract (Sparkplug-style JSON, not protobuf, for hackathon speed):
+#   plant/{plant_id}/{line_id}/{asset_id}/telemetry   payload = TelemetryMessage JSON, QoS 0, 1 Hz
+#   plant/{plant_id}/{line_id}/{asset_id}/alarm       payload = Alarm JSON, QoS 1
+# Gateway rule: values outside `range` -> quality=out_of_range; no message for 5 s -> quality=stale.
