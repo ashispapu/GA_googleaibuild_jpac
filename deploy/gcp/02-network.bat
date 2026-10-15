@@ -1,4 +1,15 @@
 @echo off
+rem Keep the window open at the end (double-click friendly): run the step as a sub-call, then wait for a key.
+if "%PG_STEP_RUNNING%"=="1" goto :pg_main
+set PG_STEP_RUNNING=1
+call "%~f0" %*
+set "PG_RC=%errorlevel%"
+set PG_STEP_RUNNING=
+echo.
+if "%PG_RC%"=="0" (echo Finished OK.) else (echo Finished with errors - read the messages above.)
+pause
+exit /b %PG_RC%
+:pg_main
 rem Step 2: private network. Only the public Cloud Run services have public addresses.
 rem   subnet for Cloud Run direct VPC egress, subnet for the Qdrant VM, private services access (Cloud SQL + Redis),
 rem   firewall (Qdrant only from Cloud Run, SSH only through IAP), Cloud NAT for the VM, private DNS zone <name>.internal

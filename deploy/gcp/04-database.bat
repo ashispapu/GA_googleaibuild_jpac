@@ -1,4 +1,15 @@
 @echo off
+rem Keep the window open at the end (double-click friendly): run the step as a sub-call, then wait for a key.
+if "%PG_STEP_RUNNING%"=="1" goto :pg_main
+set PG_STEP_RUNNING=1
+call "%~f0" %*
+set "PG_RC=%errorlevel%"
+set PG_STEP_RUNNING=
+echo.
+if "%PG_RC%"=="0" (echo Finished OK.) else (echo Finished with errors - read the messages above.)
+pause
+exit /b %PG_RC%
+:pg_main
 rem Step 4: Cloud SQL for PostgreSQL 16 - private IP only, TLS required, HA, daily backups + point-in-time recovery.
 rem Databases: plantguard_ot, plantguard_it, keycloak. Users: plantguard (OT + IT), keycloak.
 setlocal

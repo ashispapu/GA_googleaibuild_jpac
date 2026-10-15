@@ -1,4 +1,15 @@
 @echo off
+rem Keep the window open at the end (double-click friendly): run the step as a sub-call, then wait for a key.
+if "%PG_STEP_RUNNING%"=="1" goto :pg_main
+set PG_STEP_RUNNING=1
+call "%~f0" %*
+set "PG_RC=%errorlevel%"
+set PG_STEP_RUNNING=
+echo.
+if "%PG_RC%"=="0" (echo Finished OK.) else (echo Finished with errors - read the messages above.)
+pause
+exit /b %PG_RC%
+:pg_main
 rem Deletes what steps 1-12 created (NOT reversible). Lift Cloud SQL deletion protection first:
 rem   gcloud sql instances patch <name>-pg --no-deletion-protection
 rem Kept on purpose (delete by hand when sure): the Qdrant data disk and its snapshots, the backup bucket, secrets.

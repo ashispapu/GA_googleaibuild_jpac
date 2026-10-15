@@ -1,4 +1,15 @@
 @echo off
+rem Keep the window open at the end (double-click friendly): run the step as a sub-call, then wait for a key.
+if "%PG_STEP_RUNNING%"=="1" goto :pg_main
+set PG_STEP_RUNNING=1
+call "%~f0" %*
+set "PG_RC=%errorlevel%"
+set PG_STEP_RUNNING=
+echo.
+if "%PG_RC%"=="0" (echo Finished OK.) else (echo Finished with errors - read the messages above.)
+pause
+exit /b %PG_RC%
+:pg_main
 rem Step 6: the vector service - Qdrant on a private VM with an SSD data disk, TLS, API key + JWT RBAC.
 rem   collections: <name>_<env>_manuals (shared, read-only for the app), <name>_<env>_workorders_<plant> (one per plant)
 rem   persistence: daily disk snapshots (14 days) + collection snapshots copied to Cloud Storage hourly

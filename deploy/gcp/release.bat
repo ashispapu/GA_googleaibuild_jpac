@@ -1,4 +1,15 @@
 @echo off
+rem Keep the window open at the end (double-click friendly): run the step as a sub-call, then wait for a key.
+if "%PG_STEP_RUNNING%"=="1" goto :pg_main
+set PG_STEP_RUNNING=1
+call "%~f0" %*
+set "PG_RC=%errorlevel%"
+set PG_STEP_RUNNING=
+echo.
+if "%PG_RC%"=="0" (echo Finished OK.) else (echo Finished with errors - read the messages above.)
+pause
+exit /b %PG_RC%
+:pg_main
 rem Release a new version: build the images, run the migrate job, then roll out engine, worker, api and web
 rem (each waits for its startup probe; a revision that never gets ready never gets traffic).
 rem Same pipeline as a Cloud Build trigger on your main branch (deploy\gcp\cloudbuild.yaml with _DEPLOY=true).

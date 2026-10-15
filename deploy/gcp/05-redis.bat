@@ -1,4 +1,15 @@
 @echo off
+rem Keep the window open at the end (double-click friendly): run the step as a sub-call, then wait for a key.
+if "%PG_STEP_RUNNING%"=="1" goto :pg_main
+set PG_STEP_RUNNING=1
+call "%~f0" %*
+set "PG_RC=%errorlevel%"
+set PG_STEP_RUNNING=
+echo.
+if "%PG_RC%"=="0" (echo Finished OK.) else (echo Finished with errors - read the messages above.)
+pause
+exit /b %PG_RC%
+:pg_main
 rem Step 5: Memorystore for Redis 7.2 - replica with automatic fail-over, AUTH, in-transit TLS, RDB snapshots.
 rem Event bus, analysis run queue, single-use approval tokens, shared rate limits, plant-engine lease, caches.
 setlocal

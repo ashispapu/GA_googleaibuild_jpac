@@ -1,4 +1,15 @@
 @echo off
+rem Keep the window open at the end (double-click friendly): run the step as a sub-call, then wait for a key.
+if "%PG_STEP_RUNNING%"=="1" goto :pg_main
+set PG_STEP_RUNNING=1
+call "%~f0" %*
+set "PG_RC=%errorlevel%"
+set PG_STEP_RUNNING=
+echo.
+if "%PG_RC%"=="0" (echo Finished OK.) else (echo Finished with errors - read the messages above.)
+pause
+exit /b %PG_RC%
+:pg_main
 rem Step 10: the PlantGuard services (one image, one role each) and the web app.
 rem   engine  exactly one active (Redis lease), internal only, CPU always on: simulation, live scoring, alerts
 rem   worker  1..N, internal only, CPU always on: takes analyses from the Redis run queue and runs the agents
