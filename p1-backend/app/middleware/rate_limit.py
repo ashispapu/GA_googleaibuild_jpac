@@ -29,6 +29,38 @@ class TokenBucketLimiter:
         return (1 - tokens) / self._rate
 
 
+class SharedRateLimiter:
+    """Same contract as TokenBucketLimiter, counted in Redis so the limit holds across every API instance:
+    `burst` requests per `burst_window_s`, and `per_minute` per minute. Async (one pipelined round trip) so the
+    event loop never waits on the network."""
+
+    def __init__(self, kv, per_minute: int, burst: int, burst_window_s: int = 5):
+        from app.infrastructure.redis_infra import async_client
+        self._kv, self._per_min, self._burst, self._bw = kv, per_minute, burst, burst_window_s
+        self._r = async_client(socket_timeout=2)
+
+    async def acquire(self, key: str) -> float:
+        import hashlib
+        import time as _t
+        k = hashlib.sha256(key.encode()).hexdigest()[:24]  # never store bearer tokens in Redis
+        now = _t.time()
+        km, kb = self._kv.key("rl", f"{k}:m:{int(now // 60)}"), self._kv.key("rl", f"{k}:b:{int(now // self._bw)}")
+        try:
+            pipe = self._r.pipeline(transaction=False)
+            pipe.incr(km)
+            pipe.expire(km, 70, nx=True)
+            pipe.incr(kb)
+            pipe.expire(kb, self._bw + 5, nx=True)
+            per_min, _, per_burst, _ = await pipe.execute()
+        except Exception:  # Redis briefly unavailable: fail open (Cloud Armor / the LB still limit at the edge)
+            return 0.0
+        if per_min > self._per_min:
+            return 60 - now % 60
+        if per_burst > self._burst:
+            return self._bw - now % self._bw
+        return 0.0
+
+
 class RateLimitMiddleware:
     """ASGI middleware that answers 429 RATE_LIMITED when a client's bucket is empty."""
 
@@ -43,6 +75,8 @@ class RateLimitMiddleware:
         headers = dict(scope["headers"])
         key = headers.get(b"authorization", b"").decode() or (scope.get("client") or ("anon",))[0]
         wait = self.limiter.acquire(key)
+        if not isinstance(wait, (int, float)):  # SharedRateLimiter.acquire is async
+            wait = await wait
         if wait > 0:
             resp = error_response(429, ErrorCode.RATE_LIMITED, "Too many requests", {"retry_after_s": round(wait, 2)},
                                   headers={"Retry-After": str(max(1, int(wait + 0.999)))})

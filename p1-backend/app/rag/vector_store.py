@@ -17,7 +17,6 @@ import threading
 from collections import Counter
 from pathlib import Path
 
-import faiss
 import numpy as np
 
 TOKEN = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
@@ -94,6 +93,10 @@ class FaissStore:
     """IndexIDMap over inner product (cosine on normalised vectors). Thread-safe; saved after every change."""
 
     def __init__(self, directory: Path, embedder: HashingEmbedder):
+        import logging
+        logging.getLogger("faiss.loader").setLevel(logging.WARNING)
+        import faiss  # only single-process runs need it (production uses Qdrant)
+        self._faiss = faiss
         self.dir, self.embedder = directory, embedder
         self.dir.mkdir(parents=True, exist_ok=True)
         self._lock = threading.Lock()
@@ -132,5 +135,5 @@ class FaissStore:
         return int(self.index.ntotal)
 
     def save(self) -> None:
-        faiss.write_index(self.index, str(self.dir / "manuals.faiss"))
+        self._faiss.write_index(self.index, str(self.dir / "manuals.faiss"))
         (self.dir / "embedder.json").write_text(self.embedder.to_json())

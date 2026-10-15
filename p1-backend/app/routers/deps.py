@@ -29,6 +29,30 @@ def require(permission: Permission):
 VIEW = Depends(require(Permission.VIEW_PLANT))
 
 
+async def pump(ws: WebSocket, frames, close_when_done: bool = False) -> None:
+    """Send every text frame from the async iterator `frames` until it ends or the client goes away.
+    A watcher reads the socket at the same time, so a disconnect (or a server shutdown) stops the sender even when
+    `frames` is idle; otherwise a quiet stream would keep its handler (and the process's shutdown) waiting forever."""
+    import anyio
+    finished = False
+    async with anyio.create_task_group() as tg:
+        async def watcher():
+            while True:
+                if (await ws.receive())["type"] == "websocket.disconnect":
+                    tg.cancel_scope.cancel()
+                    return
+        tg.start_soon(watcher)
+        async for text in frames:
+            await ws.send_text(text)
+        finished = True
+        tg.cancel_scope.cancel()
+    if finished and close_when_done:
+        try:
+            await ws.close()
+        except RuntimeError:
+            pass
+
+
 async def ws_user(ws: WebSocket, token: str, permission: Permission = Permission.VIEW_PLANT) -> AccessClaims | None:
     """WebSocket auth via ?token=. Closes with 4401/4403 and returns None when the caller must stop."""
     c = container(ws)

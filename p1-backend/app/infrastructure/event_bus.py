@@ -25,6 +25,10 @@ class Subscription:
             raise StopAsyncIteration
         return item
 
+    async def ready(self) -> None:
+        """Registered synchronously in-process; nothing to wait for (RedisSubscription waits for the server)."""
+        return None
+
     def deliver(self, payload: dict) -> None:
         """Called by the bus: put a published payload on this subscription's queue."""
         self._queue.put_nowait(payload)

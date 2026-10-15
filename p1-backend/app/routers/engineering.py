@@ -22,6 +22,8 @@ def bom(asset_id: str, claims: AccessClaims = VIEW, c: Container = Depends(conta
 @router.post("/docs/search", response_model=DocSearchResponse)
 def doc_search(body: DocSearchRequest, claims: AccessClaims = VIEW, c: Container = Depends(container)):
     """POST /engineering/docs/search: search manuals and documents."""
+    if hasattr(c.retriever, "backend"):  # simulated plant: repairs of plants you cannot see stay hidden
+        return c.retriever.search(body, plants=list(claims.plant_ids))
     return c.retriever.search(body)
 
 

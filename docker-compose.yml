@@ -1,77 +1,164 @@
-# PlantGuard AI full stack.   make up   (SSO too:  make up-sso)
-# api       http://localhost:8000/docs      timescale 5432      redis 6379
-# qdrant    http://localhost:6333           mosquitto 1883      keycloak http://localhost:8080 (profile "sso")
-# Secrets come from .env (copy .env.example). Defaults below are for local demo only.
+# PlantGuard AI - the production architecture on one machine (approach 2):
+#   postgres (OT + IT + keycloak databases)  redis (bus, run queue, shared state)  qdrant (vector service, JWT RBAC)
+#   migrate (one-shot)  engine (x1)  worker (x2)  api (x2 behind gateway :8000)  web (:3000)  keycloak (profile sso)
+#
+#   docker compose up --build                  then http://localhost:3000   (sign in: lead / demo)
+#   docker compose --profile sso up --build    + Keycloak on http://localhost:8080 (set AUTH_MODE=keycloak in .env)
+#   docker compose run --rm migrate            re-run migrations;  SIM_RESET=1 docker compose run --rm migrate  = new plant
+# Secrets below are local-only defaults; override them in .env. Production: deploy/gcp + docs/GCP_DEPLOYMENT_GUIDE.md
 name: plantguard
 
-services:
-  api:
-    build: .
-    ports: ["8000:8000"]
-    env_file:
-      - path: .env
-        required: false
-    environment:
-      AUTH_MODE: ${AUTH_MODE:-local}
-      JWT_SECRET: ${JWT_SECRET:-demo-secret-change-me}
-      KEYCLOAK_URL: ${KEYCLOAK_URL:-http://localhost:8080}          # public URL = token issuer
-      KEYCLOAK_INTERNAL_URL: http://keycloak:8080                   # how the api container fetches public keys
-      DATABASE_URL: postgresql://plantguard:${POSTGRES_PASSWORD:-plantguard}@timescale:5432/plantguard
-      REDIS_URL: redis://redis:6379/0
-      QDRANT_URL: http://qdrant:6333
-      MQTT_HOST: mosquitto
-      MQTT_PORT: "1883"
-    depends_on:
-      timescale: {condition: service_healthy}
-      redis: {condition: service_healthy}
-      qdrant: {condition: service_started}
-      mosquitto: {condition: service_started}
-    restart: unless-stopped
+x-backend: &backend
+  build: .
+  image: plantguard-api:local
+  env_file:
+    - path: .env
+      required: false
+  environment: &backend-env
+    PLANTGUARD_ENV: ${PLANTGUARD_ENV:-dev}
+    DATA_MODE: sim
+    LOG_FORMAT: ${LOG_FORMAT:-text}
+    DB_HOST: postgres
+    DB_USER: plantguard
+    DB_PASSWORD: ${POSTGRES_PASSWORD:-plantguard}
+    DB_SSLMODE: disable
+    REDIS_HOST: redis
+    REDIS_TLS: "false"
+    REDIS_AUTH: ${REDIS_PASSWORD:-plantguard-redis}
+    QDRANT_URL: http://qdrant:6333
+    QDRANT_ADMIN_KEY: ${QDRANT_ADMIN_KEY:-plantguard-qdrant-admin-key-change-me}
+    PLANTGUARD_VECTOR_PREFIX: plantguard_local
+    JWT_SECRET: ${JWT_SECRET:-local-dev-secret-change-me-0123456789abcdef}
+    AUTH_MODE: ${AUTH_MODE:-local}
+    KEYCLOAK_URL: ${KEYCLOAK_URL:-http://localhost:8080}
+    KEYCLOAK_INTERNAL_URL: http://keycloak:8080
+    CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+    GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+  # the app containers get a Qdrant JWT that names only their collections (minted at start from the admin key)
+  entrypoint:
+    - sh
+    - -c
+    - |
+      export QDRANT_API_KEY=$$(QDRANT_ADMIN_API_KEY=$$QDRANT_ADMIN_KEY python -m app.rag.qdrant_tokens --role app --plants PLANT-A,PLANT-B --prefix plantguard_local --days 30)
+      exec "$$@"
+    - backend
+  restart: unless-stopped
+  depends_on:
+    migrate: {condition: service_completed_successfully}
 
-  timescale:
-    image: timescale/timescaledb:latest-pg16
+services:
+  postgres:
+    image: postgres:16-alpine
     environment:
       POSTGRES_USER: plantguard
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-plantguard}
       POSTGRES_DB: plantguard
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./deploy/local/postgres-init.sql:/docker-entrypoint-initdb.d/10-init.sql:ro
     ports: ["127.0.0.1:5432:5432"]
-    volumes: ["timescale-data:/var/lib/postgresql/data"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U plantguard -d plantguard"]
-      interval: 5s
-      retries: 10
+      interval: 3s
+      retries: 20
 
   redis:
-    image: redis:7-alpine
+    image: redis:7.2-alpine
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-plantguard-redis}", "--appendonly", "yes",
+              "--maxmemory-policy", "volatile-lru"]
+    volumes: ["redis-data:/data"]
     ports: ["127.0.0.1:6379:6379"]
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      retries: 10
+      test: ["CMD-SHELL", "redis-cli -a \"$${REDIS_PASSWORD:-plantguard-redis}\" --no-auth-warning ping | grep -q PONG"]
+      interval: 3s
+      retries: 20
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-plantguard-redis}
 
   qdrant:
-    image: qdrant/qdrant:latest
-    ports: ["127.0.0.1:6333:6333"]
+    image: qdrant/qdrant:v1.13.4
+    environment:
+      QDRANT__SERVICE__API_KEY: ${QDRANT_ADMIN_KEY:-plantguard-qdrant-admin-key-change-me}
+      QDRANT__SERVICE__JWT_RBAC: "true"
+      QDRANT__TELEMETRY_DISABLED: "true"
     volumes: ["qdrant-data:/qdrant/storage"]
+    ports: ["127.0.0.1:6333:6333"]
 
-  mosquitto:
-    image: eclipse-mosquitto:2
-    ports: ["127.0.0.1:1883:1883"]
-    volumes: ["./config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"]
+  migrate:
+    <<: *backend
+    entrypoint: []
+    command: ["python", "-m", "app.ops", "migrate"]
+    environment:
+      <<: *backend-env
+      PLANTGUARD_ROLE: migrate
+      QDRANT_API_KEY: ${QDRANT_ADMIN_KEY:-plantguard-qdrant-admin-key-change-me}
+      SIM_RESET: ${SIM_RESET:-}
+    restart: "no"
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      qdrant: {condition: service_started}
+
+  engine:
+    <<: *backend
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log"]
+    environment: {<<: *backend-env, PLANTGUARD_ROLE: engine}
+
+  worker:
+    <<: *backend
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log"]
+    environment: {<<: *backend-env, PLANTGUARD_ROLE: worker, WORKER_CONCURRENCY: "4"}
+    deploy: {replicas: 2}
+
+  api:
+    <<: *backend
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers",
+              "--forwarded-allow-ips=*", "--no-access-log"]
+    environment: {<<: *backend-env, PLANTGUARD_ROLE: api}
+    deploy: {replicas: 2}
+
+  gateway:
+    image: nginx:1.27-alpine
+    volumes: ["./deploy/local/nginx.conf:/etc/nginx/nginx.conf:ro"]
+    ports: ["8000:8000"]
+    depends_on: [api]
+    restart: unless-stopped
+
+  web:
+    build:
+      context: p3-frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:8000}
+    environment:
+      AUTH_URL: http://localhost:3000
+      AUTH_SECRET: ${AUTH_SECRET:-local-auth-secret-change-me-0123456789}
+      AUTH_KEYCLOAK_ID: plantguard-web
+      AUTH_KEYCLOAK_SECRET: ${KEYCLOAK_WEB_SECRET:-plantguard-web-dev-secret}
+      AUTH_KEYCLOAK_ISSUER: ${KEYCLOAK_URL:-http://localhost:8080}/realms/plantguard
+      HSTS: "off"
+    ports: ["3000:3000"]
+    depends_on: [gateway]
+    restart: unless-stopped
 
   keycloak:
     profiles: ["sso"]
-    image: quay.io/keycloak/keycloak:26.0
-    command: ["start-dev", "--import-realm"]
+    build: deploy/keycloak
+    command: ["start", "--optimized", "--import-realm"]
     environment:
-      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
       KC_HOSTNAME: http://localhost:8080
       KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
-      KC_HEALTH_ENABLED: "true"
-    ports: ["8080:8080"]
+      KC_HTTP_ENABLED: "true"
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
     volumes: ["./config/keycloak/plantguard-realm.json:/opt/keycloak/data/import/plantguard-realm.json:ro"]
+    ports: ["8080:8080"]
+    depends_on:
+      postgres: {condition: service_healthy}
 
 volumes:
-  timescale-data:
+  pg-data:
+  redis-data:
   qdrant-data:

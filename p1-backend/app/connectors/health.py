@@ -53,6 +53,33 @@ class LatestScores:
             return self._by_asset.get(asset_id)
 
 
+class SharedScores(LatestScores):
+    """LatestScores in Redis: the engine's scorer writes, every API / worker instance reads (1 s local cache)."""
+
+    def __init__(self, kv, ttl_s: float = 1.0):
+        super().__init__()
+        import time as _t
+        self._kv, self._ttl, self._t = kv, ttl_s, _t
+        self._seen: dict[str, float] = {}
+
+    def put(self, health: AssetHealth) -> None:
+        super().put(health)
+        self._seen[health.asset_id] = self._t.monotonic()
+        self._kv.put_json("scores", health.asset_id, health.model_dump(mode="json"))
+
+    def get(self, asset_id: str) -> AssetHealth | None:
+        now = self._t.monotonic()
+        if now - self._seen.get(asset_id, -1e9) < self._ttl:
+            return super().get(asset_id)
+        raw = self._kv.get_json("scores", asset_id)
+        self._seen[asset_id] = now
+        if raw is None:
+            return super().get(asset_id)
+        h = AssetHealth.model_validate(raw)
+        LatestScores.put(self, h)
+        return h
+
+
 class LiveHealthProvider:  # implements HealthProvider
     """Real model output when available, otherwise the fallback (so the demo never goes blank)."""
 

@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from app.rag.corpus import load_manuals
-from app.rag.retriever import FaissRetriever
+from app.rag.retriever import Retriever, backend_factory
 from app.sim.clock import iso
 from app.sim.db import Database
 from app.sim.physics import PROTOCOL, SIGNALS, TAG_SUFFIX, UNITS, Condition, readings, signal_range
@@ -202,9 +202,9 @@ def seed(ot: Database, it: Database, cfg: SimSettings, now: datetime, rng: rando
              "manufacturer, manual_doc_id, pos_x, pos_y) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
              (a["id"], plant["id"], line["id"], st["id"], st["name"], seq, a["name"], a["type"], m["model"],
               m["manufacturer"], None, a["position"][0], a["position"][1]))
-        for sku in m["bom"]:
-            it.x("INSERT INTO bom_items(asset_id, sku, quantity) VALUES(?,?,?)",
-                 (a["id"], sku, 2 if sku == "SKF-7008" else 1))
+        for pos, sku in enumerate(m["bom"]):
+            it.x("INSERT INTO bom_items(asset_id, sku, quantity, pos) VALUES(?,?,?,?)",
+                 (a["id"], sku, 2 if sku == "SKF-7008" else 1, pos))
 
     for t in P["technicians"]:
         it.x("INSERT INTO technicians(id, plant_id, name, crew) VALUES(?,?,?,?)", (t["id"], t["plant"], t["name"], t["crew"]))
@@ -236,8 +236,8 @@ def seed(ot: Database, it: Database, cfg: SimSettings, now: datetime, rng: rando
         for h in range(int(cfg.history_backfill_h), 0, -1):
             hour = (now - timedelta(hours=h)).replace(minute=0, second=0, microsecond=0)
             units = cfg.line_rate_units_per_h * rng.uniform(0.94, 1.0)
-            it.x("INSERT OR IGNORE INTO production_log(plant_id, line_id, hour_ts, order_id, planned_min, run_min, "
-                 "speed_sum, units, defects) VALUES(?,?,?,?,?,?,?,?,?)",
+            it.x("INSERT INTO production_log(plant_id, line_id, hour_ts, order_id, planned_min, run_min, "
+                 "speed_sum, units, defects) VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING",
                  (line["plant_id"], line["id"], iso(hour), order, 60, 60 * rng.uniform(0.95, 1.0), 6000, units,
                   int(rng.random() < 0.2)))
 
@@ -277,10 +277,10 @@ def seed(ot: Database, it: Database, cfg: SimSettings, now: datetime, rng: rando
     # ---------------------------------------------------------------- id counters (golden story numbers)
     for name, start in (("INC", 42), (f"WO-{now.year}", 153), ("STO", 4500012), ("APR", 7), ("FB", 31),
                         ("ALM", 9001), ("DEF", 800), ("INS", 5000)):
-        it.x("INSERT OR IGNORE INTO id_sequences(name, next) VALUES(?,?)", (name, start))
+        it.x("INSERT INTO id_sequences(name, next) VALUES(?,?) ON CONFLICT DO NOTHING", (name, start))
 
-    # ---------------------------------------------------------------- manuals + past repairs -> FAISS
-    FaissRetriever.build(it, cfg.data_dir / "vdb", manuals, iso(now))
+    # ---------------------------------------------------------------- manuals + past repairs -> vector index
+    Retriever.build(it, manuals, iso(now), backend_factory(it, cfg.data_dir, recreate=True))
     for plant, line, seq, st, a in assets(cfg):
         doc = models[a["type"]]["manual"]
         if doc in known_docs:

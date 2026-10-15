@@ -81,6 +81,10 @@ class Container:
     sessions: object | None = None
     option_chat: object | None = None
     background: list = field(default_factory=list)  # zero-arg coroutine factories started by the app lifespan
+    # ---- deployment ----
+    role: str = "all"             # PLANTGUARD_ROLE: all | api | engine | worker | migrate
+    shared: object | None = None  # infrastructure.redis_infra.SharedKV when several processes share the plant
+    readiness: dict = field(default_factory=dict)  # name -> zero-arg check (raises or returns False when not ready)
 
 
 def build_container(settings: Settings | None = None, verifier: TokenVerifier | None = None) -> Container:

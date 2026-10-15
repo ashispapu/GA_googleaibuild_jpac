@@ -13,6 +13,14 @@ from app.services.auth import user_from_claims
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
+def demo_hints() -> bool:
+    """The login page's demo-user list. Off in production unless DEMO_LOGIN_HINTS=true (a demo environment)."""
+    import os
+    from app.core.observability import is_production
+    flag = os.getenv("DEMO_LOGIN_HINTS")
+    return flag.lower() in ("1", "true", "yes") if flag else not is_production()
+
+
 @router.get("/config", response_model=AuthConfig)
 def auth_config(c: Container = Depends(container)):
     """No auth needed. Tells the UI whether to show the local login form or redirect to Keycloak."""
@@ -24,7 +32,7 @@ def demo_users(c: Container = Depends(container)) -> list[dict]:
     """No auth needed. Simulated plant + local sign-in only (empty otherwise): the demo users for the login page,
     with each technician's open jobs, so you can see whom to sign in as. Never lists anything in keycloak mode."""
     engine = c.engine
-    if engine is None or c.verifier.config().mode != "local":
+    if engine is None or c.verifier.config().mode != "local" or not demo_hints():
         return []
     it = engine.it
     out = []

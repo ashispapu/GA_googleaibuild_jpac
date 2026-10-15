@@ -362,7 +362,7 @@ class SqlEngineering:  # implements EngineeringConnector
             raise KeyError(asset_id)
         return AssetBom(asset_id=asset_id, items=[BomItem(sku=r["sku"], description=r["description"], quantity=r["quantity"])
                                                   for r in self.it.q("SELECT b.sku, b.quantity, p.description FROM bom_items b "
-                                                                     "JOIN parts p ON p.sku=b.sku WHERE asset_id=? ORDER BY b.rowid",
+                                                                     "JOIN parts p ON p.sku=b.sku WHERE asset_id=? ORDER BY b.pos, b.sku",
                                                                      (asset_id,))])
 
 

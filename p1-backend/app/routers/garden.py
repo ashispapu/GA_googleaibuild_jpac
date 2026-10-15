@@ -5,7 +5,7 @@ from plantguard_contracts.schemas.security import AccessClaims
 from plantguard_contracts.schemas.workflow import GardenAgent, GardenSnapshot
 
 from app.container import Container
-from app.routers.deps import VIEW, container, ws_user
+from app.routers.deps import VIEW, container, ws_user, pump
 
 router = APIRouter(prefix="/garden", tags=["garden"])
 
@@ -27,14 +27,18 @@ async def stream(ws: WebSocket, token: str):
     c: Container = ws.app.state.container
     await ws.accept()
     sub = c.bus.subscribe("garden.activity")
-    try:
+
+    async def frames():
+        await sub.ready()
         if c.garden is not None:
             for g in c.garden.snapshot(claims).agents:
-                await ws.send_text(g.model_dump_json())
+                yield g.model_dump_json()
         async for payload in sub:
             g = GardenAgent.model_validate(payload)
             if g.plant_id in claims.plant_ids:
-                await ws.send_text(g.model_dump_json())
+                yield g.model_dump_json()
+    try:
+        await pump(ws, frames())
     except (WebSocketDisconnect, RuntimeError):
         pass
     finally:

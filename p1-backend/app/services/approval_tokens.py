@@ -31,6 +31,7 @@ class ApprovalTokenService:
         self._secret, self._ttl, self._clock = secret, ttl_s, clock
         self._used: set[tuple[str, str]] = set()
         self._lock = threading.Lock()
+        self.shared = None  # SharedKV: single use across every API instance (set by the container)
 
     def issue(self, approver_id: str, incident_id: str, option_id: str, allowed_actions: set[str]) -> str:
         """Create a token for one approver, incident, option and set of action kinds."""
@@ -58,6 +59,10 @@ class ApprovalTokenService:
 
     def consume(self, claims: ApprovalClaims, action: str) -> None:
         """Mark (jti, action) as spent. A token may be used once per action kind it allows."""
+        if self.shared is not None:
+            if not self.shared.claim_once(f"approval:{claims.jti}:{action}", self._ttl + 60):
+                raise ApprovalError(ErrorCode.APPROVAL_INVALID, "Approval token already used for this action")
+            return
         with self._lock:
             if (claims.jti, action) in self._used:
                 raise ApprovalError(ErrorCode.APPROVAL_INVALID, "Approval token already used for this action")

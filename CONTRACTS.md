@@ -1,4 +1,8 @@
-# PlantGuard AI — Contracts v1.2
+# PlantGuard AI — Contracts v1.3
+
+**v1.3 (additive, current): production deployment.** The same code now also runs as several cooperating processes
+(roles `api` · `engine` · `worker` · `migrate`) on PostgreSQL, Redis and a Qdrant vector service (C12). Nothing in the
+API, the streams or the schemas changed; the single-process setup (SQLite + FAISS, role `all`) is still the default.
 
 **v1.2 (additive, current).** The backend now runs a **live simulated plant** (`DATA_MODE=sim`, default) instead of only
 the scripted INC-0042 story, and an incident no longer ends at approval: a **technician** does the repair, the machine is
@@ -22,6 +26,7 @@ Owners: **BE** Backend core · **AG** Agents & RAG · **FE** Frontend · **ML** 
 | C9 | Golden data | ML → all | `fixtures/build_fixtures.py`, `fixtures/story/` (fixtures mode only) |
 | C10 *v1.2* | Simulated plant & data model | BE → all | `config/simulation.ini`, `config/plant.yaml`, `p1-backend/app/sim/` |
 | C11 *v1.2* | Repair workflow | BE → FE, AG | `schemas/workflow.py`, `p1-backend/app/services/repair_workflow.py` |
+| C12 *v1.3* | Deployment roles & shared state | BE → ops | `p1-backend/app/sim/wiring.py`, `app/infrastructure/redis_infra.py`, `deploy/` |
 
 ---
 
@@ -244,6 +249,11 @@ class AgentRuntime(Protocol):
 
 ## C8. Event bus
 
+One process: in memory (`InMemoryEventBus`). Several processes *v1.3*: Redis pub/sub (`RedisEventBus`, channel
+`<PLANTGUARD_REDIS_PREFIX>:bus:<channel>`, JSON of the payload model). Same channels, same payloads, at-most-once delivery:
+anything that must not be lost is in PostgreSQL first (incident events, alarms, verifications) and the bus only says
+"look now". Subscribers call `await sub.ready()` before reading the history, so nothing falls between the two.
+
 | Channel | Payload | Publisher → Subscriber |
 |---|---|---|
 | `ot.telemetry.{plant}.{line}` | TelemetryMessage | gateway → WS fan-out, scorer |
@@ -256,6 +266,7 @@ class AgentRuntime(Protocol):
 | `sim.fault` *v1.2* | FaultStarted | engine → log / admin UI |
 | `sim.verification` *v1.2* | RepairVerified | engine → repair workflow (→ ready_to_close or repair_failed) |
 | `garden.activity` *v1.2* | GardenAgent | garden service → WS /garden/stream |
+| `ot.raw.{plant}.{line}` *v1.3* | TelemetryBatch (one tick of a line) | engine → api instances (OT gateway → WS /ot/stream) |
 
 ## C9. Golden numbers (do not change without telling everyone)
 
@@ -280,14 +291,24 @@ Valid in **fixtures mode** (tests, mock server, scripted demo). In sim mode the 
 
 - **Clock**: `SimClock`, `[clock] scale` plant minutes per real minute (60 = one real minute is one plant hour). Plant time
   is stored, so it survives restarts. All plant timestamps (incidents, work orders, transfers) are plant time.
-- **Two databases, kept separate like a real plant** (SQLite, WAL, foreign keys enforced, `[storage] data_dir`):
+- **Two databases, kept separate like a real plant** — SQLite files (WAL, foreign keys enforced, `[storage] data_dir`) in a
+  single process, or *v1.3* two PostgreSQL databases (`PLANTGUARD_OT/IT_DATABASE_URL` or `DB_HOST`…, see C12). Same
+  schema text for both (`app/sim/db.py`; `app/sim/pgdb.py` translates it), same queries (`?` placeholders, `ON CONFLICT`
+  upserts, no `rowid`):
   - `ot.db` — plants, lines, stations, equipment, `asset_conditions` (developing faults), historian, alarms, machine state.
   - `it.db` — ERP (parts, stock, stock_transfers, stock_movements, suppliers), MES (orders, schedule_slots, production,
     speed plans), CMMS (work_orders, work_order_parts, work_order_updates, repair_verifications), PLM (BOM), QMS
     (defects), workforce (technicians, skills, shifts), energy, identity (users, user_plants, sessions, audit), incidents,
     events, options, approvals, feedback, purchase_orders, option_chat. Every table links by foreign key; nothing stands alone.
-  - FAISS index (`IndexIDMap2` over inner product, hashing TF-IDF embeddings + lexical re-score) of the manuals in
-    `p4-ml-data/corpus/manuals/` and of every closed work order (added when the technician closes it).
+  - Vector index of the manuals in `p4-ml-data/corpus/manuals/` and of every closed work order (added when the
+    technician closes it): hashing TF-IDF embeddings (vocabulary in IT `meta.vdb_embedder`) + lexical re-score.
+    Single process: FAISS (`IndexIDMap2`, inner product) in `data_dir/vdb`. *v1.3* Production: **Qdrant**, with
+    **collection isolation** — `<prefix>_manuals` (shared, read-only for the app) and `<prefix>_workorders_<plant>`
+    (one per plant). A search opens only the collections of the plants the caller may see (asset search: that asset's
+    plant), and every service authenticates with a Qdrant JWT that names exactly its collections (`app/rag/qdrant_tokens.py`,
+    `deploy/qdrant/mint_token.sh`). `<prefix>` = `PLANTGUARD_VECTOR_PREFIX` (default `plantguard_<env>`).
+  - *v1.3* `incidents.version` (optimistic locking: a save that lost a race gets `409 CONFLICT`, the run coordinator
+    re-applies its own fields), `bom_items.pos` (BOM order), id sequences atomic across processes.
 - **Seed** from `config/plant.yaml` (models, signatures, BOM, suppliers, parts, plants, technicians, users, orders, tariffs)
   on first start, or every start with `SIM_RESET=1` / `[storage] reset_on_start`.
 - **Faults**: random (Poisson, `mean_interval_h`, at most `max_concurrent`), or injected (POST /simulator/faults). Wear
@@ -311,6 +332,35 @@ AI analysing → awaiting approval → (approve) executed = waiting_technician �
 - In sim mode a **rejected** option keeps the incident awaiting approval (the lead can choose another); a closed incident
   needs the technician — `POST /feedback` is fixtures-mode only.
 - `MaintenanceLogEntry`: solution, parts, technician, approver, actual vs AI root cause, rounds, time to fix, downtime.
+
+## C12. Deployment roles & shared state (v1.3)
+
+`PLANTGUARD_ROLE` picks what one process does; all roles run the same image (`Dockerfile`).
+
+| Role | Runs | Scale | Cloud Run |
+|---|---|---|---|
+| `all` | everything (default; SQLite + FAISS unless databases are configured) | 1 | approach 1 only |
+| `api` | REST + WebSockets | 1…N | service, public, session affinity |
+| `engine` | simulation tick, live scoring, alert → incident, alarm / verification reactions, restart recovery | exactly 1 active (Redis lease `lease:plant-engine`, 15 s) | service, internal, min = max = 1 |
+| `worker` | agent runs from the run queue | 1…N (`WORKER_CONCURRENCY` runs each) | service, internal |
+| `migrate` | schema create/upgrade, seed, vector collections + index; exits | job | job, before every rollout |
+
+Several processes need PostgreSQL **and** Redis **and** Qdrant (the API refuses to start otherwise). Shared state:
+
+| What | Where | Rule |
+|---|---|---|
+| Everything durable (plant, ERP/MES/CMMS, incidents + events, audit, sessions) | PostgreSQL | system of record |
+| Plant clock | IT `meta` (`clock_anchor_*`, wall-time anchor) | every process computes the same plant time; speed changes reach all within 2 s |
+| Analysis runs | Redis stream `runs`, group `workers` | one worker per run; un-acked runs are re-claimed after `RUN_RECLAIM_IDLE_S` (heartbeat every 30 s); `claim_once(run:<id>:<round>)` stops duplicates |
+| Approval tokens | Redis `once:approval:<jti>:<action>` | single use across all instances |
+| Rate limits | Redis counters per client (hashed key) | one limit across all API instances; fails open |
+| Latest health scores, last telemetry values, garden positions | Redis hashes | caches; rebuilt by the engine |
+| Audit hash chain | PostgreSQL advisory lock | appends are serialised across processes |
+
+Operations: `python -m app.ops migrate | reindex | snapshot | check`. Health: `GET /healthz` (process alive),
+`GET /readyz` (databases, Redis, Qdrant answer; 503 otherwise). Logs: JSON with `severity`, request id and Cloud Trace id;
+bearer tokens are redacted. `PLANTGUARD_ENV=prod` refuses demo secrets, `CORS_ORIGINS=*` and `SIM_RESET`, hides `/docs`
+and the login page's demo-user list (`DEMO_LOGIN_HINTS=true` brings it back for a demo environment).
 
 ## Change process
 

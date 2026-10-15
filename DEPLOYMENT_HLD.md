@@ -1,5 +1,9 @@
 # PlantGuard AI: Cloud deployment HLD (Google Cloud)
 
+> **Superseded for production by [docs/GCP_DEPLOYMENT_GUIDE.md](docs/GCP_DEPLOYMENT_GUIDE.md)** (approach 2: Cloud SQL
+> + Memorystore + a Qdrant vector service + Cloud Run roles, with scripts in `deploy/gcp/`). This document is kept
+> for the earlier single-service options.
+
 High-level design for running the PlantGuard AI demo online on Google Cloud. It has two parts:
 
 | Part | Approach | When to use |

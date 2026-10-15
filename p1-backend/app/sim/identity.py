@@ -115,14 +115,17 @@ class SqlAuditLog:
         self.it, self._clock, self._lock = it, clock, threading.Lock()
 
     def log(self, actor_type: str, actor: str, action: str, resource: str, details: dict | None = None) -> AuditEntry:
-        with self._lock:
-            last = self.it.one("SELECT seq, hash FROM audit_log ORDER BY seq DESC LIMIT 1")
+        # One chain for every process: read-last + append happen in one transaction under a database-wide lock
+        # (Postgres advisory lock; SQLite is single-process and its write transaction already serialises).
+        with self._lock, self.it.tx() as c:
+            self.it.advisory_lock(c, "plantguard-audit-chain")
+            last = c.execute("SELECT seq, hash FROM audit_log ORDER BY seq DESC LIMIT 1").fetchone()
             seq, prev = (last["seq"] + 1, last["hash"]) if last else (1, GENESIS)
             entry = {"seq": seq, "ts": self._clock().isoformat(), "actor_type": actor_type, "actor": actor,
-                     "action": action, "resource": resource, "details": details or {}}
+                     "action": action, "resource": resource, "details": json.loads(json.dumps(details or {}, default=str))}
             entry["prev_hash"] = prev
             entry["hash"] = entry_hash(prev, entry)
-            self.it.x("INSERT INTO audit_log(seq, ts, actor_type, actor, action, resource, details, prev_hash, hash) "
+            c.execute("INSERT INTO audit_log(seq, ts, actor_type, actor, action, resource, details, prev_hash, hash) "
                       "VALUES(?,?,?,?,?,?,?,?,?)", (seq, entry["ts"], actor_type, actor, action, resource,
                                                     json.dumps(entry["details"], default=str), prev, entry["hash"]))
             return AuditEntry(**entry)
@@ -146,7 +149,8 @@ class SqlAuditLog:
              before_seq: int | None = None) -> tuple[list[AuditEntry], int, int | None]:
         where, args = [], []
         if incident_id:
-            where.append("(resource=? OR json_extract(details, '$.incident_id')=?)")
+            where.append("(resource=? OR " + ("(details::jsonb->>'incident_id')" if self.it.dialect == "postgres"
+                                              else "json_extract(details, '$.incident_id')") + "=?)")
             args += [incident_id, incident_id]
         total = self.it.val("SELECT COUNT(*) FROM audit_log" + (" WHERE " + " AND ".join(where) if where else ""), args, 0)
         if before_seq is not None:

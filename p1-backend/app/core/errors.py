@@ -32,6 +32,13 @@ def install_error_handlers(app: FastAPI) -> None:
         """ApiError -> its own status, code and message."""
         return error_response(e.status, e.code, e.message, e.details)
 
+    from app.repositories.incident_repository import ConcurrentUpdate
+
+    @app.exception_handler(ConcurrentUpdate)
+    async def _conc(_: Request, e: ConcurrentUpdate):
+        """Another user or process changed the incident in the meantime -> 409, the UI reloads it."""
+        return error_response(409, ErrorCode.CONFLICT, "This issue was just changed by someone else. Reload and try again.")
+
     @app.exception_handler(KeyError)
     async def _key(_: Request, e: KeyError):  # connectors raise KeyError for unknown ids -> 404
         """KeyError (raised by connectors for unknown ids) -> 404 NOT_FOUND."""

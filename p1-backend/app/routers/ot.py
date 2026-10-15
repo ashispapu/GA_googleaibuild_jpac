@@ -5,7 +5,7 @@ from plantguard_contracts.schemas.ot import Alarm, Signal, SignalSeries
 from plantguard_contracts.schemas.security import AccessClaims
 
 from app.container import Container
-from app.routers.deps import VIEW, container, ws_user
+from app.routers.deps import VIEW, container, ws_user, pump
 
 router = APIRouter(prefix="/ot", tags=["ot"])
 
@@ -40,8 +40,11 @@ async def stream(ws: WebSocket, token: str, line_id: str = "L3"):
         await ws.close(code=4404)
         return
     await ws.accept()
-    try:
+
+    async def frames():
         async for msg in c.ot.subscribe(plant_id, line_id):
-            await ws.send_text(msg.model_dump_json())
+            yield msg.model_dump_json()
+    try:
+        await pump(ws, frames())
     except (WebSocketDisconnect, RuntimeError):
         pass

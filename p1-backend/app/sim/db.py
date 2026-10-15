@@ -13,6 +13,7 @@ id (`asset_id`) and plant/line ids, which is the integration key between OT and 
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 import threading
 from contextlib import contextmanager
@@ -93,7 +94,7 @@ CREATE TABLE IF NOT EXISTS stock (
   PRIMARY KEY (sku, plant_id));
 CREATE TABLE IF NOT EXISTS bom_items (
   asset_id TEXT NOT NULL REFERENCES equipment(asset_id), sku TEXT NOT NULL REFERENCES parts(sku),
-  quantity INTEGER NOT NULL, PRIMARY KEY (asset_id, sku));
+  quantity INTEGER NOT NULL, pos INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (asset_id, sku));
 -- ---------------------------------------------------------------- workforce + identity
 CREATE TABLE IF NOT EXISTS technicians (
   id TEXT PRIMARY KEY, plant_id TEXT NOT NULL REFERENCES plants(id), name TEXT NOT NULL, crew INTEGER NOT NULL);
@@ -144,6 +145,7 @@ CREATE TABLE IF NOT EXISTS incidents (
   round INTEGER NOT NULL DEFAULT 1, assigned_technician_id TEXT REFERENCES technicians(id),
   work_order_id TEXT, approved_by TEXT REFERENCES users(id), created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
   resolved_at TEXT, payload TEXT NOT NULL, run_state TEXT NOT NULL DEFAULT 'pending',
+  version INTEGER NOT NULL DEFAULT 0,
   FOREIGN KEY (plant_id, line_id) REFERENCES lines(plant_id, id));
 CREATE INDEX IF NOT EXISTS incidents_status ON incidents(status);
 CREATE TABLE IF NOT EXISTS incident_events (
@@ -175,7 +177,8 @@ CREATE TABLE IF NOT EXISTS stock_transfers (
 CREATE TABLE IF NOT EXISTS stock_movements (
   id INTEGER PRIMARY KEY AUTOINCREMENT, sku TEXT NOT NULL REFERENCES parts(sku), plant_id TEXT NOT NULL REFERENCES plants(id),
   qty_delta INTEGER NOT NULL, reason TEXT NOT NULL, transfer_id TEXT REFERENCES stock_transfers(id),
-  work_order_id TEXT REFERENCES work_orders(id), ts TEXT NOT NULL);
+  work_order_id TEXT REFERENCES work_orders(id), ts TEXT NOT NULL,
+  purchase_order_id TEXT REFERENCES purchase_orders(id));
 CREATE TABLE IF NOT EXISTS line_speed_plan (
   id INTEGER PRIMARY KEY AUTOINCREMENT, plant_id TEXT NOT NULL, line_id TEXT NOT NULL, speed_pct INTEGER NOT NULL,
   start_ts TEXT NOT NULL, end_ts TEXT, incident_id TEXT REFERENCES incidents(id), approval_id TEXT REFERENCES approvals(id),
@@ -211,7 +214,10 @@ CREATE TABLE IF NOT EXISTS option_chat (
 
 class Database:
     """One SQLite file shared by every thread of the backend (the event loop and tool worker threads).
-    Writes are serialised with a lock; foreign keys are enforced on every connection."""
+    Writes are serialised with a lock; foreign keys are enforced on every connection. Single process only:
+    production uses PgDatabase (sim/pgdb.py) with the same interface."""
+
+    dialect = "sqlite"
 
     def __init__(self, path: Path, schema: str):
         self.path = path
@@ -231,6 +237,13 @@ class Database:
         cols = {r["name"] for r in self._conn.execute("PRAGMA table_info(stock_movements)").fetchall()}
         if cols and "purchase_order_id" not in cols:
             self._conn.execute("ALTER TABLE stock_movements ADD COLUMN purchase_order_id TEXT REFERENCES purchase_orders(id)")
+        cols = {r["name"] for r in self._conn.execute("PRAGMA table_info(incidents)").fetchall()}
+        if cols and "version" not in cols:
+            self._conn.execute("ALTER TABLE incidents ADD COLUMN version INTEGER NOT NULL DEFAULT 0")
+        cols = {r["name"] for r in self._conn.execute("PRAGMA table_info(bom_items)").fetchall()}
+        if cols and "pos" not in cols:  # BOM order used to be the insertion order
+            self._conn.execute("ALTER TABLE bom_items ADD COLUMN pos INTEGER NOT NULL DEFAULT 0")
+            self._conn.execute("UPDATE bom_items SET pos=rowid")
 
     # ---- queries ----
     def q(self, sql: str, args: tuple | list = ()) -> list[sqlite3.Row]:
@@ -250,9 +263,31 @@ class Database:
         with self._lock:
             return self._conn.execute(sql, args).lastrowid
 
+    def insert_id(self, sql: str, args: tuple | list = ()) -> int:
+        """INSERT and return the generated `id` column."""
+        with self._lock:
+            return self._conn.execute(sql, args).lastrowid
+
+    def xc(self, sql: str, args: tuple | list = ()) -> int:
+        """Execute one statement; returns the number of rows changed."""
+        with self._lock:
+            return self._conn.execute(sql, args).rowcount
+
     def many(self, sql: str, rows: list[tuple]) -> None:
         with self._lock:
             self._conn.executemany(sql, rows)
+
+    def advisory_lock(self, conn, key: str) -> None:
+        """Single process: the transaction lock already serialises writers."""
+        return None
+
+    def ping(self) -> bool:
+        return self.val("SELECT 1") == 1
+
+    @contextmanager
+    def session_lock(self, key: str, timeout_s: float = 600):
+        """One process owns a SQLite file: nothing to coordinate."""
+        yield
 
     @contextmanager
     def tx(self) -> Iterator[sqlite3.Connection]:
@@ -293,5 +328,42 @@ def dumps(obj: Any) -> str:
     return json.dumps(obj, separators=(",", ":"), default=str)
 
 
-def open_databases(data_dir: Path) -> tuple[Database, Database]:
+def database_urls() -> tuple[str | None, str | None]:
+    """PostgreSQL when both are known, else SQLite files. Either full URLs:
+      PLANTGUARD_OT_DATABASE_URL / PLANTGUARD_IT_DATABASE_URL = postgresql://user:pass@host:5432/db
+    or the parts (Cloud Run: the password comes from Secret Manager as its own variable):
+      DB_HOST, DB_PORT (5432), DB_USER, DB_PASSWORD, DB_NAME_OT, DB_NAME_IT, DB_SSLMODE (require)"""
+    ot, it = os.getenv("PLANTGUARD_OT_DATABASE_URL") or None, os.getenv("PLANTGUARD_IT_DATABASE_URL") or None
+    host = os.getenv("DB_HOST")
+    if not (ot and it) and host:
+        from urllib.parse import quote
+        user, pw = quote(os.getenv("DB_USER", "plantguard"), safe=""), quote(os.getenv("DB_PASSWORD", ""), safe="")
+        base = f"postgresql://{user}{':' + pw if pw else ''}@{host}:{os.getenv('DB_PORT', '5432')}"
+        ssl = os.getenv("DB_SSLMODE", "require")
+        ot = ot or f"{base}/{os.getenv('DB_NAME_OT', 'plantguard_ot')}?sslmode={ssl}&application_name=plantguard"
+        it = it or f"{base}/{os.getenv('DB_NAME_IT', 'plantguard_it')}?sslmode={ssl}&application_name=plantguard"
+    return ot, it
+
+
+def open_databases(data_dir: Path, wipe_first: bool = False):
+    """PostgreSQL when both database URLs are set (production, several processes), else the SQLite files."""
+    ot_url, it_url = database_urls()
+    if ot_url and it_url:
+        from app.sim.pgdb import PgDatabase
+        pool = int(os.getenv("PLANTGUARD_DB_POOL_SIZE", "10"))
+        if wipe_first:
+            for url, schema, name in ((ot_url, OT_SCHEMA, "ot"), (it_url, IT_SCHEMA, "it")):
+                tmp = PgDatabase(url, "", name, max_size=1)
+                tmp.wipe()
+                tmp.close()
+        return (PgDatabase(ot_url, OT_SCHEMA, "ot", max_size=pool,
+                           migrations=["CREATE INDEX IF NOT EXISTS historian_ts ON historian(ts)"]),
+                PgDatabase(it_url, IT_SCHEMA, "it", max_size=pool,
+                           migrations=["ALTER TABLE stock_movements ADD COLUMN IF NOT EXISTS purchase_order_id TEXT "
+                                       "REFERENCES purchase_orders(id)",
+                                       "ALTER TABLE bom_items ADD COLUMN IF NOT EXISTS pos INTEGER NOT NULL DEFAULT 0",
+                                       "ALTER TABLE incidents ADD COLUMN IF NOT EXISTS version INTEGER NOT NULL DEFAULT 0",
+                                       "CREATE INDEX IF NOT EXISTS incidents_updated ON incidents(status, updated_at)",
+                                       "CREATE INDEX IF NOT EXISTS incidents_asset ON incidents(asset_id, status)",
+                                       "CREATE INDEX IF NOT EXISTS events_round ON incident_events(incident_id, round)"]))
     return Database(data_dir / "ot.db", OT_SCHEMA), Database(data_dir / "it.db", IT_SCHEMA)

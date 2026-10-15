@@ -50,3 +50,55 @@ def parse_ts(s: str) -> datetime:
 
 def iso(dt: datetime) -> str:
     return dt.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+class SharedSimClock(SimClock):
+    """The plant clock when several processes run the plant (api x N, engine, worker x N).
+
+    The anchor (plant time at a wall-clock instant) and the speed live in the IT database (meta), so every process
+    computes the same plant time; a speed change made through any API instance reaches the others within
+    `refresh_s`. Wall time (not a process-local monotonic clock) is used because instances run on different hosts."""
+
+    KEYS = ("clock_anchor_plant", "clock_anchor_wall", "clock_scale")
+
+    def __init__(self, db, start: datetime, scale: float, refresh_s: float = 2.0):
+        super().__init__(start, scale, real=time.time)
+        self._db, self._refresh_s, self._loaded_at = db, refresh_s, -1e9
+        if not self._load():
+            self._store()
+
+    def _load(self) -> bool:
+        plant, wall, scale = (self._db.meta(k) for k in self.KEYS)
+        if not (plant and wall and scale):
+            return False
+        with self._lock:
+            self._anchor_sim, self._anchor_real, self._scale = parse_ts(plant), float(wall), float(scale)
+        self._loaded_at = time.monotonic()
+        return True
+
+    def _store(self) -> None:
+        with self._lock:
+            plant, wall, scale = self._anchor_sim, self._anchor_real, self._scale
+        self._db.set_meta("clock_anchor_plant", plant.isoformat())
+        self._db.set_meta("clock_anchor_wall", repr(wall))
+        self._db.set_meta("clock_scale", repr(scale))
+        self._loaded_at = time.monotonic()
+
+    def now(self) -> datetime:
+        if time.monotonic() - self._loaded_at > self._refresh_s:
+            try:
+                self._load()
+            except Exception:  # database briefly unavailable: keep the last anchor
+                self._loaded_at = time.monotonic()
+        return super().now()
+
+    def set_scale(self, scale: float) -> None:
+        self._load()
+        super().set_scale(scale)
+        self._store()
+
+    def reanchor(self, plant_time: datetime) -> None:
+        """The engine restarted: continue from where the plant stopped (the plant does not age while it is down)."""
+        with self._lock:
+            self._anchor_sim, self._anchor_real = plant_time, time.time()
+        self._store()

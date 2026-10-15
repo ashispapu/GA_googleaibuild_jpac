@@ -50,6 +50,13 @@ class OtAlarm(BaseModel):
     ts: datetime
 
 
+class TelemetryBatch(BaseModel):
+    """One tick of one line's readings, published on `ot.raw.<plant>.<line>` for the other processes."""
+    plant_id: str
+    line_id: str
+    messages: list[TelemetryMessage]
+
+
 class FaultStarted(BaseModel):
     asset_id: str
     ts: datetime
@@ -87,6 +94,11 @@ class PlantEngine:
         self._ticks = 0
         self.health = None  # set by the container: HealthProvider for verification
         self.running = False
+        # several processes: the engine process publishes each tick's readings on the shared bus and keeps the last
+        # values in Redis; API processes (which do not run the loop) stream from there
+        self.shared_kv = None
+        self.share_telemetry = False
+        self.drives_plant = True  # False in API / worker processes: they never run the loop
 
     # ------------------------------------------------------------------ public helpers
     def line_of(self, asset_id: str) -> tuple[str, str]:
@@ -114,6 +126,10 @@ class PlantEngine:
 
     async def subscribe(self, plant_id: str, line_id: str) -> AsyncIterator[TelemetryMessage]:
         """Live readings of one line (TelemetrySource for the OT gateway)."""
+        if self.share_telemetry and not self.drives_plant:
+            async for m in self._subscribe_shared(plant_id, line_id):
+                yield m
+            return
         q: asyncio.Queue = asyncio.Queue(maxsize=500)
         self._subs[(plant_id, line_id)].add(q)
         try:
@@ -124,6 +140,28 @@ class PlantEngine:
                 yield await q.get()
         finally:
             self._subs[(plant_id, line_id)].discard(q)
+
+    async def _subscribe_shared(self, plant_id: str, line_id: str) -> AsyncIterator[TelemetryMessage]:
+        sub = self.bus.subscribe(f"ot.raw.{plant_id}.{line_id}")
+        try:
+            await sub.ready()
+            if self.shared_kv is not None:
+                for raw in self.shared_kv.all_json(f"telemetry:{plant_id}:{line_id}").values():
+                    yield TelemetryMessage.model_validate(raw)
+            async for payload in sub:
+                for m in payload.get("messages", ()):
+                    yield TelemetryMessage.model_validate(m)
+        finally:
+            sub.close()
+
+    async def _share(self, batches: dict[tuple[str, str], list[TelemetryMessage]]) -> None:
+        for (plant_id, line_id), msgs in batches.items():
+            await self.bus.publish(f"ot.raw.{plant_id}.{line_id}", TelemetryBatch(plant_id=plant_id, line_id=line_id,
+                                                                               messages=msgs))
+            if self.shared_kv is not None:
+                kv, name = self.shared_kv, f"telemetry:{plant_id}:{line_id}"
+                values = {m.asset_id: m.model_dump(mode="json") for m in msgs}
+                await asyncio.to_thread(kv.put_many_json, name, values)
 
     def set_state(self, asset_id: str, state: str, reason: str | None) -> None:
         now = iso(self.clock())
@@ -244,6 +282,7 @@ class PlantEngine:
         # 4. readings, live stream, alarms
         write_hist = self._last_hist is None or (now - self._last_hist) >= timedelta(minutes=self.cfg.history_interval_min)
         hist_rows = []
+        batches: dict[tuple[str, str], list[TelemetryMessage]] = defaultdict(list)
         for aid, a in self.assets.items():
             state, _ = self.machine_state(aid)
             c = conds.get(aid)
@@ -253,6 +292,7 @@ class PlantEngine:
                                    state=MachineState(state) if state in MachineState._value2member_map_ else MachineState.STOPPED,
                                    values=v, quality=DataQuality.GOOD)
             self.latest[aid] = msg
+            batches[(a.plant_id, a.line_id)].append(msg)
             for q in list(self._subs.get((a.plant_id, a.line_id), ())):
                 if q.full():
                     q.get_nowait()
@@ -260,10 +300,15 @@ class PlantEngine:
             if write_hist:
                 hist_rows.append((aid, iso(now), state, speeds[(a.plant_id, a.line_id)], *[v[s] for s in SIGNALS], "good"))
             await self._alarms(aid, a, v, state)
+        if self.share_telemetry:
+            try:
+                await self._share(batches)
+            except Exception:
+                log.exception("publishing telemetry failed")
         if hist_rows:
-            self.ot.many("INSERT OR REPLACE INTO historian(asset_id, ts, state, speed_pct, vibration_rms, vibration_peak, "
+            self.ot.many("INSERT INTO historian(asset_id, ts, state, speed_pct, vibration_rms, vibration_peak, "
                          "vibration_kurtosis, bearing_temp, motor_temp, spindle_rpm, motor_current, power_kw, quality) "
-                         "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", hist_rows)
+                         "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_id, ts) DO NOTHING", hist_rows)
             self._last_hist = now
 
         # 5. production, quality
@@ -340,8 +385,9 @@ class PlantEngine:
                 defects = self._quality(now, plant_id, line_id, order["id"], units, conds)
             self.it.x("INSERT INTO production_log(plant_id, line_id, hour_ts, order_id, planned_min, run_min, speed_sum, "
                       "units, defects) VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(plant_id, line_id, hour_ts) DO UPDATE SET "
-                      "planned_min=planned_min+excluded.planned_min, run_min=run_min+excluded.run_min, "
-                      "speed_sum=speed_sum+excluded.speed_sum, units=units+excluded.units, defects=defects+excluded.defects",
+                      "planned_min=production_log.planned_min+excluded.planned_min, run_min=production_log.run_min+excluded.run_min, "
+                      "speed_sum=production_log.speed_sum+excluded.speed_sum, units=production_log.units+excluded.units, "
+                      "defects=production_log.defects+excluded.defects",
                       (plant_id, line_id, hour, order["id"] if order else None, dt_h * 60, dt_h * 60 if running else 0,
                        speed * dt_h * 60 if running else 0, units, defects))
 
@@ -392,7 +438,7 @@ class PlantEngine:
             with self.it.tx() as c:
                 loc = c.execute("SELECT id FROM storage_locations WHERE plant_id=?", (tr["to_plant"],)).fetchone()["id"]
                 c.execute("INSERT INTO stock(sku, plant_id, location_id, quantity) VALUES(?,?,?,?) ON CONFLICT(sku, plant_id) "
-                          "DO UPDATE SET quantity=quantity+excluded.quantity", (tr["sku"], tr["to_plant"], loc, tr["quantity"]))
+                          "DO UPDATE SET quantity=stock.quantity+excluded.quantity", (tr["sku"], tr["to_plant"], loc, tr["quantity"]))
                 c.execute("INSERT INTO stock_movements(sku, plant_id, qty_delta, reason, transfer_id, ts) VALUES(?,?,?,?,?,?)",
                           (tr["sku"], tr["to_plant"], tr["quantity"], "transfer_in", tr["id"], t))
                 c.execute("UPDATE stock_transfers SET status='delivered', delivered_at=? WHERE id=?", (t, tr["id"]))
@@ -401,7 +447,7 @@ class PlantEngine:
             with self.it.tx() as c:
                 loc = c.execute("SELECT id FROM storage_locations WHERE plant_id=?", (po["to_plant"],)).fetchone()["id"]
                 c.execute("INSERT INTO stock(sku, plant_id, location_id, quantity) VALUES(?,?,?,?) ON CONFLICT(sku, plant_id) "
-                          "DO UPDATE SET quantity=quantity+excluded.quantity", (po["sku"], po["to_plant"], loc, po["quantity"]))
+                          "DO UPDATE SET quantity=stock.quantity+excluded.quantity", (po["sku"], po["to_plant"], loc, po["quantity"]))
                 c.execute("INSERT INTO stock_movements(sku, plant_id, qty_delta, reason, purchase_order_id, ts) "
                           "VALUES(?,?,?,?,?,?)", (po["sku"], po["to_plant"], po["quantity"], "purchase_receipt", po["id"], t))
                 c.execute("UPDATE purchase_orders SET status='delivered', delivered_at=? WHERE id=?", (t, po["id"]))

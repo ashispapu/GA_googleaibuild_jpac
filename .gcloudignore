@@ -1,0 +1,13 @@
+# what `gcloud builds submit` uploads (the Dockerfiles' .dockerignore files then narrow it further)
+.git
+.gcloudignore
+**/node_modules
+p3-frontend/.next
+**/__pycache__
+.pytest_cache
+var
+.env
+.env.*
+deploy/gcp/config.env
+deploy/gcp/.last_tag
+*.zip

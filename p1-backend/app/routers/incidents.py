@@ -12,7 +12,7 @@ from plantguard_contracts.schemas.workflow import (IncidentContext, IncidentOver
                                                    WorkCompleteRequest, WorkNoteRequest, WorkStartRequest, WorkUpdate)
 
 from app.container import Container
-from app.routers.deps import VIEW, container, require, ws_user
+from app.routers.deps import VIEW, container, require, ws_user, pump
 from app.core.errors import ApiError
 
 router = APIRouter(prefix="/incidents", tags=["incidents"])
@@ -194,10 +194,12 @@ async def stream(ws: WebSocket, incident_id: str, token: str, speed: float = Que
         return
     await ws.accept()
     c.runs.ensure_started(incident_id, speed)
-    try:
+
+    async def frames():
         async for ev in c.runs.follow(incident_id, after_seq):
-            await ws.send_text(ev.model_dump_json())
-        await ws.close()
+            yield ev.model_dump_json()
+    try:
+        await pump(ws, frames(), close_when_done=True)
     except (WebSocketDisconnect, RuntimeError):
         pass
 

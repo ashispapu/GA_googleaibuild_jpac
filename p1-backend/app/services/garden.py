@@ -58,15 +58,22 @@ class GardenService:
     def __init__(self, bus, clock, stage_fn, repo):
         self.bus, self.clock, self.stage_fn, self.repo = bus, clock, stage_fn, repo
         self.agents: dict[str, GardenAgent] = {}
+        self.kv = None  # SharedKV: positions shared by every process (set by the container)
 
     def _put(self, rec, agent: str, node: str, activity: str) -> None:
         inc = rec.incident
-        prev = self.agents.get(inc.id)
+        if self.kv is not None:  # another process may have moved it: compare with the shared position
+            raw = self.kv.get_json("garden", inc.id)
+            prev = GardenAgent.model_validate(raw) if raw else None
+        else:
+            prev = self.agents.get(inc.id)
         g = GardenAgent(incident_id=inc.id, asset_id=inc.asset_id, plant_id=inc.plant_id, agent=agent, node=node,
                         activity=activity, stage=self.stage_fn(rec), ts=self.clock(), color=color_of(inc.id))
         if prev and prev.node == g.node and prev.activity == g.activity and prev.stage == g.stage:
             return
         self.agents[inc.id] = g
+        if self.kv is not None:
+            self.kv.put_json("garden", inc.id, g.model_dump(mode="json"))
         try:
             asyncio.get_running_loop().create_task(self.bus.publish("garden.activity", g))
         except RuntimeError:
@@ -103,10 +110,14 @@ class GardenService:
     def snapshot(self, claims: AccessClaims) -> GardenSnapshot:
         now = self.clock()
         out = []
-        for g in list(self.agents.values()):
+        source = ([GardenAgent.model_validate(v) for v in self.kv.all_json("garden").values()] if self.kv is not None
+                  else list(self.agents.values()))
+        for g in source:
             if g.plant_id not in claims.plant_ids:
                 continue
             if g.stage in (Stage.RESOLVED, Stage.REJECTED, Stage.ANSWERED) and now - g.ts > KEEP_DONE_FOR:
+                if self.kv is not None:
+                    self.kv.delete("garden", g.incident_id)  # keep the shared hash small
                 continue
             out.append(g)
         return GardenSnapshot(now=now, agents=sorted(out, key=lambda a: a.incident_id))

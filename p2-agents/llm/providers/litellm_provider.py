@@ -56,6 +56,21 @@ def _get(obj, name, default=None):
     return getattr(obj, name, default)
 
 
+_IMPORT_LOCK = __import__("threading").Lock()
+
+
+def import_litellm():
+    """Import LiteLLM once, thread-safely (a startup warm-up thread and the first agent call must not import it at the
+    same time: Python would hand one of them a half-initialised module)."""
+    with _IMPORT_LOCK:
+        import litellm
+        litellm.drop_params = True  # providers ignore params they don't support instead of failing
+        litellm.suppress_debug_info = True  # no "Give Feedback / Get Help" banners in the server log
+        for name in ("LiteLLM", "LiteLLM Router", "LiteLLM Proxy", "litellm"):
+            logging.getLogger(name).setLevel(logging.CRITICAL)
+        return litellm
+
+
 class LiteLLMProvider:
     """Streams one completion through litellm.acompletion and normalises it into LLMChunks."""
 
@@ -69,12 +84,7 @@ class LiteLLMProvider:
         if self._proxy_applied != (True, proxy):  # once per proxy setting, before litellm is imported
             log.info("LLM network: %s", apply_proxy(proxy))
             self._proxy_applied = (True, proxy)
-        import litellm  # imported lazily so the rest of the layer works without it installed
-        litellm.drop_params = True  # providers ignore params they don't support instead of failing
-        litellm.suppress_debug_info = True  # no "Give Feedback / Get Help" banners in the server log
-        for name in ("LiteLLM", "LiteLLM Router", "LiteLLM Proxy", "litellm"):
-            logging.getLogger(name).setLevel(logging.CRITICAL)
-        return litellm.acompletion
+        return import_litellm().acompletion  # imported lazily so the rest of the layer works without it installed
 
     async def stream(self, req: LLMRequest) -> AsyncIterator[LLMChunk]:
         kw = build_kwargs(req)
