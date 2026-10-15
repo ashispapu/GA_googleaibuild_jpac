@@ -509,6 +509,7 @@ policies, quotas, region availability).
 | `vpc-peerings connect` fails | org policy or an overlapping range | change `PSA_RANGE_PREFIX` / the subnet ranges in `config.env` |
 | Cloud SQL create: tier not supported | Enterprise Plus default | the script sets `--edition=ENTERPRISE`; check `SQL_TIER` is a `db-custom-*` tier |
 | Service never becomes ready | startup probe on `/readyz` | `gcloud run services logs read plantguard-api --limit=50`; the readyz JSON names the failing dependency |
+| `https://…run.app/healthz` answers 404 | Cloud Run's front end reserves `/healthz` on `run.app` URLs; the probes still use it inside | use `/health` or `/auth/config` from outside |
 | `CERTIFICATE_VERIFY_FAILED` to Qdrant | client CA ≠ server's CA | re-run `06-qdrant.bat` after deleting the `qdrant-ca` secret versions, then `gcloud compute instances reset plantguard-qdrant` and redeploy |
 | Qdrant 403 | token names other collections (prefix or plant list changed) | `set ROTATE_QDRANT_TOKEN=1`, `09-migrate.bat`, then `10-services.bat` |
 | Keycloak "Invalid redirect uri" | realm generated for another web URL | `set REGENERATE_REALM=1` + `08-auth.bat` only works before the realm exists; otherwise fix the client's URLs in the admin console |

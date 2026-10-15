@@ -23,7 +23,7 @@ steps:
     waitFor: ["-"]
     args: [build, --build-arg, "NEXT_PUBLIC_API_URL=${_API_URL}", --build-arg, "NEXT_PUBLIC_PLANT_TZ=${_PLANT_TZ}",
            -t, "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_NAME}/web:${_TAG}",
-           -t, "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_NAME}/web:latest", p3-frontend]
+           -t, "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_NAME}/web:latest", -f, p3-frontend/Dockerfile, .]
   - id: auth-image
     name: gcr.io/cloud-builders/docker
     waitFor: ["-"]

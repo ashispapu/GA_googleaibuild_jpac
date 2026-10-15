@@ -47,3 +47,4 @@ deploy/gcp/initial-passwords.csv
 deploy/gcp/.last_tag
 p3-frontend/.next
 deploy/gcp/config.cmd
+deploy/gcp/user-passwords.csv

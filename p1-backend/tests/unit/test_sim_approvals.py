@@ -54,6 +54,15 @@ def wait_stage(client, h, stage, timeout=90):
 
 def test_options_chat_chain_and_purchase_order(sim):
     lead, leadb, manager = tok(sim, "lead"), tok(sim, "leadb"), tok(sim, "manager")
+    # breakdowns start switched off: nothing develops and no incident opens
+    st = sim.get("/simulator/status", headers=lead).json()
+    assert st["random_faults"] is False and st["developing_faults"] == 0
+    time.sleep(3)
+    assert sim.get(f"/incidents/{INC}", headers=lead).status_code == 404
+    op = tok(sim, "op")
+    assert sim.post("/simulator/breakdowns", headers=op, json={"enabled": True}).status_code == 403
+    r = sim.post("/simulator/breakdowns", headers=lead, json={"enabled": True})
+    assert r.status_code == 200 and r.json()["random_faults"] is True and r.json()["developing_faults"] >= 1
     wait_stage(sim, lead, "awaiting_approval")
     opts = {o["id"]: o for o in sim.get(f"/incidents/{INC}/options", headers=lead).json()["options"]}
     signers = {k: [s["key"] for s in o["approvals_needed"]] for k, o in opts.items()}

@@ -4,7 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { BookOpen, ClipboardList, Crosshair, Gauge, LayoutGrid, ListChecks, Lock, LogOut, MessageCircleQuestion, Network, Search, Shield, TriangleAlert, Wrench } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "@/lib/session";
+import { backend } from "@/lib/backend";
 import { useAppState, usePlantNow } from "@/lib/app-state";
 import { AssistantProvider, useAssistant } from "@/components/assistant";
 import { useOrders, usePlants, useSignoffs } from "@/lib/queries";
@@ -137,6 +139,55 @@ function PlantClock() {
   );
 }
 
+/** Machine breakdowns on/off. Off by default: nothing breaks until someone switches it on; switching it off again
+ *  stops new faults and freezes the ones developing. Leads, managers and admins can switch it; others see the state. */
+function BreakdownsToggle() {
+  const { me } = useSession();
+  const { simMode } = useAppState();
+  const qc = useQueryClient();
+  const status = useQuery({ queryKey: ["sim-status"], queryFn: backend.simStatus, refetchInterval: 10_000, retry: 1 });
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  if (!simMode || !status.data) return null;
+  const on = status.data.random_faults;
+  const canSwitch = ["admin", "plant_manager", "maintenance_lead"].includes(me?.role ?? "");
+  const toggle = async () => {
+    setBusy(true);
+    setErr(null);
+    try {
+      const s = await backend.setBreakdowns(!on);
+      qc.setQueryData(["sim-status"], s);
+    } catch {
+      setErr("Could not switch");
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <span className="flex items-center gap-2">
+      <button
+        type="button"
+        role="switch"
+        aria-checked={on}
+        disabled={!canSwitch || busy}
+        onClick={() => void toggle()}
+        title={canSwitch ? (on ? "Machines can break down. Click to stop new breakdowns." : "No breakdowns happen. Click to let machines break down.") : "Only a maintenance lead, plant manager or admin can switch this"}
+        className={cn(
+          "flex min-h-[36px] items-center gap-2 rounded-md border px-3 text-[13px] font-medium",
+          on ? "border-[#F5C2C0] bg-[#FDEDEC] text-crit-text" : "border-line bg-surface text-ink-3",
+          (!canSwitch || busy) && "cursor-not-allowed opacity-70",
+        )}
+      >
+        <span className={cn("relative inline-block h-4 w-7 rounded-full transition-colors", on ? "bg-[#D93025]" : "bg-[#C5CDD8]")}>
+          <span className={cn("absolute top-0.5 h-3 w-3 rounded-full bg-white transition-all", on ? "left-3.5" : "left-0.5")} />
+        </span>
+        Breakdowns {on ? "on" : "off"}
+      </button>
+      {err && <span className="text-xs text-crit-text">{err}</span>}
+    </span>
+  );
+}
+
 function TopBar({ onOpenMenu }: { onOpenMenu: () => void }) {
   const { me, logout } = useSession();
   const { plantId, setPlantId, activeIncidentId } = useAppState();
@@ -174,6 +225,7 @@ function TopBar({ onOpenMenu }: { onOpenMenu: () => void }) {
         })}
       </div>
       <PlantClock />
+      <BreakdownsToggle />
       {order && (
         <span className="rounded-sm border border-line bg-subtle px-2.5 py-1.5 text-[13px] text-ink-3">
           Order <span className="font-mono">{order.id}</span> · {count(order.completed)} of {count(order.quantity)} · due {formatDayTime(order.due_at)}

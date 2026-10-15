@@ -10,7 +10,7 @@ CHANNEL="$(gcloud beta monitoring channels list --filter="labels.email_address=$
   --channel-labels="email_address=${ALERT_EMAIL}" --format='value(name)')"
 
 say "Uptime checks"
-for target in "api:${API_URL#https://}:/healthz" "web:${WEB_URL#https://}:/login"; do
+for target in "api:${API_URL#https://}:/auth/config" "web:${WEB_URL#https://}:/login"; do
   IFS=: read -r what host path <<< "$target"
   exists gcloud monitoring uptime describe "${NAME}-${what}" || \
     gcloud monitoring uptime create "${NAME}-${what}" --resource-type=uptime-url \

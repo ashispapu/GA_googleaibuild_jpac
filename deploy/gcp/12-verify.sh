@@ -5,7 +5,7 @@ ok() { printf '  \033[32mok\033[0m  %s\n' "$*"; }; bad() { printf '  \033[31mFAI
 FAILED=0
 say "Public endpoints"
 code() { curl -s -o /dev/null -w '%{http_code}' "$1"; }
-[ "$(code "${API_URL}/healthz")" = 200 ] && ok "api /healthz" || bad "api /healthz"
+[ "$(code "${API_URL}/auth/config")" = 200 ] && ok "api answers" || bad "api /auth/config"
 [ "$(code "${API_URL}/auth/config")" = 200 ] && ok "api /auth/config" || bad "api /auth/config"
 curl -s "${API_URL}/auth/config" | grep -q keycloak && ok "api is in keycloak mode" || bad "api auth mode"
 [ "$(code "${API_URL}/plants")" = 401 ] && ok "api rejects anonymous calls" || bad "api /plants without token"
@@ -13,11 +13,11 @@ curl -s "${API_URL}/auth/config" | grep -q keycloak && ok "api is in keycloak mo
 [ "$(code "${WEB_URL}/login")" = 200 ] && ok "web /login" || bad "web /login"
 [ "$(code "${KC_URL}/realms/plantguard/.well-known/openid-configuration")" = 200 ] && ok "keycloak realm" || bad "keycloak realm"
 for h in strict-transport-security x-content-type-options x-frame-options; do
-  curl -sI "${API_URL}/healthz" | grep -qi "^$h" && ok "header $h" || bad "header $h"
+  curl -sI "${API_URL}/auth/config" | grep -qi "^$h" && ok "header $h" || bad "header $h"
 done
 say "Internal services are not public"
 for s in engine worker; do
-  c="$(code "$(run_url "${NAME}-$s")/healthz")"; [ "$c" = 403 ] || [ "$c" = 404 ] && ok "$s not reachable ($c)" || bad "$s answered $c"
+  c="$(code "$(run_url "${NAME}-$s")/auth/config")"; [ "$c" = 403 ] || [ "$c" = 404 ] && ok "$s not reachable ($c)" || bad "$s answered $c"
 done
 say "Readiness inside (job logs)"
 gcloud run jobs executions list --job="${NAME}-migrate" --region="$REGION" --limit=1 \

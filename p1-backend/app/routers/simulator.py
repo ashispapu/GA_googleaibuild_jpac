@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends
 
 from plantguard_contracts.schemas.common import ErrorCode
 from plantguard_contracts.schemas.incidents import IncidentStatus
-from plantguard_contracts.schemas.security import AccessClaims, Permission
+from plantguard_contracts.schemas.security import AccessClaims, Permission, ROLE_PERMISSIONS
 from plantguard_contracts.schemas.simulator import Scenario, ScenarioResponse
-from plantguard_contracts.schemas.workflow import FaultRequest, FaultResponse, SimSpeedRequest, SimStatus
+from plantguard_contracts.schemas.workflow import BreakdownsRequest, FaultRequest, FaultResponse, SimSpeedRequest, SimStatus
 
 from app.container import Container
 from app.core.errors import ApiError
@@ -34,7 +34,7 @@ def status(claims: AccessClaims = VIEW, c: Container = Depends(container)):
         return SimStatus(mode="fixtures", now=c.clock(), scale=1.0, random_faults=False, developing_faults=0,
                          open_incidents=open_n)
     faults = c.engine.ot.val("SELECT COUNT(*) FROM asset_conditions WHERE ended_at IS NULL", (), 0)
-    return SimStatus(mode="sim", now=c.clock(), scale=c.engine.clock.scale, random_faults=c.engine.cfg.random_faults,
+    return SimStatus(mode="sim", now=c.clock(), scale=c.engine.clock.scale, random_faults=c.engine.breakdowns_enabled(),
                      developing_faults=faults, open_incidents=open_n)
 
 
@@ -59,4 +59,20 @@ def speed(body: SimSpeedRequest, claims: AccessClaims = SIM, c: Container = Depe
         raise ApiError(501, ErrorCode.NOT_IMPLEMENTED, "Only on the simulated plant")
     c.engine.clock.set_scale(min(600.0, max(0.0, body.scale)))
     c.audit.log("user", claims.sub, "set_plant_speed", "clock", {"scale": body.scale})
+    return status(claims, c)
+
+
+BREAKDOWN_ROLES = ("admin", "plant_manager", "maintenance_lead")
+
+
+@router.post("/breakdowns", response_model=SimStatus)
+def breakdowns(body: BreakdownsRequest, claims: AccessClaims = VIEW, c: Container = Depends(container)):
+    """Switch machine breakdowns on or off (admin, plant manager, maintenance lead). Off by default: no new faults and
+    developing faults are frozen. The first switch-on also starts the plant's story faults."""
+    if c.engine is None:
+        raise ApiError(501, ErrorCode.NOT_IMPLEMENTED, "Only on the simulated plant")
+    if claims.role.value not in BREAKDOWN_ROLES and Permission.RUN_SIMULATOR not in ROLE_PERMISSIONS.get(claims.role, ()):
+        raise ApiError(403, ErrorCode.FORBIDDEN, "Only an admin, plant manager or maintenance lead can switch breakdowns")
+    started = c.engine.set_breakdowns(body.enabled)
+    c.audit.log("user", claims.sub, "breakdowns_on" if body.enabled else "breakdowns_off", "plant", {"started": started})
     return status(claims, c)

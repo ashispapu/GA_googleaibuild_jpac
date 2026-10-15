@@ -45,7 +45,7 @@ if not "%DROP_USERS%"=="1" echo   one-time passwords: deploy\gcp\initial-passwor
 echo. & echo == Keycloak service %NAME%-auth at %KC_URL%
 %TOOLS% envfile "%WORK%\auth-env.yaml" "KC_DB_URL=jdbc:postgresql://%SQL_IP%:5432/keycloak?sslmode=require" KC_DB_USERNAME=keycloak KC_HOSTNAME=%KC_URL% KC_LOG_CONSOLE_OUTPUT=json KC_BOOTSTRAP_ADMIN_USERNAME=kcadmin
 if errorlevel 1 goto :fail
-call gcloud run deploy %NAME%-auth --image=%AR%/auth:%TAG% --region=%REGION% ^
+call gcloud beta run deploy %NAME%-auth --image=%AR%/auth:%TAG% --region=%REGION% ^
   --service-account=%SA_AUTH% --allow-unauthenticated --ingress=all ^
   --cpu=2 --memory=2Gi --min-instances=1 --max-instances=1 --no-cpu-throttling --cpu-boost ^
   --concurrency=80 --timeout=300 --port=8080 %NET% ^

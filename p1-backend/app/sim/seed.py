@@ -145,7 +145,11 @@ def seed(ot: Database, it: Database, cfg: SimSettings, now: datetime, rng: rando
 
     # initial (story) faults + historian backfill that already shows them developing
     conds: dict[str, tuple[Condition, datetime, float]] = {}
-    for asset_id, (mode, progress) in cfg.initial_faults.items():
+    # breakdowns start switched off: the story faults are started by the first switch-on (engine.set_breakdowns)
+    it.set_meta("breakdowns_enabled", "0")
+    it.set_meta("story_faults_pending", "1" if cfg.initial_faults else "0")
+    story_now: dict = {}  # nothing is developing at seed time
+    for asset_id, (mode, progress) in story_now.items():
         typ = next(a["type"] for _, _, _, _, a in assets(cfg) if a["id"] == asset_id)
         spec = models[typ]["modes"][mode]
         T = rng.uniform(cfg.breakdown_h_min, cfg.breakdown_h_max)

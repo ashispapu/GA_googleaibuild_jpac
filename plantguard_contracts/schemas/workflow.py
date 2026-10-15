@@ -237,6 +237,11 @@ class FaultResponse(Contract):
     message: str
 
 
+class BreakdownsRequest(Contract):
+    """additive (v1.3): switch machine breakdowns on or off (off = no new faults, developing ones stay frozen)."""
+    enabled: bool
+
+
 class SimSpeedRequest(Contract):
     scale: float  # 0 pauses the plant
 

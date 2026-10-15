@@ -11,6 +11,8 @@
   python tools.py lifecycle OUTFILE             Cloud Storage lifecycle rules for the backup bucket
   python tools.py alerts CHANNEL                create the error log metric and the alert policies that are missing
   python tools.py lf IN OUT                     copy a text file with Linux line endings (the VM boot script)
+  python tools.py kc-passwords ADMINPWFILE OUTCSV [USER] [PASSWORD]
+                                                set + test Keycloak user passwords (realm plantguard)
   python tools.py tag                           image tag: git commit, else a timestamp
   python tools.py verify                        smoke test of the deployed URLs (reads the step variables)
 
@@ -242,6 +244,72 @@ def cmd_alerts(channel: str) -> None:
         print(f"  {display}: created")
 
 
+# ---------------------------------------------------------------- Keycloak users
+def _kc(method: str, url: str, token: str | None = None, form: dict | None = None, body=None):
+    import urllib.parse
+    data, headers = None, {}
+    if form is not None:
+        data = urllib.parse.urlencode(form).encode()
+        headers["Content-Type"] = "application/x-www-form-urlencoded"
+    elif body is not None:
+        data = json.dumps(body).encode()
+        headers["Content-Type"] = "application/json"
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(url, data=data, method=method, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            raw = r.read().decode()
+            return r.status, (json.loads(raw) if raw.strip() else None)
+    except urllib.error.HTTPError as e:
+        raw = e.read().decode(errors="replace")
+        try:
+            return e.code, json.loads(raw)
+        except ValueError:
+            return e.code, raw
+
+
+def cmd_kc_passwords(admin_pw_file: str, out_csv: str, only_user: str = "", new_password: str = "") -> None:
+    """Set a known password on every user of the plantguard realm (or one user), clear required actions,
+    unlock brute-force lockouts, then prove each one can sign in. Writes username,password to OUT_CSV."""
+    kc = env("KC_URL").rstrip("/")
+    admin_pw = Path(admin_pw_file).read_text(encoding="utf-8-sig").strip()
+    s, tok = _kc("POST", f"{kc}/realms/master/protocol/openid-connect/token",
+                 form={"grant_type": "password", "client_id": "admin-cli", "username": "kcadmin", "password": admin_pw})
+    if s != 200:
+        raise SystemExit(f"Keycloak admin sign-in failed ({s}): {tok}")
+    t = tok["access_token"]
+    base = f"{kc}/admin/realms/plantguard"
+    s, users = _kc("GET", f"{base}/users?max=500&briefRepresentation=false", t)
+    if s != 200:
+        raise SystemExit(f"cannot list users ({s}): {users}")
+    if only_user:
+        users = [u for u in users if u["username"] == only_user]
+        if not users:
+            raise SystemExit(f"user {only_user} does not exist in realm plantguard")
+    rows, failed = [], 0
+    for u in sorted(users, key=lambda x: x["username"]):
+        pw = new_password or ("Pg-" + "".join(secrets.choice(string.ascii_letters + string.digits) for _ in range(12)) + "9")
+        s1, r1 = _kc("PUT", f"{base}/users/{u['id']}/reset-password", t,
+                     body={"type": "password", "value": pw, "temporary": False})
+        u2 = {k: u[k] for k in ("username", "email", "firstName", "lastName", "attributes") if k in u}
+        u2.update({"enabled": True, "emailVerified": True, "requiredActions": []})
+        s2, r2 = _kc("PUT", f"{base}/users/{u['id']}", t, body=u2)
+        _kc("DELETE", f"{base}/attack-detection/brute-force/users/{u['id']}", t)
+        # prove it: sign in with the new password (admin-cli exists in every realm and allows password sign-in)
+        s3, r3 = _kc("POST", f"{kc}/realms/plantguard/protocol/openid-connect/token",
+                     form={"grant_type": "password", "client_id": "admin-cli", "username": u["username"], "password": pw})
+        ok = s1 in (200, 204) and s2 in (200, 204) and s3 == 200
+        why = "" if ok else f"  reset={s1} {r1 if s1 >= 300 else ''} update={s2} {r2 if s2 >= 300 else ''} sign-in={s3} {r3 if s3 != 200 else ''}"
+        print(f"  {'ok  ' if ok else 'FAIL'} {u['username']:<10}{why}")
+        failed += 0 if ok else 1
+        rows.append((u["username"], pw))
+    with open(out_csv, "w", encoding="utf-8", newline="") as f:
+        f.write("username,password\n" + "".join(f"{a},{b}\n" for a, b in rows))
+    print(f"passwords written to {out_csv}")
+    raise SystemExit(1 if failed else 0)
+
+
 # ---------------------------------------------------------------- misc
 def cmd_lf(src: str, out: str) -> None:
     Path(out).write_bytes(Path(src).read_bytes().replace(b"\r\n", b"\n"))
@@ -275,8 +343,10 @@ def cmd_verify() -> None:
         print(("  ok    " if ok else "  FAIL  ") + what)
         failed += 0 if ok else 1
 
-    s, _, h = get(f"{api}/healthz")
-    check(s == 200, "api /healthz")
+    # /healthz is reserved by Cloud Run's front end on *.run.app URLs (Google answers 404 before the container);
+    # the probes reach it inside, so the public check uses an unauthenticated API route instead
+    s, _, h = get(f"{api}/auth/config")
+    check(s == 200, "api answers (/auth/config)")
     headers = {k.lower() for k in h}
     for hd in ("strict-transport-security", "x-content-type-options", "x-frame-options"):
         check(hd in headers, f"api header {hd}")
@@ -287,14 +357,14 @@ def cmd_verify() -> None:
     check(get(f"{web}/login")[0] == 200, "web /login")
     check(get(f"{kc}/realms/plantguard/.well-known/openid-configuration")[0] == 200, "keycloak realm")
     for svc in ("engine", "worker"):
-        s = get(f"{run(svc)}/healthz")[0]
+        s = get(f"{run(svc)}/auth/config")[0]
         check(s in (403, 404), f"{svc} is not reachable from the internet ({s})")
     raise SystemExit(1 if failed else 0)
 
 
 COMMANDS = {"random": cmd_random, "strip": cmd_strip, "certs": cmd_certs, "token": cmd_token,
             "backend-env": cmd_backend_env, "envfile": cmd_envfile, "lifecycle": cmd_lifecycle,
-            "alerts": cmd_alerts, "lf": cmd_lf, "tag": cmd_tag, "verify": cmd_verify}
+            "alerts": cmd_alerts, "kc-passwords": cmd_kc_passwords, "lf": cmd_lf, "tag": cmd_tag, "verify": cmd_verify}
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 or sys.argv[1] not in COMMANDS:

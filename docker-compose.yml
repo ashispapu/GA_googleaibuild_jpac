@@ -126,7 +126,8 @@ services:
 
   web:
     build:
-      context: p3-frontend
+      context: .
+      dockerfile: p3-frontend/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:8000}
     environment:

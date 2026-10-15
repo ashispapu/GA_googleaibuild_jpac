@@ -100,6 +100,32 @@ class PlantEngine:
         self.share_telemetry = False
         self.drives_plant = True  # False in API / worker processes: they never run the loop
 
+    # ------------------------------------------------------------------ breakdowns switch
+    # Off by default: nothing breaks until someone switches breakdowns on (UI button, POST /simulator/breakdowns).
+    # Off = no new faults and developing faults stop progressing. Stored in the IT database, so every process agrees.
+    _bd_cache: tuple[float, bool] = (0.0, False)
+
+    def breakdowns_enabled(self) -> bool:
+        import time as _t
+        at, val = self._bd_cache
+        if _t.monotonic() - at > 2:
+            val = self.it.meta("breakdowns_enabled", "0") == "1"
+            self._bd_cache = (_t.monotonic(), val)
+        return val
+
+    def set_breakdowns(self, enabled: bool) -> list[str]:
+        """Switch on/off. The first switch-on also starts the plant's story faults (config initial_faults)."""
+        import time as _t
+        started = []
+        self.it.set_meta("breakdowns_enabled", "1" if enabled else "0")
+        self._bd_cache = (_t.monotonic(), enabled)
+        if enabled and self.it.meta("story_faults_pending", "0") == "1":
+            self.it.set_meta("story_faults_pending", "0")
+            for asset_id, (mode, progress) in self.cfg.initial_faults.items():
+                if asset_id in self.assets and self.inject_fault(asset_id, mode, progress=progress) is not None:
+                    started.append(asset_id)
+        return started
+
     # ------------------------------------------------------------------ public helpers
     def line_of(self, asset_id: str) -> tuple[str, str]:
         a = self.assets[asset_id]
@@ -244,6 +270,7 @@ class PlantEngine:
             return
         self._ticks += 1
         conds = {r["asset_id"]: r for r in self.ot.q("SELECT * FROM asset_conditions WHERE ended_at IS NULL")}
+        breakdowns = self.breakdowns_enabled()
         speeds = {(a.plant_id, a.line_id): None for a in self.assets.values()}
         for k in speeds:
             speeds[k] = self.line_speed(*k, at=now)
@@ -252,8 +279,8 @@ class PlantEngine:
         for aid, c in conds.items():
             a = self.assets[aid]
             state, _ = self.machine_state(aid)
-            if state != "run":
-                continue
+            if state != "run" or not breakdowns:
+                continue  # breakdowns switched off: developing faults are frozen
             sf = (speeds[(a.plant_id, a.line_id)] or 0) / 100
             p = min(1.0, c["progress"] + dt_h / c["breakdown_h"] * sf ** self.cfg.speed_exponent)
             self.ot.x("UPDATE asset_conditions SET progress=? WHERE id=?", (p, c["id"]))
@@ -263,7 +290,7 @@ class PlantEngine:
         conds = {r["asset_id"]: r for r in self.ot.q("SELECT * FROM asset_conditions WHERE ended_at IS NULL")}
 
         # 2. random faults (Poisson process in plant time)
-        if self.cfg.random_faults and len(conds) < self.cfg.max_concurrent_faults:
+        if breakdowns and self.cfg.random_faults and len(conds) < self.cfg.max_concurrent_faults:
             if self.rng.random() < 1 - math.exp(-dt_h / max(0.1, self.cfg.mean_fault_interval_h)):
                 c = self.inject_fault()
                 if c:

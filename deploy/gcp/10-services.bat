@@ -30,7 +30,7 @@ set "COMMON=--image=%AR%/api:%TAG% --region=%REGION% --port=8000 %NET% %PROBES% 
 echo. & echo == engine
 %TOOLS% backend-env "%WORK%\engine-env.yaml" engine
 if errorlevel 1 goto :fail
-call gcloud run deploy %NAME%-engine %COMMON% --service-account=%SA_ENGINE% "--env-vars-file=%WORK%\engine-env.yaml" ^
+call gcloud beta run deploy %NAME%-engine %COMMON% --service-account=%SA_ENGINE% "--env-vars-file=%WORK%\engine-env.yaml" ^
   --ingress=internal --no-allow-unauthenticated --min-instances=1 --max-instances=1 --no-cpu-throttling ^
   --cpu=1 --memory=1Gi --concurrency=20 "--labels=app=%NAME%,env=%ENV%,role=engine"
 if errorlevel 1 goto :fail
@@ -38,7 +38,7 @@ if errorlevel 1 goto :fail
 echo. & echo == worker
 %TOOLS% backend-env "%WORK%\worker-env.yaml" worker RUN_RECLAIM_IDLE_S=300
 if errorlevel 1 goto :fail
-call gcloud run deploy %NAME%-worker %COMMON% --service-account=%SA_WORKER% "--env-vars-file=%WORK%\worker-env.yaml" ^
+call gcloud beta run deploy %NAME%-worker %COMMON% --service-account=%SA_WORKER% "--env-vars-file=%WORK%\worker-env.yaml" ^
   --ingress=internal --no-allow-unauthenticated --min-instances=%WORKER_MIN% --max-instances=%WORKER_MAX% ^
   --no-cpu-throttling --cpu=2 --memory=2Gi --concurrency=10 "--labels=app=%NAME%,env=%ENV%,role=worker"
 if errorlevel 1 goto :fail
@@ -46,7 +46,7 @@ if errorlevel 1 goto :fail
 echo. & echo == api at %API_URL%
 %TOOLS% backend-env "%WORK%\api-env.yaml" api
 if errorlevel 1 goto :fail
-call gcloud run deploy %NAME%-api %COMMON% --service-account=%SA_API% "--env-vars-file=%WORK%\api-env.yaml" ^
+call gcloud beta run deploy %NAME%-api %COMMON% --service-account=%SA_API% "--env-vars-file=%WORK%\api-env.yaml" ^
   --ingress=all --allow-unauthenticated --min-instances=%API_MIN% --max-instances=%API_MAX% ^
   --no-cpu-throttling --cpu=2 --memory=2Gi --concurrency=80 --timeout=3600 --session-affinity ^
   "--labels=app=%NAME%,env=%ENV%,role=api"
@@ -76,7 +76,7 @@ if errorlevel 1 goto :fail
 
 echo.
 echo web app : %WEB_URL%
-echo api     : %API_URL%   (health: %API_URL%/healthz)
+echo api     : %API_URL%   (health: %API_URL%/auth/config)
 echo sign-in : %KC_URL%
 echo. & echo Step 10 done.
 exit /b 0

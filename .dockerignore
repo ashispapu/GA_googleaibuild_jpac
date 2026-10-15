@@ -11,7 +11,6 @@ p2-agents/tests
 p1-backend/tests
 tests
 var
-generated
 mock_server
 deploy/**/secrets
 *.zip

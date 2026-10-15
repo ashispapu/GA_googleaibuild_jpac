@@ -117,6 +117,11 @@ def create_app(container: Container | None = None, settings: Settings | None = N
         """Liveness: the process answers (Cloud Run liveness probe)."""
         return {"status": "ok", "role": c.role}
 
+    @app.get("/health", include_in_schema=False)
+    def health():
+        """Same as /healthz, reachable from outside on Cloud Run (*.run.app reserves paths ending in z)."""
+        return {"status": "ok", "role": c.role}
+
     @app.get("/readyz", include_in_schema=False)
     def readyz():
         """Readiness: every backing service answers (startup probe / load balancer)."""

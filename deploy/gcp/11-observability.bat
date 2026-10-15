@@ -11,14 +11,19 @@ pause
 exit /b %PG_RC%
 :pg_main
 rem Step 11: notification channel, uptime checks, error log metric and alert policies.
-rem Needs the gcloud beta component for notification channels:  gcloud components install beta
+rem Needs the gcloud beta + alpha components:  gcloud components install beta alpha
+rem Alert policies are created by tools.py (alerts), which uses "gcloud alpha monitoring policies".
 setlocal
 call "%~dp0_lib.cmd" init
 if errorlevel 1 exit /b 1
 
+if /i "%ALERT_EMAIL%"=="ops@example.com" (
+  echo ALERT_EMAIL in config.cmd is still the placeholder ops@example.com - set your real address first.
+  exit /b 1
+)
 echo. & echo == Notification channel %ALERT_EMAIL%
 set "CHANNEL="
-call gcloud beta monitoring channels list "--filter=labels.email_address=%ALERT_EMAIL%" "--format=value(name)" > "%WORK%\channel.txt"
+call gcloud beta monitoring channels list "--filter=labels.email_address='%ALERT_EMAIL%'" "--format=value(name)" > "%WORK%\channel.txt" 2>nul
 if errorlevel 1 goto :fail
 set /p CHANNEL=<"%WORK%\channel.txt"
 if not defined CHANNEL (
@@ -33,13 +38,18 @@ set "API_HOST=%API_URL:https://=%"
 set "WEB_HOST=%WEB_URL:https://=%"
 call gcloud monitoring uptime list-configs "--format=value(displayName)" > "%WORK%\uptime.txt" 2>nul
 findstr /x /c:"%NAME%-api" "%WORK%\uptime.txt" >nul
-if errorlevel 1 call gcloud monitoring uptime create %NAME%-api --resource-type=uptime-url "--resource-labels=host=%API_HOST%,project_id=%PROJECT_ID%" --path=/healthz --protocol=https --period=1 --timeout=10
+if errorlevel 1 call gcloud monitoring uptime create %NAME%-api --resource-type=uptime-url "--resource-labels=host=%API_HOST%,project_id=%PROJECT_ID%" --path=/auth/config --protocol=https --period=1 --timeout=10
 if errorlevel 1 goto :fail
 findstr /x /c:"%NAME%-web" "%WORK%\uptime.txt" >nul
 if errorlevel 1 call gcloud monitoring uptime create %NAME%-web --resource-type=uptime-url "--resource-labels=host=%WEB_HOST%,project_id=%PROJECT_ID%" --path=/login --protocol=https --period=1 --timeout=10
 if errorlevel 1 goto :fail
 
 echo. & echo == Error log metric + alert policies
+call gcloud alpha monitoring policies list --limit=1 "--format=value(name)" >nul 2>&1 <nul
+if errorlevel 1 (
+  echo   gcloud alpha component missing. Run:  gcloud components install alpha --quiet
+  goto :fail
+)
 %TOOLS% alerts %CHANNEL%
 if errorlevel 1 goto :fail
 echo. & echo Step 11 done.
