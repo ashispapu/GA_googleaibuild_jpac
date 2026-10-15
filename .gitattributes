@@ -1,0 +1,4 @@
+# Windows scripts need CRLF; Linux scripts (the Qdrant VM boot script!) must keep LF whatever core.autocrlf says
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.sh  text eol=lf

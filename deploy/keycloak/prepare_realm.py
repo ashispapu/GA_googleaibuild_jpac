@@ -1,7 +1,7 @@
 """Turn the development realm (config/keycloak/plantguard-realm.json) into a production realm file.
 
   python deploy/keycloak/prepare_realm.py --web-url https://plantguard-web-xxxx.a.run.app \
-      --client-secret "$(openssl rand -hex 32)" --out /tmp/realm.json [--drop-users | --temp-passwords users.csv]
+      --client-secret-file secret.txt --out realm.json [--drop-users | --temp-passwords users.csv]
 
 Changes made:
   - plantguard-web: redirect / logout / web-origin URLs = the production web app; new client secret
@@ -58,13 +58,17 @@ def prepare(realm: dict, web_url: str, client_secret: str, drop_users: bool) -> 
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--web-url", required=True)
-    ap.add_argument("--client-secret", required=True)
+    sec = ap.add_mutually_exclusive_group(required=True)
+    sec.add_argument("--client-secret")
+    sec.add_argument("--client-secret-file", help="file holding the secret (keeps it off the command line)")
     ap.add_argument("--src", default=str(ROOT / "config" / "keycloak" / "plantguard-realm.json"))
     ap.add_argument("--out", required=True)
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--drop-users", action="store_true")
     g.add_argument("--temp-passwords", help="CSV file for the one-time passwords of the kept users")
     a = ap.parse_args(argv)
+    if a.client_secret_file:
+        a.client_secret = Path(a.client_secret_file).read_text(encoding="utf-8-sig").strip()
     if len(a.client_secret) < 32:
         print("--client-secret must be at least 32 characters", file=sys.stderr)
         return 2

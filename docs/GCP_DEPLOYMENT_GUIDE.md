@@ -1,7 +1,8 @@
 # PlantGuard AI on Google Cloud: deployment guide (approach 2)
 
 This guide brings up every Google Cloud service PlantGuard needs and deploys the code onto them. Everything is
-scripted in [`deploy/gcp/`](../deploy/gcp). Each step below says what the script creates, why, how to check it, and
+scripted in [`deploy/gcp/`](../deploy/gcp): **Windows batch files** (`01-foundation.bat` … `12-verify.bat`, run from
+Command Prompt or PowerShell on your PC), with identical `.sh` twins for Linux/macOS/Cloud Shell. Each step below says what the script creates, why, how to check it, and
 what to do when it fails. Roles, shared state and the rules behind them are in CONTRACTS.md, section C12.
 
 - [1. What you are building](#1-what-you-are-building)
@@ -63,9 +64,26 @@ flowchart LR
 
 ## 2. Before you start
 
-**Where to run the scripts.** [Cloud Shell](https://shell.cloud.google.com) is the easiest: it already has `gcloud`,
-`openssl`, `python3`, `git` and is signed in. On your own machine you need the Google Cloud CLI (`gcloud init`),
-`bash`, `openssl` and `python3` (standard library only).
+**What you need on your Windows PC**
+- [Google Cloud CLI for Windows](https://cloud.google.com/sdk/docs/install) (installer adds `gcloud` to PATH). Then
+  `gcloud auth login` once. For step 11 also `gcloud components install beta`.
+- Python 3.10+ (the one you run PlantGuard with) with `cryptography` (installed by `pip install -r requirements.txt`;
+  otherwise `pip install cryptography`). Only the standard library otherwise. If `python` is not on PATH, set
+  `PY=py` in `config.cmd`.
+- Nothing else: no Docker, no bash, no openssl. The images are built in Cloud Build, not on your PC.
+
+Run the steps from the project folder, in **Command Prompt** (`deploy\gcp\01-foundation.bat`) or **PowerShell**
+(`.\deploy\gcp\01-foundation.bat`). The VM that runs Qdrant is Linux; its boot script `deploy/qdrant/startup.sh` is
+uploaded by step 6 (with Linux line endings, even if Git converted it on your PC), you never run it yourself.
+
+How the Windows scripts are built, in case you edit them: `gcloud` is `gcloud.cmd`, so every call is
+`call gcloud …` (without `call`, the script would stop after the first command); each command is followed by
+`if errorlevel 1 goto :fail`; values that cmd.exe would mangle (env files, certificates, tokens, alert filters) are
+written by [`deploy/gcp/tools.py`](../deploy/gcp/tools.py) to files that gcloud reads.
+
+**Optional toggles** are environment variables set on their own line before a step, e.g. in Command Prompt
+`set DROP_USERS=1` then `deploy\gcp\08-auth.bat` (in PowerShell: `$env:DROP_USERS=1`). Do not write
+`set X=1 && …` in cmd: the value would include a trailing space.
 
 **Permissions.** The person running the scripts needs `Owner` on the project, or: Service Usage Admin, Compute Admin,
 Cloud SQL Admin, Cloud Memorystore Redis Admin, Secret Manager Admin, Artifact Registry Admin, Cloud Build Editor,
@@ -76,11 +94,11 @@ Logs Configuration Writer, Storage Admin.
 setup; see section 7 for the small variant and use the [pricing calculator](https://cloud.google.com/products/calculator)
 for your region before you start.
 
-**Get the code into Cloud Shell:** upload the zip (⋮ → Upload) and `unzip`, or `git clone` your repository.
+**Get the code:** unzip it (or `git clone`) and open a terminal in the project folder:
 
-```bash
-cd GA_googleaibuild_jpac-development
-gcloud auth login            # not needed in Cloud Shell
+```bat
+cd C:\path\to\GA_googleaibuild_jpac-development
+gcloud auth login
 ```
 
 ## 3. Step by step
@@ -89,19 +107,21 @@ Every script is idempotent: if a step fails, fix the cause and run the same scri
 
 ### Step 0 · Configuration
 
-```bash
-cp deploy/gcp/config.env.example deploy/gcp/config.env
-nano deploy/gcp/config.env      # PROJECT_ID, REGION/ZONE, ALERT_EMAIL, PLANT_IDS, TZ_PLANT
+```bat
+copy deploy\gcp\config.example.cmd deploy\gcp\config.cmd
+notepad deploy\gcp\config.cmd
 ```
 
-`PROJECT_ID=pessimist12-1205` and `REGION=asia-south1` are prefilled; choose the region closest to the plant. Every
+Set `PROJECT_ID`, `REGION`/`ZONE`, `ALERT_EMAIL`, `PLANT_IDS`, `TZ_PLANT` (and `PY` if needed).
+
+`PROJECT_ID=pessimist12-1205` and `REGION=asia-south1` are prefilled (Linux/Cloud Shell: `config.env.example` → `config.env`); choose the region closest to the plant. Every
 resource is named `<NAME>-…` (default `plantguard`). Cloud Run URLs are known in advance
 (`https://plantguard-api-<project number>.<region>.run.app`), so no step has to wait for another to learn a URL.
 
 ### Step 1 · Foundation: APIs, image registry, service accounts
 
-```bash
-deploy/gcp/01-foundation.sh
+```bat
+deploy\gcp\01-foundation.bat
 ```
 
 Enables the APIs (Cloud Run, SQL Admin, Redis, Secret Manager, Vertex AI, …), creates the Artifact Registry repository
@@ -122,8 +142,8 @@ Check: `gcloud iam service-accounts list --filter=plantguard`.
 
 ### Step 2 · Private network
 
-```bash
-deploy/gcp/02-network.sh
+```bat
+deploy\gcp\02-network.bat
 ```
 
 Creates `plantguard-vpc` with two subnets (Cloud Run egress `10.20.0.0/24`, Qdrant `10.20.4.0/24`), a private
@@ -136,8 +156,8 @@ Check: `gcloud compute networks subnets list --network=plantguard-vpc` and
 
 ### Step 3 · Secrets
 
-```bash
-deploy/gcp/03-secrets.sh
+```bat
+deploy\gcp\03-secrets.bat
 ```
 
 Generates random secrets straight into Secret Manager (they never touch the disk): `jwt-secret` (signs approval
@@ -150,8 +170,8 @@ Check: `gcloud secrets list --filter=labels.app=plantguard`.
 
 ### Step 4 · Cloud SQL for PostgreSQL
 
-```bash
-deploy/gcp/04-database.sh        # ~10 minutes the first time
+```bat
+deploy\gcp\04-database.bat
 ```
 
 One PostgreSQL 16 instance (Enterprise edition, `db-custom-2-7680`): **private IP only**, **TLS required**
@@ -160,21 +180,22 @@ One PostgreSQL 16 instance (Enterprise edition, `db-custom-2-7680`): **private I
 Databases: `plantguard_ot`, `plantguard_it`, `keycloak`; users `plantguard` (both PlantGuard databases) and `keycloak`.
 PlantGuard creates and upgrades its own tables (step 9), so nothing else is needed.
 
-Optional hardening (recommended): make each user own only its databases and nothing else. From Cloud Shell:
+Optional hardening (recommended): make each user own only its databases and nothing else (needs `psql` on a machine
+that can reach the private IP, e.g. a small VM in the VPC, or Cloud Shell):
 
-```bash
+```bat
 gcloud sql users set-password postgres --instance=plantguard-pg --prompt-for-password
-gcloud sql connect plantguard-pg --user=postgres     # needs a public IP; or run psql from a VM in the VPC:
+rem then, on a machine inside the VPC:
 psql "host=<private ip> user=postgres sslmode=require" -f deploy/gcp/sql/grants.sql
 ```
 
-Check: `gcloud sql instances describe plantguard-pg --format='value(state,settings.availabilityType,ipAddresses[0].ipAddress)'`
+Check: `gcloud sql instances describe plantguard-pg "--format=value(state,settings.availabilityType,ipAddresses[0].ipAddress)"`
 → `RUNNABLE REGIONAL 10.x.x.x`.
 
 ### Step 5 · Memorystore for Redis
 
-```bash
-deploy/gcp/05-redis.sh           # ~5 minutes the first time
+```bat
+deploy\gcp\05-redis.bat
 ```
 
 Redis 7.2, **Standard tier** (replica in another zone, automatic fail-over), **AUTH** on, **in-transit TLS**
@@ -185,12 +206,12 @@ as a file and connect with `rediss://`.
 What lives in Redis is listed in CONTRACTS C12. Redis is *not* the system of record: if it is lost, the engine rebuilds
 the caches and re-queues analyses that never started (PostgreSQL holds every incident and event).
 
-Check: `gcloud redis instances describe plantguard-redis --region=$REGION --format='value(state,tier,transitEncryptionMode)'`.
+Check: `gcloud redis instances describe plantguard-redis --region=asia-south1 "--format=value(state,tier,transitEncryptionMode)"`.
 
 ### Step 6 · Qdrant vector service
 
-```bash
-deploy/gcp/06-qdrant.sh
+```bat
+deploy\gcp\06-qdrant.bat
 ```
 
 What it creates:
@@ -198,7 +219,7 @@ What it creates:
 1. **Backup bucket** `gs://<project>-plantguard-backups` (uniform access, no public access, versioned, objects
    deleted after 30 days).
 2. **TLS**: a private CA and a server certificate for `qdrant.plantguard.internal`
-   ([`deploy/qdrant/make_certs.sh`](../deploy/qdrant/make_certs.sh)). The CA certificate, server certificate and key go to
+   (`tools.py certs`; on Linux [`deploy/qdrant/make_certs.sh`](../deploy/qdrant/make_certs.sh)). The CA certificate, server certificate and key go to
    Secret Manager; the CA private key is not kept (re-run with a new CA to rotate).
 3. **Data disk** `plantguard-qdrant-data` (SSD, 50 GB) with a **daily snapshot schedule** (14 days). The disk is
    independent of the VM (`auto-delete=no`): replacing or deleting the VM never deletes the vectors.
@@ -224,15 +245,15 @@ create or delete collections, and a plant token cannot read another plant's coll
 
 Check (boot takes ~2 minutes):
 
-```bash
-gcloud compute instances get-serial-port-output plantguard-qdrant --zone=$ZONE | grep -E "qdrant started|ERROR"
-gcloud compute ssh plantguard-qdrant --zone=$ZONE --tunnel-through-iap -- sudo docker logs --tail 20 qdrant
+```bat
+gcloud compute instances get-serial-port-output plantguard-qdrant --zone=asia-south1-a | findstr /c:"qdrant started" /c:"ERROR"
+gcloud compute ssh plantguard-qdrant --zone=asia-south1-a --tunnel-through-iap --command="sudo docker logs --tail 20 qdrant"
 ```
 
 ### Step 7 · Build the images
 
-```bash
-deploy/gcp/07-build.sh
+```bat
+deploy\gcp\07-build.bat
 ```
 
 Cloud Build ([`deploy/gcp/cloudbuild.yaml`](../deploy/gcp/cloudbuild.yaml)) builds three images and pushes them with
@@ -248,8 +269,8 @@ The upload honours [`.gcloudignore`](../.gcloudignore) (no `node_modules`, no lo
 
 ### Step 8 · Keycloak (sign-in)
 
-```bash
-deploy/gcp/08-auth.sh
+```bat
+deploy\gcp\08-auth.bat
 ```
 
 Generates the production realm from `config/keycloak/plantguard-realm.json` with
@@ -260,7 +281,7 @@ username/email, no reuse of the last 3) are on, and refresh tokens are single us
 
 Users: by default the demo users are kept so the seeded plant (whose technicians and approvers have ids such as
 `USR-lead`) works, **each with a random one-time password** written to `deploy/gcp/initial-passwords.csv`. Keycloak
-forces a new password at first sign-in. Hand them out and delete the file. `DROP_USERS=1 deploy/gcp/08-auth.sh`
+forces a new password at first sign-in. Hand them out and delete the file. `set DROP_USERS=1` before `08-auth.bat`
 removes them instead; then create real users in the admin console with the attributes `user_id` (the PlantGuard user
 id) and `plant_ids`, and one realm role (`operator`, `maintenance_lead`, `plant_manager`, `technician`, `admin`).
 
@@ -272,8 +293,8 @@ Check: `curl -s https://plantguard-auth-<number>.<region>.run.app/realms/plantgu
 
 ### Step 9 · Migrate job and the Qdrant app token
 
-```bash
-deploy/gcp/09-migrate.sh
+```bat
+deploy\gcp\09-migrate.bat
 ```
 
 Creates the Cloud Run job `plantguard-migrate` (`python -m app.ops migrate`) and runs it. It creates or upgrades both
@@ -282,16 +303,16 @@ when the database is empty, creates the Qdrant collections and indexes the manua
 idempotent: run it before every release (the CI pipeline does). It uses the Qdrant **admin** key; it is the only
 component that can create collections.
 
-Then it mints the app's Qdrant JWT with [`deploy/qdrant/mint_token.sh`](../deploy/qdrant/mint_token.sh) (bash +
-openssl; valid 365 days) and stores it as `plantguard-qdrant-app-token`.
+Then it mints the app's Qdrant JWT (`tools.py token`; on Linux [`deploy/qdrant/mint_token.sh`](../deploy/qdrant/mint_token.sh);
+valid 365 days) and stores it as `plantguard-qdrant-app-token`.
 
-Check: `gcloud run jobs executions list --job=plantguard-migrate --region=$REGION --limit=1` → succeeded; the job log
+Check: `gcloud run jobs executions list --job=plantguard-migrate --region=asia-south1 --limit=1` → succeeded; the job log
 ends with `{"migrated": true, … "vector_store": "qdrant", "chunks": 80}`.
 
 ### Step 10 · The services
 
-```bash
-deploy/gcp/10-services.sh
+```bat
+deploy\gcp\10-services.bat
 ```
 
 | Service | Role | Ingress | Instances | CPU / RAM | Notes |
@@ -311,9 +332,9 @@ At the end it prints the URLs. Open the web URL and sign in with one of the user
 
 ### Step 11 · Observability and alerts
 
-```bash
-gcloud components install beta     # not needed in Cloud Shell
-deploy/gcp/11-observability.sh
+```bat
+gcloud components install beta
+deploy\gcp\11-observability.bat
 ```
 
 Creates an e-mail notification channel (`ALERT_EMAIL`), uptime checks for the API (`/healthz`) and the web app, the
@@ -330,8 +351,8 @@ jsonPayload.request_id="<id from the X-Request-ID response header>"
 
 ### Step 12 · Verify
 
-```bash
-deploy/gcp/12-verify.sh
+```bat
+deploy\gcp\12-verify.bat
 ```
 
 Checks: API health, Keycloak mode, anonymous calls refused (401), `/docs` hidden, web login page, realm discovery,
@@ -342,8 +363,8 @@ job to "Closed".
 
 ## 4. Releasing new versions
 
-**By hand:** `deploy/gcp/07-build.sh`, then
-`gcloud builds submit --config deploy/gcp/cloudbuild.yaml --substitutions=_DEPLOY=true,_TAG=$(git rev-parse --short HEAD),_REGION=$REGION,_API_URL=<api url>,_PLANT_TZ=UTC .`
+**By hand:** `deploy\gcp\release.bat` (builds the images in Cloud Build, runs the migrate job, rolls out engine →
+worker → api → web; the tag is the git commit, or set `TAG` in `config.cmd`).
 
 **CI/CD:** create a Cloud Build trigger on your main branch with `deploy/gcp/cloudbuild.yaml` and the substitutions
 `_DEPLOY=true`, `_REGION`, `_API_URL`, `_PLANT_TZ`, `_TAG=$SHORT_SHA`. The pipeline builds and pushes the images, runs
@@ -379,11 +400,11 @@ Cloud Armor (WAF rules, per-IP rate limiting) and switch their ingress to `inter
 Binary Authorization; turn on VPC Service Controls around the project.
 
 **Rotating secrets:**
-- JWT secret: `gcloud secrets versions add plantguard-jwt-secret --data-file=-`, then redeploy api/engine/worker (open
-  approval tokens become invalid; users just approve again).
-- Qdrant app token: `ROTATE_QDRANT_TOKEN=1 deploy/gcp/09-migrate.sh`, then `deploy/gcp/10-services.sh`.
+- JWT secret: put a new random value in a file and `gcloud secrets versions add plantguard-jwt-secret --data-file=new.txt`
+  (then delete the file), then `10-services.bat` (open approval tokens become invalid; users just approve again).
+- Qdrant app token: `set ROTATE_QDRANT_TOKEN=1`, `09-migrate.bat`, then `10-services.bat`.
 - Qdrant master key: add a new version, restart the VM (`gcloud compute instances reset`), re-mint the app token.
-- Database passwords: add a version, run `04-database.sh` (sets the user's password from the secret), redeploy.
+- Database passwords: add a version, run `04-database.bat` (sets the user's password from the secret), redeploy.
 
 ## 6. Persistence, backup and restore
 
@@ -439,14 +460,15 @@ Test a restore every quarter (clone the database at a point in time, recover one
 
 ## 9. The same architecture on one machine
 
-```bash
-make up            # docker compose up --build -d
+```bat
+docker compose up --build -d
 open http://localhost:3000     # lead / demo
 ```
 
 [`docker-compose.yml`](../docker-compose.yml) runs PostgreSQL (OT, IT and Keycloak databases), Redis with a password,
 Qdrant with an API key and JWT RBAC, the migrate job, one engine, two workers, two API instances behind an nginx
-gateway with sticky sessions (`:8000`) and the web app (`:3000`); `make up-sso` adds Keycloak. Same image, same roles,
+gateway with sticky sessions (`:8000`) and the web app (`:3000`) (Docker Desktop on Windows);
+`docker compose --profile sso up --build -d` adds Keycloak. Same image, same roles,
 same isolation as in the cloud (only TLS inside the network is left out).
 
 ## 10. What has been tested
@@ -470,8 +492,11 @@ from the image's file layout with `PLANTGUARD_ENV=prod`, plus the Next.js standa
   PostgreSQL/Redis/Qdrant (atomic ids across 8 threads, transaction rollback, cross-process locks, optimistic locking,
   Redis bus between two clients, run-queue re-claim + heartbeat, single-use claims, shared rate limit, engine lease,
   Qdrant JWT isolation);
-- the deploy scripts: `bash -n`, ShellCheck, and every `gcloud` command and flag checked against `gcloud --help`
-  (Cloud SDK 570). `docker compose config` validates the compose file.
+- the Windows deploy scripts: every step run under a `cmd.exe` implementation (Wine) with a stand-in `gcloud` that
+  records each call, for both "nothing exists yet" and "everything exists" (re-run) paths, checking the exact
+  command lines; every `gcloud` command and flag checked against `gcloud --help` (Cloud SDK 570); `tools.py`
+  certificates and tokens tested against a real Qdrant with TLS + JWT RBAC. The `.sh` twins: `bash -n`, ShellCheck,
+  the same flag check. `docker compose config` validates the compose file.
 
 Not run from here (no access to your Google Cloud project): the scripts against real Google Cloud APIs and the Docker
 image builds. Expect to run each step once, read its output, and re-run after fixing anything project-specific (org
@@ -484,9 +509,9 @@ policies, quotas, region availability).
 | `vpc-peerings connect` fails | org policy or an overlapping range | change `PSA_RANGE_PREFIX` / the subnet ranges in `config.env` |
 | Cloud SQL create: tier not supported | Enterprise Plus default | the script sets `--edition=ENTERPRISE`; check `SQL_TIER` is a `db-custom-*` tier |
 | Service never becomes ready | startup probe on `/readyz` | `gcloud run services logs read plantguard-api --limit=50`; the readyz JSON names the failing dependency |
-| `CERTIFICATE_VERIFY_FAILED` to Qdrant | client CA ≠ server's CA | re-run `06-qdrant.sh` after deleting the `qdrant-ca` secret versions, then `gcloud compute instances reset plantguard-qdrant` and redeploy |
-| Qdrant 403 | token names other collections (prefix or plant list changed) | `ROTATE_QDRANT_TOKEN=1 09-migrate.sh`, redeploy |
-| Keycloak "Invalid redirect uri" | realm generated for another web URL | `REGENERATE_REALM=1 08-auth.sh` only works before the realm exists; otherwise fix the client's URLs in the admin console |
+| `CERTIFICATE_VERIFY_FAILED` to Qdrant | client CA ≠ server's CA | re-run `06-qdrant.bat` after deleting the `qdrant-ca` secret versions, then `gcloud compute instances reset plantguard-qdrant` and redeploy |
+| Qdrant 403 | token names other collections (prefix or plant list changed) | `set ROTATE_QDRANT_TOKEN=1`, `09-migrate.bat`, then `10-services.bat` |
+| Keycloak "Invalid redirect uri" | realm generated for another web URL | `set REGENERATE_REALM=1` + `08-auth.bat` only works before the realm exists; otherwise fix the client's URLs in the admin console |
 | 401 on every API call after sign-in | issuer mismatch | `KEYCLOAK_URL` must equal the Keycloak public URL (the token's `iss` without `/realms/…`) |
 | `production configuration refused` at startup | a demo setting in prod | the message lists them (JWT secret, CORS, SIM_RESET) |
 | Plant reset needed (demo) | — | `gcloud run jobs execute plantguard-migrate --update-env-vars=SIM_RESET=1` wipes and reseeds (production refuses `SIM_RESET` on services, only the job may) |
