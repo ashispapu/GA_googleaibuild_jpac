@@ -1,5 +1,9 @@
 # PlantGuard AI on Google Cloud: deployment guide (approach 2)
 
+> **Architecture reference:** [CLOUD_SERVICES_HLD.md](CLOUD_SERVICES_HLD.md) is the current repository-reviewed HLD,
+> including every cloud service, deployment/network diagrams, and known availability, recovery, and security gaps.
+> Treat the settings below as the scripted baseline, not a guarantee of end-to-end production readiness.
+
 This guide brings up every Google Cloud service PlantGuard needs and deploys the code onto them. Everything is
 scripted in [`deploy/gcp/`](../deploy/gcp): **Windows batch files** (`01-foundation.bat` … `12-verify.bat`, run from
 Command Prompt or PowerShell on your PC), with identical `.sh` twins for Linux/macOS/Cloud Shell. Each step below says what the script creates, why, how to check it, and

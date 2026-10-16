@@ -1,8 +1,10 @@
 # PlantGuard AI: Cloud deployment HLD (Google Cloud)
 
-> **Superseded for production by [docs/GCP_DEPLOYMENT_GUIDE.md](docs/GCP_DEPLOYMENT_GUIDE.md)** (approach 2: Cloud SQL
-> + Memorystore + a Qdrant vector service + Cloud Run roles, with scripts in `deploy/gcp/`). This document is kept
-> for the earlier single-service options.
+> **Historical design — superseded by [docs/CLOUD_SERVICES_HLD.md](docs/CLOUD_SERVICES_HLD.md).**
+> The new HLD covers the current Cloud Run roles, Cloud SQL, Memorystore, Qdrant, Keycloak, Vertex AI,
+> and all supporting cloud services, with implementation limitations called out explicitly.
+> Use [docs/GCP_DEPLOYMENT_GUIDE.md](docs/GCP_DEPLOYMENT_GUIDE.md) for deployment steps. The recommendations
+> and proposed services below describe earlier single-service options, not the current implementation.
 
 High-level design for running the PlantGuard AI demo online on Google Cloud. It has two parts:
 

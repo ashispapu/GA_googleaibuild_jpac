@@ -537,7 +537,7 @@ class RepairWorkflow:
 
     async def on_alarm(self, payload: dict) -> None:
         """A critical OT alarm (or a breakdown) opens an incident if none is open for the machine yet."""
-        if payload.get("severity") != "critical":
+        if payload.get("severity") != "critical" or self.engine.event_before_reset(payload["asset_id"], payload.get("ts")):
             return
         from plantguard_contracts.schemas.incidents import IncidentCreate
         try:

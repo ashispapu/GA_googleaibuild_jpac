@@ -99,6 +99,8 @@ class PlantEngine:
         self.shared_kv = None
         self.share_telemetry = False
         self.drives_plant = True  # False in API / worker processes: they never run the loop
+        self.operation_lock = asyncio.Lock()  # ticks, scoring and resets must not overlap
+        self.reset_handler = None
 
     # ------------------------------------------------------------------ breakdowns switch
     # Off by default: nothing breaks until someone switches breakdowns on (UI button, POST /simulator/breakdowns).
@@ -247,6 +249,14 @@ class PlantEngine:
             return True, f"Real cause fixed: {c['root_cause']}."
         return False, "The replaced part was not the one failing; the real cause is still there."
 
+    def event_before_reset(self, asset_id: str, ts) -> bool:
+        """Discard telemetry/alerts queued before the last reset of this plant."""
+        asset = self.assets.get(asset_id)
+        if asset is None or ts is None:
+            return False
+        reset = self.it.meta(f"sim_reset_at:{asset.plant_id}")
+        return bool(reset and (parse_ts(ts) if isinstance(ts, str) else ts) <= parse_ts(reset))
+
     # ------------------------------------------------------------------ main loop
     async def run(self) -> None:
         self.running = True
@@ -260,6 +270,12 @@ class PlantEngine:
             await asyncio.sleep(max(0.05, interval - (asyncio.get_running_loop().time() - started)))
 
     async def tick(self) -> None:
+        async with self.operation_lock:
+            await self._tick()
+
+    async def _tick(self) -> None:
+        if self.reset_handler is not None and await self.reset_handler():
+            return
         now = self.clock()
         if self._last_tick is None:
             self._last_tick = now

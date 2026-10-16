@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from pydantic import BaseModel
 
 from plantguard_contracts.schemas.common import ErrorCode
 from plantguard_contracts.schemas.incidents import IncidentStatus
@@ -63,6 +64,25 @@ def speed(body: SimSpeedRequest, claims: AccessClaims = SIM, c: Container = Depe
 
 
 BREAKDOWN_ROLES = ("admin", "plant_manager", "maintenance_lead")
+
+
+class ResetPlantRequest(BaseModel):
+    plant_id: str
+
+
+@router.post("/reset", response_model=SimStatus)
+async def reset_plant(body: ResetPlantRequest, claims: AccessClaims = VIEW, c: Container = Depends(container)):
+    """Restore the selected simulated plant and resolve its issues. Never resets accounts or credentials."""
+    if c.engine is None or c.plant_reset is None:
+        raise ApiError(501, ErrorCode.NOT_IMPLEMENTED, "Only available on the simulated plant")
+    if claims.role.value not in BREAKDOWN_ROLES:
+        raise ApiError(403, ErrorCode.FORBIDDEN, "Only a maintenance lead, plant manager or admin can reset a plant")
+    if body.plant_id not in claims.plant_ids:
+        raise ApiError(403, ErrorCode.PLANT_SCOPE, "You cannot reset another plant")
+    if not c.engine.it.one("SELECT 1 FROM plants WHERE id=?", (body.plant_id,)):
+        raise KeyError(body.plant_id)
+    await c.plant_reset.request(body.plant_id, claims.sub)
+    return status(claims, c)
 
 
 @router.post("/breakdowns", response_model=SimStatus)

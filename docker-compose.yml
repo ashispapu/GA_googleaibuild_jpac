@@ -33,6 +33,10 @@ x-backend: &backend
     KEYCLOAK_URL: ${KEYCLOAK_URL:-http://localhost:8080}
     KEYCLOAK_INTERNAL_URL: http://keycloak:8080
     CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+    # Internal service requests (including Keycloak signing keys) must bypass office/Docker proxies.
+    # Set both spellings because different HTTP libraries prefer different cases.
+    NO_PROXY: ${NO_PROXY:-localhost,127.0.0.1,host.docker.internal},postgres,redis,qdrant,keycloak,api,gateway,web
+    no_proxy: ${NO_PROXY:-localhost,127.0.0.1,host.docker.internal},postgres,redis,qdrant,keycloak,api,gateway,web
     GEMINI_API_KEY: ${GEMINI_API_KEY:-}
   # the app containers get a Qdrant JWT that names only their collections (minted at start from the admin key)
   entrypoint:
@@ -136,6 +140,7 @@ services:
       AUTH_KEYCLOAK_ID: plantguard-web
       AUTH_KEYCLOAK_SECRET: ${KEYCLOAK_WEB_SECRET:-plantguard-web-dev-secret}
       AUTH_KEYCLOAK_ISSUER: ${KEYCLOAK_URL:-http://localhost:8080}/realms/plantguard
+      AUTH_KEYCLOAK_INTERNAL_ISSUER: http://keycloak:8080/realms/plantguard
       HSTS: "off"
     ports: ["3000:3000"]
     depends_on: [gateway]

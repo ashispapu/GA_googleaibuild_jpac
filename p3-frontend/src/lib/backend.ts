@@ -221,6 +221,7 @@ export const backend = {
     callAs<FaultResponse>(adminToken ?? getToken() ?? null, "POST", "/simulator/faults", { asset_id: assetId || null, failure_mode: mode || null }),
   /** admin, plant manager, maintenance lead: switch machine breakdowns on/off (off by default) */
   setBreakdowns: (enabled: boolean) => callAs<SimStatus>(getToken() ?? null, "POST", "/simulator/breakdowns", { enabled }),
+  resetPlant: (plantId: string) => post<SimStatus>("/simulator/reset", { plant_id: plantId }),
   setPlantSpeed: (scale: number, adminToken?: string | null) =>
     callAs<SimStatus>(adminToken ?? getToken() ?? null, "POST", "/simulator/speed", { scale }),
 

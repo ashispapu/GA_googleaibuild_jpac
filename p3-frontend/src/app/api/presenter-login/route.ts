@@ -3,6 +3,7 @@
 // presenter, with the "plantguard-dev" client from the realm. Only admins may run the demo.
 // Disabled in production builds unless ALLOW_PRESENTER_LOGIN=true.
 import { NextResponse } from "next/server";
+import { keycloakFetch } from "@/lib/keycloak-network";
 
 const ROLE_ORDER = ["admin", "plant_manager", "maintenance_lead", "operator"];
 
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
 
   let res: Response;
   try {
-    res = await fetch(`${issuer}/protocol/openid-connect/token`, {
+    res = await keycloakFetch(`${issuer}/protocol/openid-connect/token`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({ grant_type: "password", client_id: "plantguard-dev", username, password }),

@@ -52,6 +52,12 @@ class LatestScores:
         with self._lock:
             return self._by_asset.get(asset_id)
 
+    def invalidate(self, asset_ids: list[str]) -> None:
+        """Drop only local cached copies; the engine owns the authoritative shared scores."""
+        with self._lock:
+            for aid in asset_ids:
+                self._by_asset.pop(aid, None)
+
 
 class SharedScores(LatestScores):
     """LatestScores in Redis: the engine's scorer writes, every API / worker instance reads (1 s local cache)."""
@@ -78,6 +84,11 @@ class SharedScores(LatestScores):
         h = AssetHealth.model_validate(raw)
         LatestScores.put(self, h)
         return h
+
+    def invalidate(self, asset_ids: list[str]) -> None:
+        super().invalidate(asset_ids)
+        for aid in asset_ids:
+            self._seen.pop(aid, None)
 
 
 class LiveHealthProvider:  # implements HealthProvider

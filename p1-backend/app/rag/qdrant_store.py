@@ -33,8 +33,10 @@ def make_client(data_dir: Path):
     url = os.getenv("QDRANT_URL")
     if url:  # QDRANT_CA_CERT: the private CA that signed the Qdrant server certificate (https://)
         extra = {"verify": os.environ["QDRANT_CA_CERT"]} if os.getenv("QDRANT_CA_CERT") else {}
+        # Qdrant is an infrastructure service, not an outbound LLM call. Docker/office proxy settings must not
+        # route internal service names (such as "qdrant") through a corporate proxy. Keep explicit TLS verification.
         return QdrantClient(url=url, api_key=os.getenv("QDRANT_API_KEY") or None, timeout=15, prefer_grpc=False,
-                            https=url.startswith("https"), **extra)
+                            https=url.startswith("https"), trust_env=False, **extra)
     path = data_dir / "qdrant"
     path.mkdir(parents=True, exist_ok=True)
     return QdrantClient(path=str(path))

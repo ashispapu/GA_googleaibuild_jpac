@@ -80,6 +80,7 @@ class Container:
     garden: object | None = None
     sessions: object | None = None
     option_chat: object | None = None
+    plant_reset: object | None = None
     background: list = field(default_factory=list)  # zero-arg coroutine factories started by the app lifespan
     # ---- deployment ----
     role: str = "all"             # PLANTGUARD_ROLE: all | api | engine | worker | migrate

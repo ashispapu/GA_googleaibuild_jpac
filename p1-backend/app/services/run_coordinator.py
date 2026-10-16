@@ -23,6 +23,10 @@ def is_final(ev: AgentEvent) -> bool:
     return ev.agent == Agent.ORCHESTRATOR and ev.type == EventType.STATUS and ev.message == "finished" and not ev.sub_agent
 
 
+class RunReset(Exception):
+    """The plant was reset while an old investigation was running."""
+
+
 class RunCoordinator:
     """Runs an incident's agent runtime once per analysis round, stores each event and publishes it on the bus."""
 
@@ -87,9 +91,32 @@ class RunCoordinator:
         emit an ERROR plus `finished` so viewers never hang."""
         rec = self._repo.get(incident_id)
         offset = rec.round_first_seq - 1
+        rec.reset_generation = self._generation(rec)
+        reset_cancelled = False
+        task = asyncio.current_task()
+
+        async def watch_reset():
+            nonlocal reset_cancelled
+            while True:
+                await asyncio.sleep(0.5)
+                try:
+                    changed = rec.reset_generation != self._generation(rec)
+                except Exception:
+                    continue  # transient DB outage; retry rather than abandoning the guard
+                if changed:
+                    reset_cancelled = True
+                    task.cancel()
+                    return
+
+        watcher = asyncio.create_task(watch_reset()) if rec.reset_generation is not None else None
         try:
             async for ev in self._factory(speed).run(rec.incident):
                 await self._record(rec, ev.model_copy(update={"seq": ev.seq + offset, "round": rec.incident.round}))
+        except asyncio.CancelledError:
+            if not reset_cancelled:
+                raise
+        except RunReset:
+            pass
         except Exception as e:
             log.exception("agent run failed for %s", incident_id)
             self._audit.log("system", "orchestrator", "agent_run_failed", incident_id, {"error": type(e).__name__,
@@ -101,10 +128,22 @@ class RunCoordinator:
             await self._record(rec, AgentEvent(incident_id=incident_id, seq=last + 2, ts=self._clock(),
                                                agent=Agent.ORCHESTRATOR, type=EventType.STATUS, round=rec.incident.round,
                                                message="finished"))
+        finally:
+            if watcher is not None:
+                watcher.cancel()
+
+    def _generation(self, rec: IncidentRecord) -> str | None:
+        db = getattr(self._repo, "_db", None)
+        return db.meta(f"sim_reset_generation:{rec.incident.plant_id}", "") if db is not None else None
+
+    def _check_reset(self, rec: IncidentRecord) -> None:
+        if rec.reset_generation is not None and rec.reset_generation != self._generation(rec):
+            raise RunReset()
 
     async def _record(self, rec: IncidentRecord, ev: AgentEvent) -> None:
         """Store the event, copy a Diagnosis/OptionsResponse result onto the incident, flip ANALYSING ->
         AWAITING_APPROVAL on `finished`, then publish event (and status)."""
+        self._check_reset(rec)
         self._repo.append_event(rec, ev)
         inc = rec.incident
         if ev.type == EventType.RESULT:
@@ -122,6 +161,7 @@ class RunCoordinator:
         inc.updated_at = self._clock()
         if status_changed or ev.type == EventType.RESULT or is_final(ev):
             self._save_merge(rec)
+        self._check_reset(rec)
         for fn in self.listeners:
             try:
                 fn(rec, ev)
@@ -138,6 +178,7 @@ class RunCoordinator:
         """Save what the run produced. If another process changed the incident meanwhile (e.g. an alarm note), reload
         it and apply the run's own fields again instead of overwriting the other change."""
         for _ in range(5):
+            self._check_reset(rec)
             try:
                 self._repo.save(rec)
                 return

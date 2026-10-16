@@ -177,7 +177,10 @@ def build_sim_container(s: Settings, verifier: TokenVerifier | None = None):
     users = SqlUserDirectory(it)
     scorer = RunningOnlyScorer(extractor, model, bus, scores, directory, hours, clock, min_samples=6)
     scoring = SimScoringService(engine, scorer, cfg.score_interval_s)
-    alert_opener = AlertIncidentOpener(incidents, bus)
+    alert_opener = AlertIncidentOpener(incidents, bus,
+                                      ignore_alert=lambda a: engine.event_before_reset(a.asset_id, a.ts))
+    from app.sim.reset import PlantReset
+    plant_reset = PlantReset(engine, scorer, scores, incidents, garden, audit)
 
     async def follow(channel: str, handler):
         async for payload in bus.subscribe(channel):
@@ -211,7 +214,8 @@ def build_sim_container(s: Settings, verifier: TokenVerifier | None = None):
                   maintenance, quality, engineering, retriever, workforce, energy, health, scores, tool_gateway, incidents,
                   runs, engine, scoring=scoring, alert_opener=alert_opener, clock=clock, engine=engine, workflow=workflow,
                   garden=garden, sessions=sessions,
-                  option_chat=OptionChat(incidents, it, audit, clock, workflow.user), role=role, shared=kv)
+                  option_chat=OptionChat(incidents, it, audit, clock, workflow.user), plant_reset=plant_reset,
+                  role=role, shared=kv)
 
     plant_work = [engine.run, scoring.run, alert_opener.run, lambda: follow("sim.verification", workflow.on_verification),
                   lambda: follow("ot.alarm", workflow.on_alarm), recover]

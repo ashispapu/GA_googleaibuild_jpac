@@ -8,11 +8,13 @@
 //   AUTH_KEYCLOAK_ISSUER=http://localhost:8080/realms/plantguard
 //
 // app/api/auth/[...nextauth]/route.ts:  import { handlers } from "@/lib/auth"; export const { GET, POST } = handlers;
-import NextAuth from "next-auth";
+import NextAuth, { customFetch } from "next-auth";
 import Keycloak from "next-auth/providers/keycloak";
+import { keycloakFetch } from "./keycloak-network";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers: [Keycloak], // reads AUTH_KEYCLOAK_ID / _SECRET / _ISSUER; Authorization Code + PKCE
+  // Keep the public issuer for validation/redirects; route server-side discovery and token calls internally.
+  providers: [Keycloak({ [customFetch]: keycloakFetch })],
   callbacks: {
     async jwt({ token, account }) {
       if (account) {
@@ -27,7 +29,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const expiresAt = typeof token.expiresAt === "number" ? token.expiresAt : 0;
       if (Date.now() < (expiresAt - 60) * 1000 || !token.refreshToken) return token;
       try {
-        const res = await fetch(`${process.env.AUTH_KEYCLOAK_ISSUER}/protocol/openid-connect/token`, {
+        const res = await keycloakFetch(`${process.env.AUTH_KEYCLOAK_ISSUER}/protocol/openid-connect/token`, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: new URLSearchParams({

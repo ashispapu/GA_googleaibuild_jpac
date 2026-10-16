@@ -113,6 +113,8 @@ class GardenService:
         source = ([GardenAgent.model_validate(v) for v in self.kv.all_json("garden").values()] if self.kv is not None
                   else list(self.agents.values()))
         for g in source:
+            if self._before_reset(self.repo.get(g.incident_id)):
+                continue
             if g.plant_id not in claims.plant_ids:
                 continue
             if g.stage in (Stage.RESOLVED, Stage.REJECTED, Stage.ANSWERED) and now - g.ts > KEEP_DONE_FOR:
@@ -122,9 +124,17 @@ class GardenService:
             out.append(g)
         return GardenSnapshot(now=now, agents=sorted(out, key=lambda a: a.incident_id))
 
+    def _before_reset(self, rec) -> bool:
+        from app.sim.clock import parse_ts
+        db = getattr(self.repo, "_db", None)
+        at = db.meta(f"sim_reset_at:{rec.incident.plant_id}") if db is not None else None
+        return bool(at and rec.incident.created_at <= parse_ts(at))
+
     def rebuild(self) -> None:
         """After a restart: put every recent incident back where it was."""
         for rec in self.repo.all():
+            if self._before_reset(rec):
+                continue
             if rec.incident.status in (IncidentStatus.RESOLVED, IncidentStatus.REJECTED) and \
                     self.clock() - rec.incident.updated_at > KEEP_DONE_FOR:
                 continue

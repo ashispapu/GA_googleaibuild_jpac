@@ -49,8 +49,18 @@ class RunningOnlyScorer(HealthScorer):
         super().__init__(*a, **kw)
         self._state: dict[str, str] = {}
         self._keep, self._max_age = keep, max_age
+        self._reset_at: dict[str, datetime] = {}
+
+    def reset_assets(self, asset_ids: list[str], at: datetime) -> None:
+        for aid in asset_ids:
+            self._buffers.pop(aid, None)
+            self._state.pop(aid, None)
+            self._last_alert.pop(aid, None)
+            self._reset_at[aid] = at
 
     def ingest(self, msg: TelemetryMessage) -> None:
+        if msg.asset_id in self._reset_at and msg.ts <= self._reset_at[msg.asset_id]:
+            return
         prev = self._state.get(msg.asset_id)
         self._state[msg.asset_id] = msg.state.value
         if msg.state != MachineState.RUN or (prev is not None and prev != MachineState.RUN.value):
@@ -88,7 +98,8 @@ class SimScoringService:
         while True:
             await asyncio.sleep(self.interval)
             try:
-                await self.scorer.evaluate()
+                async with self.engine.operation_lock:
+                    await self.scorer.evaluate()
             except Exception:
                 log.exception("scoring cycle failed")
 

@@ -31,6 +31,7 @@ class IncidentRecord:
     run_round: int = 0          # last analysis round whose agent run was started
     round_first_seq: int = 1    # first event seq of the current round
     version: int = 0            # optimistic-locking version of the stored row (shared repository)
+    reset_generation: str | None = None  # run-local guard; never serialized into the incident
 
 
 class ConcurrentUpdate(Exception):

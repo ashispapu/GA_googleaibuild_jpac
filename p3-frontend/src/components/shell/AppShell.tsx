@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
-import { BookOpen, ClipboardList, Crosshair, Gauge, LayoutGrid, ListChecks, Lock, LogOut, MessageCircleQuestion, Network, Search, Shield, TriangleAlert, Wrench } from "lucide-react";
+import { BookOpen, ClipboardList, Crosshair, Gauge, LayoutGrid, ListChecks, Lock, LogOut, MessageCircleQuestion, Network, RotateCcw, Search, Shield, TriangleAlert, Wrench } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "@/lib/session";
 import { backend } from "@/lib/backend";
@@ -143,10 +143,11 @@ function PlantClock() {
  *  stops new faults and freezes the ones developing. Leads, managers and admins can switch it; others see the state. */
 function BreakdownsToggle() {
   const { me } = useSession();
-  const { simMode } = useAppState();
+  const { simMode, plantId } = useAppState();
   const qc = useQueryClient();
   const status = useQuery({ queryKey: ["sim-status"], queryFn: backend.simStatus, refetchInterval: 10_000, retry: 1 });
   const [busy, setBusy] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   if (!simMode || !status.data) return null;
   const on = status.data.random_faults;
@@ -161,6 +162,26 @@ function BreakdownsToggle() {
       setErr("Could not switch");
     } finally {
       setBusy(false);
+    }
+  };
+  const reset = async () => {
+    if (!window.confirm(`Restore all machines in ${plantId} and resolve its open issues? Current investigations and jobs will stop. Your login and historical records will be kept.`)) return;
+    setBusy(true);
+    setResetting(true);
+    setErr(null);
+    try {
+      await backend.resetPlant(plantId);
+      await qc.cancelQueries();
+      // Remove old approval tokens without touching the user's sign-in credentials.
+      for (const key of Object.keys(sessionStorage)) {
+        if (key.startsWith("pg.approval.")) sessionStorage.removeItem(key);
+      }
+      // Recreate query/assistant/stream state on a clean overview; preserve auth cookies.
+      window.location.assign("/");
+    } catch {
+      setErr("Could not restore the plant. Please try again.");
+      setBusy(false);
+      setResetting(false);
     }
   };
   return (
@@ -183,6 +204,19 @@ function BreakdownsToggle() {
         </span>
         Breakdowns {on ? "on" : "off"}
       </button>
+      {canSwitch && (
+        <button
+          type="button"
+          aria-label="Reset selected plant"
+          aria-busy={resetting}
+          title="Reset selected plant"
+          disabled={busy}
+          onClick={() => void reset()}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-line bg-white text-ink-3 hover:bg-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <RotateCcw className={cn("h-4 w-4", resetting && "animate-spin")} aria-hidden />
+        </button>
+      )}
       {err && <span className="text-xs text-crit-text">{err}</span>}
     </span>
   );

@@ -1,0 +1,34 @@
+# Optional local Vertex AI access. Your databases and login still run locally.
+# Prerequisites:
+#   gcloud auth application-default login
+#   gcloud auth application-default set-quota-project YOUR_PROJECT_ID
+# Add to .env:
+#   GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID
+#   GOOGLE_CLOUD_LOCATION=global
+#   GCP_ADC_FILE=C:/Users/YOUR_USER/AppData/Roaming/gcloud/application_default_credentials.json
+# Keep the credentials outside the repository; do not commit or share them.
+# Start:
+#   docker compose -f docker-compose.yml -f docker-compose.vertex.yml --profile sso up -d
+# Check (one small billable Vertex AI request):
+#   docker compose -f docker-compose.yml -f docker-compose.vertex.yml exec worker python -m llm.check
+# Use both Compose files for subsequent starts; the base file alone selects its normal configuration.
+
+x-vertex-access: &vertex-access
+  environment:
+    GOOGLE_GENAI_USE_ENTERPRISE: "true"
+    GOOGLE_CLOUD_PROJECT: ${GOOGLE_CLOUD_PROJECT:?Set GOOGLE_CLOUD_PROJECT in .env to your Google Cloud project ID}
+    GOOGLE_CLOUD_LOCATION: ${GOOGLE_CLOUD_LOCATION:-global}
+    GOOGLE_APPLICATION_CREDENTIALS: /run/plantguard/google-adc.json
+  volumes:
+    - type: bind
+      source: ${GCP_ADC_FILE:?Set GCP_ADC_FILE in .env to your Google application-default credentials file}
+      target: /run/plantguard/google-adc.json
+      read_only: true
+      bind:
+        create_host_path: false
+
+services:
+  migrate: *vertex-access
+  engine: *vertex-access
+  worker: *vertex-access
+  api: *vertex-access

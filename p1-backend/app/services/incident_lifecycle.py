@@ -33,9 +33,9 @@ class SceneIncidentLifecycle:
 class AlertIncidentOpener:
     """Consumes `alerts.raised` from the scoring loop and opens an incident per alert."""
 
-    def __init__(self, service: IncidentService, bus: EventBus):
+    def __init__(self, service: IncidentService, bus: EventBus, ignore_alert=None):
         """service: opens incidents; bus: where `alerts.raised` arrives."""
-        self._service, self._bus = service, bus
+        self._service, self._bus, self._ignore = service, bus, ignore_alert
 
     async def run(self) -> None:
         """Background loop: for each alert on the bus, open an incident for that asset. A bad alert is logged and
@@ -43,6 +43,8 @@ class AlertIncidentOpener:
         async for payload in self._bus.subscribe("alerts.raised"):
             try:
                 alert = AlertRaised.model_validate(payload)
+                if self._ignore is not None and self._ignore(alert):
+                    continue
                 await self._service.open(IncidentCreate(asset_id=alert.asset_id, trigger=IncidentTrigger.ML_ALERT),
                                          SYSTEM_ACTOR)
             except Exception:
